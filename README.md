@@ -1,10 +1,11 @@
-# Alleycat-Player
+# Alleycat Player
 
 A browser-based application for extracting and viewing videos from websites (YouTube, Bitchute, Vimeo, etc.)
 
 GitHub might not be the right medium for this project but we'll see how it goes.
 
 The files within this project are more easily accessible via the home repository at:
+
 https://archive.org/details/alleycat-player
 
 There you will find all versions of the application as browser-ready HTML files. Currently, the application consists of a single file comprising 6557 lines (version 2a, as reported by GitHub) of HTML, CSS and Javascript. The file size is about 234KB. In future, this project may likely be divided into smaller chunks, depending on whether the functionality (and thus the amount of Javascript) needs to grow beyond what it is currently.
