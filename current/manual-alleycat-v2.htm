@@ -1,0 +1,297 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin">
+
+<title>Alleycat Manual</title>
+
+<style type="text/css">
+
+body {
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: peachpuff;
+}
+
+hr {
+  border-color: indianred; border-style: solid;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: decimal;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+w_ { color: green; font-weight: bold; }
+
+</style></head>
+
+<body>
+
+<h1><r_>Alleycat Player</r_> -- Instruction Manual</h1>
+
+<p><hr><p>
+
+<b><b_>Introduction</b_></b>
+<p>
+Alleycat Player is an application designed to access embedded video links on a wide range of web sites. The list of
+supported sites includes YouTube, BitChute, Rumble, Vimeo, Brighteon, Dailymotion, Twitter, Facebook and many more. Most
+web browsers natively support the playback of mp4 and webm, as well as a few other less popular formats. For the HLS
+and DASH streaming formats, Alleycat Player employs Javascript modules available in the public domain. For some sites,
+a proxy server may be required to bypass HTTP access restrictions.
+<p>
+There are three video viewers available in Alleycat Player. Each is dedicated to supporting a category of web
+sites. Functionally, the viewers are all exactly the same. Internet TV, for example, is supportable in any viewer.
+The Internet Radio is completely separate from the video viewers.
+<p>
+<b><b_>Selecting a Proxy Server</b_></b>
+<p>
+This option is available at the top of the Alleycat Player page. The default is the Kraker Local Proxy Server. If you do
+not have Kraker installed then you will need to choose a remote proxy from the dropdown list. Some sites do not
+need a proxy at all, others need a proxy to bypass the web browser restriction on Cross-Origin Resource Sharing (CORS),
+still others will not be accessible at all without Kraker. It is always preferable to have Kraker installed but that is
+up to you. Just be aware of the limitations. Remote proxies may go offline or not work with particular sites.
+<p>
+For some sites, Alleycat Player may need to access the video server through Kraker for playback or download. This is
+different from finding the video link. For example, Kraker is needed to access Twitter but the video link on Twitter is
+playable without Kraker. There is no rule for this. In cases where Kraker is needed to play a video, you will see
+"http://localhost:8080" at the beginning of the video URL.
+<p>
+<b><b_>Playing Videos</b_></b>
+<p>
+In order to retrieve a video, you must first select the target site from the dropdown list to the left of the video
+viewer. There are two retrieval methods. The first method employs the ID number of the video (if
+such is available). Enter the ID number in the line below the "Play ID" button and press. The second method is to
+use the DIG option. In this case, you would copy the URL of a web page to the input line beside the "DIG" button
+and press. For some sites, Alleycat will search the indicated page for the ID number of a video and then apply the ID
+lookup function. Some sites do not employ video ID numbers so the DIG option would be the only way to get the video.
+Many web sites can be problematic due to small or major differences in page design so this may not always work. Also,
+sites may sometimes change the page format so that Alleycat can no longer find the video. For this reason, the code
+is continuously being tested and will be updated accordingly.
+<p>
+A complete URL may be entered as the ID number with the caveat that the ID must be the last part of the URL. If a
+slash (/) or a dot (.) appears within the last 5 characters (like ".html") then the string will be truncated. A character
+count is used to separate the ID from the rest of the URL. For YouTube, an ID is always exactly 11 characters. For some
+sites, there is a small range like from 6 to 8 characters. In the event that a known good ID number is rejected, you can
+force the ID to be accepted by preceding it with an asterisk (*). This is seldom necessary but might be needed for some
+old videos.
+<p>
+In many cases, you have the option of choosing the resolution of the video. The format/resolution selection box has an odd
+appearance due to Alleycat's original purpose of extracting YouTube videos. YouTube, unlike every other video
+storage site, uses its own special coding system for resolutions and formats (because it has so many). For example,
+#22 refers to mp4-720p and #43 refers to webm-360p. Note that the webm format is only available on YouTube and Rumble.
+The checkbox called "Format" applies to m3u8 playback (not mp4 or mpd). If checked, the video track for the desired
+resolution will be extracted from the master m3u8. Note that this cannot be done if the master file contains an audio
+track separate from the video. In this case, the HLS video player may independently select the desired resolution.
+<p>
+The video URL is always available below the video viewport. It may be copied to the clipboard via the "Copy" button. You
+can paste the URL from the clipboard to an external video playback device (such as VLC or SMPlayer). For some sites, the
+video feed may need to pass through Kraker due to server access restrictions. Such a feed is still playable on your external
+device since the local proxy is available to all applications. In some cases, the passthrough is only needed for the web
+browser and may be excluded (if desired but this is not necessary).
+<p>
+Use the "No Play" option to retrieve a video URL without playing the video. You can play a video in a new tab or a popup
+window. A range of popup window sizes is available. To utilize multiple windows, check the "Allow Multiple" option.
+<p>
+<b><b_>Downloading Videos</b_></b>
+<p>
+For the mp4 and webm video formats, use your web browser's default functionality for downloading. You can right-click
+the video viewport while the video is in playback mode and select the download option. On Firefox, you can also highlight
+the video URL and right-click to download. For Chrome-based browsers, right-click on the "DLoad" button.
+<p>
+Note that the "Copy" button will copy the content of the video URL line to the clipboard and also to the "DLoad" button.
+The "Allow Multiple" option must be unchecked (see the section called "Stack Buttons and
+the Pop Stack").
+<p>
+Streaming formats (HLS/m3u8 or DASH/mpd) are not directly downloadable. For some sites, mp4 download links may be
+available via the "DLoad" button. For m3u8, there is a download option available in Alleycat Player. It is accessed by
+prepending the video URL with a special command and then pressing the "Play URL" button. A window will pop up to show
+the progress of the download.
+<p>
+This is not applicable to livestreams such as Internet TV. The DASH format has no download option.
+<p>
+The m3u8 download process requires Kraker in order to work. This allows Alleycat Player to save each video segment
+immediately to disk as it is received. Aliases are used to name the saved files. Kraker will associate the aliases
+with the physical files via the "_aliases.txt" file. See the Kraker documentation. The special command is in the form
+"?&lt;alias&gt;". Usage example:
+<p>
+&nbsp;<g_>?&lt;vid2&gt;http://farawayserver.net/awesomevideo.m3u8</g_>
+<p>
+Two files (<r_>video2-aud.ts</r_> for audio and <r_>video2-vid.ts</r_> for video) will be created on the disk. These
+are in mpeg2 format and are not playable in your web browser but they are playable with VLC or SMPlayer. You will need
+an appropriate tool to merge the audio and video tracks and save them as an mp4. If there is not a separate audio track
+then the audio file on disk will be empty. There are 9 aliases available (from <r_>vid1</r_> to <r_>vid9</r_>). These
+can be changed or additional aliases may be added by modifying the "_aliases.txt" file.
+<p>
+<b><b_>Video Playback Controls</b_></b>
+<p>
+The main feature is the seek
+function with 6 presets (5s, 15s, 1m, 2m, 5m, 10m) and a freeform input which can accept either h:m:s format or just a
+plain number of seconds. Fractional values work too. Precede the number with a "+" or a "-" to seek from the current
+play time. For example, "+0.1" will allow you to seek ahead one tenth of a second for those times when you need to find
+the perfect spot to take a snapshot.
+<p>
+Click the mouse in the video viewport to pause or play the video. Move the mouse cursor to the bottom of the viewport to
+show the controls. The controls will normally remain visible if an audio-only file is playing. If you want to hide the
+controls then click the viewport.
+<p>
+There are controls for pause/play, audio volume and playback speed. The "B" control is for brightness, the "S" control
+is for saturation, the "F" control flips the video horizontally, the "R" control rotates the video and "FS" activates
+the full screen mode. The "Z" control is used to zoom the video. To change the aspect ratio, activate the "F" control
+and use the "Z" control to increase or decrease the video height. There are also controls for brightness, saturation
+and zoom located above and below the video viewport.
+<p>
+<b><b_>Viewer modes: Raw / Wrapper / Sandbox</b_></b>
+<p>
+Sandboxing (implemented via the <i>iframe</i> tag) is employed by Alleycat Player to prevent Javascript embeds from
+opening popup windows for advertising. Some pirate video download sites are unsafe when used without a good popup
+blocker. However, if you play the URL inside Alleycat Player, these popups are very effectively blocked. Any URL may be
+inserted, not just videos. The native viewers are sandboxed by default. However, if you employ
+a window option to open the URL, you need to indicate that you want the window to be sandboxed. Just check the Sandbox
+option. If you don't want a sandbox but you want to run a non-video URL then check the Raw option. In the default Wrapper
+mode, there are three selectable options: <i>Wrapper</i> for playing mp4/ogv/webm videos (or whatever video format your
+web browser supports), <i>M3U8</i> for HLS/m3u8 files and <i>DASH</i> for DASH/mpd.
+<p>
+<b><b_>Web browser compatibility notes</b_> (this information might be outdated)</b>
+<p>
+Alleycat Player works correctly with the following web browsers: Firefox, Waterfox, Google Chrome, Brave, Opera,
+Torch and Dissenter. Other browsers should work if they conform correctly to the HTML standards.
+<p>
+Pale Moon does not render the video viewers correctly. This is due to some extra padding in the buttons
+(6 pixels horizontally and 2 pixels vertically). The text on the buttons is misaligned. This cannot be fixed.
+Both Waterfox and Pale Moon draw an ugly horizontal bar inside the range controls of the video control panel. I don't know
+how this can be removed.
+<p>
+Epic Privacy Browser and Otter Browser do not work correctly. Epic has the same problem as Microsoft Edge (described
+below). Otter chokes on the Javascript for some reason.
+<p>
+If the "Allow Multiple" option is not checked, windows are supposed to get re-used or closed as needed. However, I
+have found two cases where the web browser incorrectly blocks the window close function in Alleycat Player. Microsoft
+Edge does not allow a window opened in Raw mode to be closed. Firefox (on Win10 but not on WinXP) blocks in Raw mode
+if the window is controlled by an extension (such as for m3u8/mpd playback).
+<p>
+Always keep in mind that browsers contain various "security" features that may interfere with Alleycat Player. Consider
+that Alleycat is able to extract video links from numerous different sites. Your browser has no idea what is trustworthy
+and what is not (even though the content is just a video). You may need to battle with the site blockers in the browser
+itself and in whatever add-ons or extensions you may have. Don't blame Alleycat. Your browser is just trying to "protect"
+you. Normally, a notice of some sort should appear to warn you about blockage. Sometimes not. If a video does not play,
+check the settings in your web browser or popup blocker. 'Nuff said. It isn't too bad overall.
+<p>
+Microsoft Edge has native support for m3u8 and mpd. This does not conflict with Alleycat Player. However, Edge is
+hopelessly broken. Videos play with only sound because Edge does not support the CSS
+filters used for the brightness control. Also, Edge is not allowing connections to the local host (might be an option
+somewhere but I can't be bothered to find it). To repair the no-video problem, find and comment out this line of code:
+<p>
+&nbsp;<r_>vid.style.filter = "brightness(" + lvl + ") contrast(" + con + ") saturate(" + sat + ")";</r_>
+<p>
+<b>Also:</b> CSS filters are used for the radio buttons and checkboxes to get rid of the ugly gray background on
+Chrome-based browsers. This breaks on Edge as well. The offending two lines of code read as follows:
+<p>
+&nbsp;<r_>filter: contrast(1.0) brightness(1.2) opacity(90%);</r_>
+<p>
+<b>Caveat:</b> My version of Microsoft Edge is out of date since I have Windows 10 updates disabled.
+
+<p><hr><p>
+<b><b_>Additional Notes</b_></b>
+<ul><li>
+It is important to use your browser's zoom feature to fit Alleycat Player to your browser window. This works pretty well
+(as far as I can tell) but the faux speaker grill on the right-hand side might still be visible because you don't have
+exact control over the zoom factor. I have added a feature to snap the grill out of view when it reaches a certain
+minimum width.
+</li><li>
+You can play a video from your local disk via the Local Proxy Server if you have an alias set up for it in the
+"_aliases.txt" file. Simply enter the alias with an intial "+" and press "Play URL". If the video is located in your
+Alleycat Player folder then you just need the file name without the "+".
+</li><li>
+There are video brightness controls situated above the video viewer and a simpler version is available in the video
+playback control panel. There is no control for gamma because web browsers do not support that. There is also no control
+for contrast because that is adjusted automatically according to the brightness and saturation settings. The algorithm has
+been heavily tested and rewritten many times to obtain the best results. It is not perfect and never will be. A specialized
+video player will do a better job of it but that generally entails a lot of fiddling. The Alleycat Player controls
+are designed for simplicity and convenience. Note: the "Reset" button will zero the settings on the first press and restore
+them on the second press.
+</li><li>
+When a video viewer is busy accessing a web site, no other action is permitted in any viewer until the current action has
+completed. Usually, a web server will respond within a few seconds but it is possible that the server may never respond
+or take a long time to do so. The web browser may wait for up to 90 seconds for a response. If you are impatient, you
+can clear the viewer busy state by pressing the "Clear" button. Note that this is not a safe action since the viewer
+will still be waiting for the server response. This is a limitation of the "fetch" function in Javascript. There is no
+danger but be aware that the suspended script may potentially interfere with any new action you initiate (that is, when
+the script resumes).
+</li></ul>
+
+<p><hr><p>
+<b><b_>YouTube - Alternative Sources and DASH</b_></b>
+<p>
+There is a dropdown box above the video viewport to select from a number of options for the YouTube source. Currently, only
+YouTube itself and few Invidious instances are available. The standard formats for a YouTube video are: 360p-mp4,
+720p-mp4 and 360p-webm. There is an additional option to select the YouTube DASH formats (this is the default setting).
+This option is only available via the Kraker Local Proxy Server. The audio and the video are provided as separate streams.
+The YouTube tag numbers are as follows:
+<p>
+&nbsp;<g_>#140 (audio), #134 (360p), #135 (480p), #136 (720p) -- mp4<br>
+&nbsp;#251 (audio), #243 (360p), #244 (480p); #247 (720p) -- webm</g_>
+<p>
+Higher resolutions may be available for some videos but Alleycat does not access them (at least, not at this time).
+If the DASH formats are not available (rare), Alleycat will revert to the standard formats. The audio and video streams
+are both available for download via the "DLoad" button.
+
+<p><hr><p>
+<b><b_>Stack Buttons and the Pop Stack</b_></b>
+<p>
+Each viewer has a row of buttons for the purpose of playing saved video links. Except for the Internet TV, these
+are provided for testing purposes. In future, it will be possible to load a stack list from the local disk but, for now,
+you will have to dig through the Javascript if you wish to modify the stacks.
+<p>
+A stack is like a playlist but without the options you would normally associate with a playlist. A stack link may be either
+a full URL or an ID number with an identifier for the web site to search. Later revisions to this help file may
+elaborate on this but it is somewhat complicated.
+<p>
+Pressing a stack button will generate the stack list in two places: the dropdown listbox below the ID number field and in
+the "pop stack" which is an array of buttons displayed over the video viewport. Clicking on a button in the pop stack will
+immediately play the associated video. Alternatively, you can pick from the dropdown box and then press "Play ID".
+<p>
+The pop stack is an important tool for accessing the Internet TV. The channels are categorized for easy referrence. The
+pop stack also includes a history of up to 12 previously played channels. There is an option to display the pop stack when
+you pause the video. Check "Allow Multiple" for this. This option will also change the function of the "Copy" button to 
+show or hide the pop stack. Unpause the video to hide the pop stack or press a blank button if you wish to keep the
+video paused. The pop stack may also be opened by clicking on the status bar in the video viewer when a video is not loaded.
+
+<p><hr><p>
+<b><b_>Internet Radio and Internet TV</b_></b>
+<p>
+The Internet Radio is very basic. Just press a button to play the radio. You can also play a video in audio-only mode as
+long as it is not a streaming format (m3u8 or mpd). Press "Stop" to stop whatever may be currently playing and then press
+"Play" after you have entered the video URL. For YouTube, use the 11-character ID. The audio will play via an Invidious
+instance (whichever is currently selected in the Internet TV viewer or the default). For your convenience, the
+Internet Radio will pause when you play a video in any of the video viewers. Press the "Clear" button to unpause.
+<p>
+The Internet TV works exclusively with livestream m3u8 links or via Youtube DASH. A wide selection of such links have
+already been provided. The majority of the channel links are persistent, meaning that the link does not require an
+authentication code to activate. For non-persistent links, Alleycat Player must extract a newly authenticated link from
+a web site. Currently, the main sources for links are:
+<p>
+&nbsp;<g_>ustv247.tv, uvtvgo.tv, watchnewslive.tv, 123tv.live, www.ustream.to</g_>
+<p>
+The Kraker Local Proxy Server is required for these sites. They cover most of the US TV channels. Some channels
+have two sources. The secondary source may be selected by choosing webm in the format selection box. The channel names will
+include a plus sign to indicate that a secondary source exists (double-plus if the channel is sourced from different local
+stations). An asterisk indicates that the channel requires either Kraker (indicated with a double-asterisk in the absence
+of a plus sign) or at least a CORS unblocking extension.
+<p>
+The "Radio" stack contains radio stations sourced from iHeartRadio and VirtualDJ. This feature is just a demonstration.
+I threw it together on a whim before building the Internet Radio.
+
+<p><hr><p>
+Go to the <a href="manual-kraker-v2.htm">Local Proxy Server</a> instruction manual.
+
+<div style="width: 90vw; height: 50vh"></div>
+
+</body></html>

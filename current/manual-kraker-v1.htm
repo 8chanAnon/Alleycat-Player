@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin">
+
+<title>Kraker Manual</title>
+
+<style type="text/css">
+
+body {
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: peachpuff;
+}
+
+td {
+  padding-left: 0.5em;
+  padding-right: 1.5em;
+}
+
+r_ { color: crimson; }
+g_ { color: seagreen; }
+b_ { color: blue; }
+w_ { color: green; font-weight: bold; }
+
+</style></head>
+
+<body>
+
+<h1><r_>Kraker</r_> <g_>Local Proxy Server</g_> -- Instruction Manual</h1>
+
+<p><hr><p>
+This manual is not complete. Only critical information relevant to Alleycat Player is presented at this time.
+The manual will be updated with more details for those who are interested in using the proxy server for their own purposes.
+
+<p><hr><p>
+<b><b_>File access permissions - the Kraker security model</b_></b>
+<p>
+The proxy server implements a security model in order to prevent unauthorized access to files on the local drive. Alleycat
+Player is normally restricted by the web browser from freely accessing the file system but this limit can be bypassed via
+the proxy server. These basic rules are applied for file access:
+<p>
+1) All files in the Alleycat directory are accessible for reading.<br>
+2) A new file can be opened for writing but it is not permitted to modify an existing file.<br>
+3) No access at all is possible outside of the Alleycat root directory.
+<p>
+It is sometimes desirable to read files located elsewhere on the local drive (to play a video, for example). Also,
+Alleycat Player has a new feature for saving m3u8 videos and this requires the ability to append to an existing file
+in order to concatenate the segments. This is not allowed under the basic rules. A special file called "_aliases.txt"
+is employed to control file access. If you intend to save m3u8 videos, you need to learn this. File path names are not
+permitted. You must use an alias. The syntax for an entry in the aliases file is simple:
+<p>
+<r_>+alias, +c:/myfolder/myvideo.mp4;</r_>
+<p>
+White space is irrelevant and you may include whatever comments you like in the file. The proxy
+server looks for a given name in between a plus sign and a comma. If the name is found, then the proxy will look for a
+path name in between a plus sign and a semicolon. To enable a file for writing, put a question mark at the end of the
+alias (in front of the comma). The alias may not contain a colon or a slash or a backslash.
+<p>
+A file called "_aliases_sample.txt" is provided with the Alleycat installation. This file should be renamed as
+"_aliases.txt". It contains 18 preset aliases for the purpose of saving m3u8 videos. Each video uses two aliases, one for
+an audio track (where applicable) and one for the video track.
+<p>
+Note that "_aliases.txt" is blocked for both reading and writing. File reading is implemented via the GET method in a
+standard HTTP request. Files may be created or appended via the PUT method. No other mechanism has been provided for
+accessing the file system. This is not intended as a replacement for standard file access.
+
+<p><hr><p>
+<b_>List of Alleycat Player files:</b_>
+<table>
+<tr><td><r_>kraker.js</r_></td>			<td>Proxy Server</td></tr>
+<tr><td><r_>alleycat-player.htm</r_></td>	<td>Alleycat Player</td></tr>
+<tr><td><r_>crypto.js</r_></td>			<td>cryptography module</td>
+  <td><g_>https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js</g_></td></tr>
+<tr><td><r_>hls_player.js</r_></td>		<td>HLS/m3u8 player module</td>
+  <td><g_>https://cdn.jsdelivr.net/npm/hls.js@0.12.0/dist/hls.min.js</g_></td></tr>
+<tr><td><r_>dash_player.js</r_></td>		<td>DASH/mpd player module</td>
+  <td><g_>https://reference.dashif.org/dash.js/v2.9.3/dist/dash.all.min.js</g_></td></tr>
+<tr><td><r_>poster.jpg</r_></td>		<td>background image</td></tr>
+</table>
+<p>
+<b_>List of supplementary files:</b_>
+<table>
+<tr><td><r_>_aliases.txt</r_></td>		<td>file access permissions</td></tr>
+<tr><td><r_>_blank_dash_mpd.txt</r_></td>	<td>template for Youtube DASH</td></tr>
+<tr><td><r_>_blank_live_mpd.txt</r_></td>	<td>template for Youtube DASH</td></tr>
+<tr><td><r_>_https_crt.pem</r_></td>		<td>HTTPS certificate</td></tr>
+<tr><td><r_>_https_key.pem</r_></td>		<td>HTTPS private key</td></tr>
+</table>
+<p>
+
+<p><hr><p>
+Go to the <a href="manual-alleycat-v1.htm">Alleycat Player</a> instruction manual.
+
+<div style="width: 90vw; height: 50vh"></div>
+
+</body></html>
