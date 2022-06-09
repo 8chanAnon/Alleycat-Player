@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://8chananon.github.io/Alleycat-Player/favicon.ico">
+
+<title>GitHub Download</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 12px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body><div style="text-align:center"><big>
+
+<p><g_>Download the latest version of the</g_> <b>8kun Bread Launcher</b>
+<p>
+<a href="launch-8kun-v2d.htm" download="">launch-8kun-v2d.htm</a>
+<p>
+<g_>Also get the new icon:</g_> <a href="launch-8kun.ico" download="">launch-8kun.ico</a>
+<p>
+No other files needed at this time.
+<p>
+<g_>Left-click to download a file. If that does not work then right-click to save.</g>
+
+</big></div>
+
+<p><hr><p>
+
+If you do not already have the <g_>Kraker Local Proxy Server</g_> installed then please follow these
+<a href="installation-v2.htm">instructions</a> for installing <g_>Alleycat Player</g_>. It is not absolutely necessary
+for the use of the Launcher app but it is recommended for full functionality (including auto-updating and posting).
+
+<p><hr><p>
+
+<b>Release notes for v2d (November 13, 2021)</b>
+<ul><li>
+<b>Important New Feature:</b> Any Slice that is in a thread that is auto-updating will also be
+auto-updated. This allows you to follow a conversation or track the reponses to an important post in real time.
+Great feature for bakers.
+</li><li>
+The Post Office will now display the new post number after posting. The input fields will no longer be cleared by default.
+There is a checkbox at the lower right to enable auto-clear. Also, the number of posts is increased from 5 to 6.
+</li><li>
+Added an event handler to block double-clicks on the status bar. This allows for the rapid reactivation
+of the menu bar (useful in the Post Office).
+</li><li>
+Corrected the flawed truncation of long titles in the status bar. The new CSS will now truncate long titles
+correctly when the browser is resized.
+</li><li>
+I found another strange behaviour on Chrome-based browsers. Zooming is blocked if a new tab is opened without a URL.
+The fix is to open the tab with the URL "about:blank". This behaviour is totally unexpected. As I stated before,
+I use Firefox so funky Chrome issues often get missed.
+</li><li>
+Setting the proxy to "None" was causing an exception (internal Javascript crash). Sorry about that but who uses "None" anyway?
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2c (October 20, 2021)</b>
+<ul><li>
+Ooops. I just noticed that the page width setting wasn't working. Been like that for a while but it's fixed now.
+</li><li>
+Changed the media server from "images.128ducks.com" to "media.128ducks.com". The changeover occurred early Wednesday,
+October 20.
+</li><li>
+The Post Office feature is now fully implemented. It includes the ability to create new threads and to manage 5 posts
+per instance.
+</li><li>
+It is now possible to copy the text from the status bar without causing the menu bar to open.
+</li><li>
+I can't get the XMLHttpRequest module to give progress reports for file uploads. It does not work correctly on any
+browser. I searched the net for a possible solution but it appears that the module is just funky. It does not function
+correctly on the default 8kun client either.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2b (October 13, 2021)</b>
+<ul><li>
+Fixed wrong button appearance on Pale Moon and Waterfox. I used an outline rather than a border around the buttons
+in the status bar. The outline was being drawn square instead of rounded.
+</li><li>
+Fixed three issues on Chrome-based browsers (Google, Brave, Opera and others): 1) slow countdown timer,
+2) missing bread titles, 3) images appearing on the right when they should be on the left
+</li><li>
+Removed the dark border around the text area in the Quick Reply box. I missed this because I have a userContent CSS
+on my Firefox that does that. The fix is to specify "outline:none" in the CSS for the &lt;textarea&gt; element.
+</li><li>
+I am working on the Post Office feature. Give me a week or so.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2a (October 9, 2021)</b>
+<ul><li>
+This is a major upgrade. The Bread Launcher now supports auto-updating and posting. At present, only one image or file
+is allowed in a post (Quick Reply). The text input is unlimited but constrained to a small window. A more complete
+post editor will come soon (I will be calling it the Post Office).
+</li><li>
+The Youtube embed links stopped working because YT doesn't like the blank "referer" HTTP header so I removed the
+"no-referrer" meta setting.
+</li></ul>
+
+<p><hr><p style="text-align:center">
+
+<img src="https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=8chananon.github.io/launcher&title=Page%20Views%20(daily/total)&count_bg=%2355B595&title_bg=%23B58555">
+
+</body></html>
