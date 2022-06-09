@@ -1,0 +1,221 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin">
+<base target="_blank">
+
+<title>Installation</title>
+
+<style type="text/css">
+
+body {
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: peachpuff;
+}
+
+hr {
+  border-color: indianred; border-style: solid;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+w_ { color: green; font-weight: bold; }
+
+</style></head>
+
+<body>
+
+<h1>Installation - <r_>Alleycat Player</r_> / <g_>Kraker Local Proxy Server</g_></h1>
+
+<p><hr><p>
+<b><b_>Before We Start - An Explanation</b_></b>
+<p>
+Under ideal circumstances, Alleycat Player would work just fine as a simple HTML page loaded into the web browser with
+no additional support. In fact, you can run Alleycat that way if you choose but there are issues, all of them related to
+the security model which today's browsers must comply with. I could go on a rant about how this "security model" is
+poorly designed and shoddily implemented but that won't fix anything. It is what it is and Alleycat Player has to
+somehow work with it or, rather, work around it.
+<p>
+The core issue is the handling of the HTTP headers in the communication between web browser and server. Some of these
+headers are "special" and the browser is expected to handle them in a restricted manner so as to prevent "rogue" web
+applications from compromising the user's privacy or, worse, installing malicious software. The target of these
+restrictions is the Javascript running inside of web pages. The major security issue is unapproved Javascript accessing
+privileged information on a web site into which the user is logged (via password or other mechanism). This is what is
+known as a "cross-site scripting attack" and the main mechanism for preventing such an attack is the HTTP header "Referer"
+(historically misspelt). Web servers use this header to ensure that an HTTP request is originating from an
+approved source (meaning the location from which the web page was loaded initially).
+<p>
+It is forbidden on any (approved) web browser for a Javascript program to manipulate the "Referer" header. However, this
+is the only assurance that the web server has that the HTTP request is genuine. A web browser with a broken security
+model or a proxy server intercepting the request could very easily change the header. For that reason, a web server will
+use other methods, such as encrytion, to block unauthorized requests. This is fine except that the "Referer" header is
+widely abused in cases where user privacy or security is not an issue. That is not surprising but the problem is that the
+security model implemented in the web browser is so simplistic that there is no way around this abuse
+without resorting to an external aid. This aid comes in the form of a proxy server.
+<p>
+<b><b_>Proxy Server - Local or Remote?</b_></b>
+<p>
+A proxy server is a third party standing in the communication path between the web browser and the web server. The proxy
+server is not subject to any of the restrictions implemented in the web browser. The headers and the body of the
+communication can be freely manipulated. There are numerous proxy servers which are available on the Internet for
+various purposes but the main purpose is to manipulate the "Access-Control-Allow-Origin" header returned by the web
+server to the web browser. This is used to indicate to the browser that the data being returned is intended for a specific
+recipient. It should match the origin of the web page which made the request (the origin being the domain of the server
+from which the web page was loaded). This process is commonly referred to as CORS or Cross-Origin Resource Sharing.
+<p>
+If the "Access-Control-Allow-Origin" header is set to "*" then this means that the data is not restricted and it may be
+seen by any web page. This is the minimum that a proxy server will do and most public servers won't do anything else. Some
+will manipulate the outgoing "Referer" header to be equal to the domain of the destination server. That is pretty much
+the extent of what a public proxy server will do. I gather that, if they did much more, they would probably get
+banned by the major browser makers due to the security risk involved.
+<p>
+So the problem for Alleycat Player is that these remote proxy servers are useful for some sites but not for others. That is
+because the proxies do not support changing the "Referer" header which is what needs to be done for sites which look at
+this header and refuse service if it is not correct. For example, Twitter requires that the "Referer" header be set to
+"https://twitter.com" but the actual request to Twitter is in the domain "api.twitter.com". Those proxy servers which
+modify the "Referer" header to be equal to the destination domain won't work because the domains are clearly different.
+This is just one reason (there are many more) why a Local Proxy Server is needed in order for Alleycat Player to work to
+its full potential.
+<p>
+<b><b_>Implementing the Local Proxy Server</b_></b>
+<p>
+Once you have the Local Proxy Server installed on your system, Alleycat Player will be able to access the various web
+sites without coming into conflict with the web browser security model. The main trick is to embed some information in
+the URL in order to inform the proxy server as to what course of action to take. Consider this simple
+request to Twitter:
+<p>
+<g_>http://localhost:8080/*https://twitter.com*https://api.twitter.com/1.1/guest/activate.json</g_>
+<p>
+The proxy server is located at "localhost" using port number 8080. It is a simple HTTP request though the actual Twitter
+request is HTTPS. As far as the web browser is concerned, there is nothing special about this URL nor the HTTP request
+headers. There is no conflict with web security. The proxy server will parse the URL and determine that the "Referer"
+header needs to be set to a specific domain. Then the request goes out. For the response, the proxy server will change
+the "Access-Control-Allow-Origin" header to "*" and return that to the web browser. In this case, that is all that
+the proxy needs to do. Despite how simple this looks, the proxy server has been used to bypass web security in a
+way that would otherwise not be possible.
+<p>
+Immediately, you might be asking yourself whether this can compromise the overall security of your web browser.
+It does not and it cannot. I will repeat emphatically for those who don't quite grasp how this all works: <b>It does not
+compromise your web browser.</b> The Local Proxy Server is no different than any other server on the Internet. It parses
+a request and it returns a result. It does not sit in the background messing around with your browser or any part of your
+system. The only potential risk is that a rogue application which knows that you are running a proxy server might try to
+use it for its own purposes. That possibility is remote but it does not matter to you. Anybody who seriously wants to hack
+you over the web will certainly have their own servers available for that. There is nothing to be gained from hacking
+your proxy server. If you are still nervous then what else can I say?
+<p>
+<b><b_>Wrapping This Up</b_></b>
+<p>
+I sincerely hope that you took the time to read my admittedly long explanation before moving to installation. It is
+important to first understand what this is all about. I would prefer that this not be necessary but it is what it is.
+Alleycat Player is not a desktop application. It has to work with the web browser. A desktop app would not be any easier
+to install or use anyway. After all, where would the support come from for displaying the graphics, playing the videos,
+accessing the Internet and whatever other services which the web browser provides transparently? The only advantage would
+be not having to write the above explanatory text.
+<p>
+<b>On that note, let's move forward and get this baby installed</b>
+<p>
+The full installation requires installing an application known as "Node.js" which is a web server development platform.
+It is widely used in many commercial applications. It is public domain software and it is free to use. The complete
+installation will run to a whopping 50 megabytes. I admit that this feels like a bit of an overkill when Alleycat Player
+is only 1/4 megabyte by itself. For that reason, it is (and always will be) possible to run Alleycat without the Local
+Proxy Server, as long as you understand the limitations.
+
+<p><hr><p>
+<b><b_>Installing Node.js and Alleycat Player</b_></b>
+<p>
+If you already have Node.js installed then go to Step 3.
+<p>
+The Node.js platform is compatible with Windows, Linux, Mac and other systems. My emphasis will be on the Windows version
+because that is what I have. These instructions may require adjustment for whatever system you are on.
+The main site for downloading Node.js is here: 
+<p>
+<b_>Install Node.js</b_> -- <a href="https://nodejs.org/en/download">https://nodejs.org/en/download</a>
+<p>
+<r_>Step 1:</r_> <g_>Go to the site and select the relevant download link for your OS.</g_>
+<p>
+Take your time to explore all of the options and pick the one that is best for you.
+<p>
+<r_>Step 2:</r_> <g_>Install Node.js as per the procedure for your operating system.</g_>
+<p>
+The Kraker Local Proxy Server does NOT require that any optional tools be installed.
+<br>
+Do NOT check the checkbox as shown in <a href="installnodejs.png">this image</a>. It is unchecked by default.
+<p>
+Now you will need to install the files needed to run the proxy server and Alleycat Player.
+<p>
+<r_>Step 3:</r_> <w_>Extract the files from this zip file to a new folder or directory:</w_>
+<p>
+<b_>Extract zip file</b_> -- <a href="installation-v2.zip" target=_self>installation-v2.zip</a>
+<p>
+<r_>Step 4:</r_> <w_>Pour a cup of coffee.</w_>
+
+<p><hr><p>
+<b><b_>Getting it all up and running</b_></b>
+<p>
+At this point, you should have a copy of Node.js and a bunch of Alleycat Player files sitting around on your disk drive
+somewhere. We just need to get it all working together. If you run the file "alleycat-player.htm", you will just get
+a web page in your browser but no proxy server. That's fine but you really need the proxy for full functionality.
+<p>
+The proxy server needs to run first and THEN we can run Alleycat Player. If the Node.js installation process did not put
+an icon on your desktop then find the file "node.exe" where you installed the app. Make a runnable icon with
+"kraker.js" on the command line and the current directory pointing to it. The details will depend on your
+system but here's how you can make it work under Windows 10 (earlier versions of Windows may differ slightly).
+<p>
+Open the "Properties" tab on your desktop icon. The "Target" should be the path to the Node.js executable. Add a space
+character and "kraker.js" to the end of that line. In "Start in", enter the full path to the folder containing the
+Alleycat Player files. That should do it. You should be able to double-click the icon and get the proxy server running.
+This is what the entries look like on my system:
+<p>
+<table><tr><td><r_>Target:<br>Start in:&nbsp;</r_>
+</td><td><g_>C:\stuff\nodejs\node.exe kraker.js<br>C:\stuff\proxy</g_>
+</td></tr></table>
+<p>
+I did not install Node.js in "Program Files" but into a folder that I created off the root of the C: drive.
+If you install in "Program Files" (which is the default destination selected by the Node.js installer) then you need
+an extra step because of the space in the path name. You need to use double-quotes like this:
+<p>
+<g_>&nbsp;"C:\Program Files\nodejs\node.exe" kraker.js</g_>
+<p>
+You can install the Alleycat Player files on your desktop or anywhere else that is convenient for you. Be sure to
+use double-quotes if the path name contains a space character. You will never need to access the Node.js installation
+itself and you will never be required to update it. Kraker is compatible with any version of Node.js
+from version 10 and up. When the proxy server finally runs, a console should pop up with this message:
+<p>
+<g_>&nbsp;Kraker (version 3b) Local Proxy Server - waiting on port 8080, ctrl-C to exit</g_>
+<p>
+You may get a prompt from your operating system or firewall asking whether to allow access to your network.
+Node.js only needs access to the Internet and not to your Local Area Network. I have no advice to offer if you are using
+a VPN or other type of proxy. Either it works or it doesn't, I suppose.
+<p><hr><p>
+<b><b_>You are now ready to run Alleycat Player</b_></b>
+<p>
+In your web browser, enter the following URL: "http://localhost:8080". You should get a plain-text message indicating that
+the proxy server is indeed up and running and available to your browser. If this does not work then you should try
+another browser. If it still doesn't work then you will need to investigate whether there is a firewall or some such
+device on your system which is blocking the local server. Normally, there should not be an issue.
+<p>
+If you get a response from the local server then try this: "http://localhost:8080/alleycat-player.htm". Alleycat Player
+should pop up. If so, then you are done with the installation process. If not, then please go back and review the
+instructions.
+<p>
+You should bookmark Alleycat Player or set it up as your home page.
+
+<p><hr><p>
+<b><b_>One more thing: saving m3u8 videos</b_></b>
+<p>
+This is a new feature of Alleycat Player which requires another step if you want to save this type of video. There is a
+file called "_aliases_sample.txt" in the Alleycat folder which you will want to rename as "_aliases.txt". This is a
+special file which is needed to enable write access to the local drive. Without this file, it will not be possible to
+save your videos.
+
+<p><hr><p>
+Go to the <a href="manual-alleycat-v2.htm">Alleycat Player</a> instruction manual.
+<p>
+Go to the <a href="manual-kraker-v2.htm">Local Proxy Server</a> instruction manual.
+
+<div style="width: 90vw; height: 50vh"></div>
+
+</body></html>

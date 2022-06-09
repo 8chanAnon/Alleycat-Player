@@ -1,0 +1,43 @@
+Proxy Server Settings
+
+--- Flags --- (change '0' to '1' to set a flag)
+
+$fmodify=0$   Allow flags to be modified on reload
+
+$console=0$   Enable console output for socks5 server
+
+$altport=0$   Use alternate TOR port 9150 (default is 9050)
+
+$tor4all=0$   Enable TOR for all URLs
+
+--- DNS services ---
+
+[#default]
+
+[#cloudflare 1.1.1.1 1.0.0.1][#google 8.8.8.8 8.8.4.4][#opendns 208.67.222.222 208.67.220.220]
+
+[#doh-cloudflare 1.0.0.1 cloudflare-dns.com/dns-query][#doh-google 8.8.4.4 dns.google/resolve]
+
+[#ethereum 104.18.166.219 eth.link/dns-query]
+
+--- Domains and IP addresses ---
+
+[? thefastestguninthewest.bitchute.com 0.0.0.0]
+
+[?8kun sys.8kun.top 185.165.190.88]
+
+[?8kun 8kun.top|media.8kun.top|nerv.8kun.top|softserve.8kun.top +8kun]
+
+[?8kuntor 8kun.top|media.8kun.top|nerv.8kun.top|softserve.8kun.top|sys.8kun.top TOR]
+
+[+8kun
+ 94.103.81.80
+ 94.103.82.74
+ 94.103.94.73
+ 109.234.38.4
+ 193.178.169.19
+ 195.2.92.96
+ 195.2.93.193
+]
+
+$end$
