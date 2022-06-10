@@ -1,0 +1,677 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<base target="_blank">
+
+<title>Alleycat Player Demo</title>
+
+<style type="text/css">
+
+body {
+  font-size: 17px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: navajowhite;
+  text-align: center;
+}
+
+.widevid {
+  width: 736px; height: 414px;
+  position: relative; overflow: hidden;
+  border: 2px solid red; background-color: indigo;
+}
+
+.widevid:fullscreen {
+  border: none;
+}
+
+.msgbox {
+  position: absolute; top: 35%; left: 40%; right: 40%; display: block;
+  text-align: center; border-radius: 10px;
+  color: paleturquoise; background-color: slateblue;
+  font-style: italic; cursor: pointer;
+}
+
+iframe {
+  width: 100%; height: 100%;
+  position: absolute; border: none;
+  background-color: transparent;
+  pointer-events: auto;
+}
+
+input {
+  height: 17px; font-size: 13px;
+  font-family: 'helvetica', sans-serif;
+  border-width: 2px; border-style: solid;
+  border-color: tan lemonchiffon lemonchiffon burlywood;
+  padding: 3px 5px 1px 5px; caret-color: navy; outline: none;
+}
+
+input[type=radio] {
+  vertical-align: bottom; margin: 0 1px 1px 2px;
+  filter: contrast(1.0) brightness(1.2) opacity(100%);
+}
+
+input[type=checkbox] {
+  vertical-align: bottom; margin: 1px 2px 1px 2px;
+  filter: contrast(1.0) brightness(1.2) opacity(90%);
+}
+
+input.urlspec {
+  width: 60%; padding: 5px 6px 3px 6px; margin: -2px 1px 2px 1px;
+  color: slateblue; background-color: cornsilk;
+}
+
+input.static {
+  margin: 0 1px 0 2px; padding: 4px 0 3px 0; text-align: center;
+  border-radius: 2px; border: 1px solid lightsalmon;
+  color: crimson; background-color: papayawhip;
+}
+
+table {
+  display: inline-block; border: 3px solid green;
+}
+
+td {
+  font-size: 17px; line-height: 19px;
+  padding: 0 4px 0 6px; color: saddlebrown;
+  text-align: left; vertical-align: middle;
+}
+
+td.textbox {
+  max-width: 250px;
+  font-size: 19px; line-height: 19px;
+  width: 30vw; padding: 0 17px 0 17px;
+  text-align: center; white-space: nowrap;
+}
+
+td.vidbox {
+  font-size: 15px; line-height: normal;
+  padding: 0 0 0 2px; vertical-align: middle;
+  border-left: 1px solid firebrick;
+}
+
+button {
+  width: auto; height: auto;
+  font-size: 18px; line-height: 24px;
+  padding: 0px 10px 0 10px; margin: 0;
+  font-family: 'helvetica', sans-serif;
+  color: darkblue; background-color: powderblue;
+  border-color: gainsboro; outline: none;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 12px 0;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+::selection {
+  color: yellow; background-color: orchid;
+}
+
+r_ { color: crimson; }
+g_ { color: seagreen; }
+b_ { color: blue; }
+w_ { color: #A02000; }
+
+</style></head>
+
+<body onload="javascript:load_all()" onunload="javascript:dump_all()">
+
+<h1 style="text-align:center;margin:15px 0 17px 0"><r_>Alleycat Player <g_>Demo</h1>
+
+<table><tr><td class="textbox">
+
+<button onclick="javascript:clear_video()">Clear</button>&nbsp;
+<button onclick="javascript:urlcopy()">Copy Link</button>
+<br><hr>
+<input type=radio name="format" value="18" checked> 360p<br>
+<input type=radio name="format" value="19"> 480p<br>
+<input type=radio name="format" value="22"> 720p
+<br><hr>
+
+<table style="border:none;padding-bottom:4px;margin-top:-2px">
+<th style="padding-bottom:5px">Live TV</th><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://cdn.klowdtv.net/803B48A/oan_aws_ms/OAN.m3u8')"> One America News
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://dai.google.com/linear/hls/event/c-oMNcDLTeuszRKPugMj9Q/master.m3u8')"> Real America's Voice
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://nmxlive.akamaized.net/hls/live/529965/Live_1/index.m3u8')"> NewsMax TV
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://dai2.xumo.com/amagi_hls_data_xumo1234A-lawcrime/CDN/master.m3u8')"> Law & Crime
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://d2klx6wjx7p5vm.cloudfront.net/Rooster-teeth/ngrp:Rooster-teeth_all/playlist.m3u8')"> Rooster Teeth
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://the-pet-collective-international-us.ono.wurl.tv/playlist.m3u8')"> The Pet Collective
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://gcamhls02-i.akamaihd.net/hls/live/1024257/ClassicArts/master.m3u8')"> Classic Arts Showcase
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://vcndstv.teleosmedia.com/stream/dstv/dstv/playlist.m3u8')"> DanceStar TV
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://d35j504z0x2vu2.cloudfront.net/v1/master/0bc8e8376bd8417a1b6761138aa41c26c7309312/stingray/qello-qello001-montreal/distrotv/master.m3u8')"> Stingray Qello
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://dai2.xumo.com/xumocdn/p=roku/amagi_hls_data_xumo1212A-filmriseclassictv/CDN/master.m3u8')"> Filmrise Classic TV
+</td></tr><tr><td>
+<input type=radio name="tv" onclick="javascript:tv
+  ('https://dai2.xumo.com/xumocdn/p=roku/amagi_hls_data_xumo1212A-theasylum/CDN/master.m3u8')"> The Asylum
+</td></tr></table>
+
+</td><td class="vidbox">
+
+<!-- VIDEO -->
+<div class="widevid"><h2 id="msg" class="msgbox">No Video</h2>
+<iframe id="frame" autoplay allowfullscreen controls></iframe>
+
+</div></td></td></tr></table><p style="text-align:center">
+
+<button onclick="javascript:play_video()">Play Video</button>&nbsp;
+
+<input type=text id="url" class="urlspec"
+  onclick="javascript:input_onclick('line5')" onblur="javascript:input_onblur('line5')">
+
+<input type=text id="meta" class="static" disabled style="width:78px">
+
+<br><br>Scroll down for instructions.</p>
+
+<div style="width:90vw;height:20vh"></div><hr><div style="text-align:left">
+
+This demo is tiny compared to the full version of Alleycat Player. It is not possible to provide more than a few
+sites for demonstration due to the Cross Origin Resource Sharing (CORS) issue which is fully explained in the
+Alleycat Player installation manual. The supported sites are these:
+<p>
+Banned Video at <a href="https://banned.video">banned.video</a> -
+Brand New Tube at <a href="https://brandnewtube.com">brandnewtube.com</a> -
+The Archive at <a href="https://www.thearchive.tv">www.thearchive.tv</a>
+<p>
+The player is designed to fit a standard 4:3 video monitor. If you have a wide-screen monitor then you may need to
+zoom in so that the player fits your screen width. Open one of the sites and look for an interesting video to play.
+Do not open the video page. Just right-click to copy the link and then paste it in the Alleycat Player input line.
+Press the "Play Video" button and your video should play. You can select the desired resolution (360p, 480p, 720p).
+Note that the actual resolution may not match your selection. When the video starts, the resolution will be shown
+in the box next to the input line. You can press "Clear" to clear the viewer. Press "Copy Link" if you wish to copy
+the link to the clipboard so that you can play the video in VLC or SMPlayer or whatever.
+<p>
+<g_>Banned Video</g_> and <g_>The Archive</g_> supply the m3u8 format while <g_>Brand New Tube</g_> supplies mp4.
+You can download an mp4 video but not an m3u8 (also referred to as HLS). To play an Internet TV channel, just press
+the button. The channels are delivered as m3u8. Alleycat Player loads the HLS/m3u8 player from this location:
+<p>
+<g_>https://cdn.jsdelivr.net/npm/hls.js@0.12.0/dist/hls.min.js</g_>
+- see this <a href="https://github.com/video-dev/hls.js">GitHub project</a>
+<hr>
+<p style="text-align:center">If you like what you see then go
+<a href="https://8chananon.github.io/Alleycat-Player/current/installation-v2.htm">here</a>
+for the real thing.
+<hr>
+
+</div><div style="width:90vw;height:70vh">
+
+</body>
+
+<script>
+
+var localhost = "", busy = hls = 0;
+
+var load_all = function ()
+{
+}
+////////////////////
+
+var dump_all = function ()
+{
+  clear_video();
+}
+////////////////////
+
+var input_onclick = function ()
+{
+  var doc = document.getElementById ("url");
+  if (!doc.checked && doc.selectionStart >= doc.selectionEnd - 1) doc.select();
+  doc.checked = true;
+}
+////////////////////
+
+var input_onblur = function ()
+{
+  document.getElementById ("url").checked = false;
+}
+////////////////////
+
+var urlcopy = function ()
+{
+  document.getElementById ("url").select(); document.execCommand ("copy");
+}
+////////////////////
+
+var clear_video = function ()
+{
+  var vid = document.getElementById ("frame"), win = vid.parentNode;
+  win.removeChild (vid); vid.src = "about:blank"; win.appendChild (vid);
+  document.getElementById ("msg").innerHTML = "No Video"; vid_info (1, 0, 0, 1);
+}
+////////////////////
+
+var is_busy = function ()
+{
+  if (busy) return 1;
+  document.getElementById ("msg").innerHTML = "Busy";
+  busy = 1; return 0;
+}
+////////////////////
+
+var no_fail = function ()
+{
+  if (!busy) document.getElementById ("msg").innerHTML = "Error";
+  var Busy = busy; busy = 0; return (Busy);
+}
+////////////////////
+
+var pullstring = function (s, t, u)
+{
+  var m = t.length, n = s.indexOf (t) + m;
+  m = n < m ? -1 : (u ? s.indexOf (u, n) : s.length);
+  return (m < 0 ? "" : s.substr (n, m - n));
+}
+////////////////////
+
+var get_checked = function (name, value)
+{
+  var i = 0, j = value, k = document.getElementsByName (name);
+  if (k && k.length) for (; i < k.length; i++) if (k [i].checked) j = k [i].value;
+  if (isNaN (i = parseFloat (j))) return (j); else return (i);
+}
+////////////////////
+
+var tv = function (url)
+{
+  clear_video(); var fmt = get_checked ("format", 18);
+  hls = 1; load_stream (1, url, fmt);
+}
+
+var play_video = function ()
+{
+  clear_video(); var fmt = get_checked ("format", 18);
+  var u = document.getElementById ("url").value.trim();
+
+  if (u.includes ("/banned.video/"))  { request_banned (u, fmt); return; }
+  if (u.includes (".thearchive."))   { request_thearchive (u, fmt); return; }
+  if (u.includes ("/brandnewtube.")) { request_brandnewtube (u, fmt); return; }
+
+  document.getElementById ("msg").innerHTML = "Bad Input";
+}
+////////////////////
+
+const request_banned = async (doc, fmt) =>
+{
+  var frame = 1; if (is_busy (frame)) return;
+  var id = doc.substr (doc.indexOf ("=") + 1);
+  var url = "https://api.infowarsmedia.com/embed/" + id;
+
+try
+{
+  if (id.length != 24) throw ("!!!");
+
+  response = await fetch (url);
+  textData = await response.text();
+
+  url = pullstring (textData, 'downloadUrl="', '"');
+  if (!url) url = pullstring (textData, '"directUrl":"', '"');
+
+  var s = pullstring (textData, '<source src="', '"');
+  if (!s) s = pullstring (textData, '"streamUrl":"', '"');
+  if (s) url = s; if (!url) throw ("!!!");
+
+  hls = 0; if (url.includes (".m3u8")) hls = 1;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) load_stream (frame, url, fmt);
+}
+////////////////////
+
+const request_thearchive = async (doc, fmt) =>
+{
+  var frame = 1; if (is_busy (frame)) return;
+
+try
+{ 
+  response = await fetch (doc);
+  textData = await response.text();
+
+  var id = pullstring (textData, 'data-ottera-id="', '"');
+
+  if (id.length < 4 || id.length > 6) throw ("!!!");
+
+  url = "https://api-ott.thearchive.tv/search";
+
+  var s = { 'content-type':'application/x-www-form-urlencoded' };
+
+  response = await fetch (url, { method: 'POST', headers: s, body: "id=" + id } );
+  jsonData = await response.json();
+
+  hls = 1; url = jsonData.objects[0].video_url; if (!url) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) load_stream (frame, url, fmt);
+}
+////////////////////
+
+const request_brandnewtube = async (doc, fmt) =>
+{
+  var frame = 1; if (is_busy (frame)) return;
+  var id = doc.substr (doc.length - 20); id = id.substr (0, id.indexOf ("."));
+  var url = "https://brandnewtube.com/embed/" + id;
+
+try
+{
+  if (id.length != 15) throw ("!!!");
+
+  response = await fetch (url);
+  textData = await response.text();
+
+  var n = textData.indexOf ("<video"); if (n < 0) throw ("!!!");
+
+  url = crack_source (textData.substr (n, 2000), frame, fmt);
+  if (url == "" || url.includes ("/watch?v=")) throw ("!!!");
+
+  hls = 0; fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) load_stream (frame, url, fmt);
+}
+////////////////////
+
+var crack_source = function (data, frame, fmt)
+{
+  var sub, str, url, i, j, f = [0,0,0,0,0,0,0,0], r = [0,0,0,0];
+
+  sub = data.split ("<source src="); if (sub.length < 2) return "";
+
+  for (i = 1; i < sub.length; i++)
+  {
+    str = sub [i]; j = str.indexOf ('label='); str = str.substr (j + 6);
+    j = str.indexOf (str[0], 1) - 1; str = str.substr (1, j); j = str.length - 1;
+    if (str[j] == "p") str = str.substr (0, j); if (str == "original") str = "720";
+    if ((j = chkformat (str)) >= 0) if (r[j] < str) { f[j] = i; r[j] = str; }
+  }
+
+  fmt = getformat (f, fmt); //fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0) return "";
+
+  str = sub [f[j]]; fmt = r[j]; j = str.indexOf (str[0], 1) - 1;
+  url = str.substr (1, j); if (url == "") return "";
+
+  return (url + "<>" + fmt);
+}
+////////////////////
+
+var vid_oops = function (frame, vid, fatal)
+{
+}
+////////////////////
+
+var vid_info = function (frame, w, h, reset)
+{
+  if (!frame) return; var msg = w + " x " + h;
+  if (w <= 0 || h <= 0) if (reset) msg = ""; else return;
+  doc = document.getElementById ("meta").value = msg;
+}
+////////////////////
+
+var load_stream = function (frame, url, fmt)
+{
+  document.getElementById ("url").value = url;
+
+  var bstyle = "<body style='margin:0;padding:0;overflow:hidden;background-color:";
+  var istyle = " style='position:absolute;border:none;outline:none;width:100%;height:100%'";
+  var vstyle = " autoplay controls allowfullscreen ";
+
+  var insert = bstyle + "black'><video" + istyle + vstyle + "id='video'></video></body>";
+
+  var doc = document.getElementById ("frame").contentDocument;
+  doc.open(); doc.write ("<!DOCTYPE html>" + insert); doc.close();
+  var win = doc.getElementById ("video"); doc = doc.body; 
+
+  win.onloadedmetadata = function()
+  {
+    var w = this.videoWidth, h = this.videoHeight; vid_info (frame, w, h, 0);
+  }
+
+  if (!hls)
+  {
+    win.src = url; win.onerror = function() { vid_oops (frame, win, true); }
+  }
+
+  if (hls == 1)
+  {
+    var js = get_js ("HLS", !window.Hls);
+    js.onload = function() { play_hls (frame, url, doc, win, fmt); }
+    if (window.Hls) js.onload(); else if (localhost) js.src = "~hls_player.js";
+      else js.src = "https://cdn.jsdelivr.net/npm/hls.js@0.12.0/dist/hls.min.js";
+  }
+
+  if (hls == 2)
+  {
+    var js = get_js ("DASH", !window.dashjs);
+    js.onload = function() { play_dash (frame, url, doc, win, fmt); }
+    if (window.dashjs) js.onload(); else if (localhost) js.src = "~dash_player.js";
+      else js.src = "https://reference.dashif.org/dash.js/v3.0.2/dist/dash.all.min.js";
+  }
+}
+////////////////////
+
+var get_js = function (type, replace)
+{
+  var name = type + "_player", js = document.getElementById (name);
+  if (js) if (!replace) return js; else js.parentNode.removeChild (js);
+  js = document.createElement ("SCRIPT"); js.onerror = function() { err_play (type); }
+  js.id = name; document.body.appendChild (js); return js;
+}
+////////////////////
+
+var err_play = function (error)
+{
+  alert (error + " player seems to be missing! Server not serving.\n\n" +
+    " (o o)  ((( Could be that THEY are watching you ! )))  (o o)\n \n");
+}
+////////////////////
+
+var hls_select = function (levels, fmt)
+{
+  if (!fmt) return (-1); var f = formats_m3u8 (levels);
+  fmt = getformat (f, fmt); fmt = argformat (fmt);
+  if (fmt >= 0) fmt = f[fmt] - 1; return (fmt);
+}
+////////////////////
+
+var play_hls = function (frame, url, doc, win, fmt)
+{
+  var hls_cfg = {
+    debug: false,
+    startLevel: 2,
+    autoStartLoad: false,
+    capLevelOnFPSDrop: true,
+    capLevelToPlayerSize: true,
+    defaultAudioCodec: "mp4a.40.5",
+    fpsDroppedMonitoringPeriod: 3000,
+    fpsDroppedMonitoringThreshold: 0.1,
+    minAutoBitrate: 350000,
+    enableWebVTT: false,
+    enableCEA708Captions: false
+  };
+
+  var vid = new Hls (hls_cfg);
+  doc.onunload = function() { vid.destroy(); console.log ("HLS player unloaded."); }
+  vid.loadSource (url);
+  vid.attachMedia (win);
+  vid.on (Hls.Events.ERROR, function (event,data) { vid_oops (frame, win, data.fatal); });
+
+  vid.on (Hls.Events.MANIFEST_LOADED, function (event,data) {
+    this.loadLevel = hls_select (this.levels, fmt); this.startLoad(); });
+
+  if (frame > 0) vid.on (Hls.Events.BUFFER_CODECS, function (event,data) {
+    var x = data.video; if (x) vid_info (frame, x.metadata.width, x.metadata.height, 0); });
+}
+////////////////////
+
+var play_dash = function (frame, url, doc, win, fmt)
+{
+  var vid = dashjs.MediaPlayer().create();
+  doc.onunload = function() { vid.reset(); console.log ("DASH player unloaded."); }
+  // vid.getDebug().setLogToBrowserConsole(false);   // turn off fracking console messages! v2.5.0
+  vid.initialize (win, url, true);
+  vid.on (dashjs.MediaPlayer.events ["ERROR"], function () { vid_oops (frame, win, true); });
+
+  if (frame > 0) vid.on (dashjs.MediaPlayer.events ["QUALITY_CHANGE_RENDERED"], function ()
+    { var x = vid.getCurrentTrackFor ('video'); if (!x) return;
+      var y = x.bitrateList [vid.getQualityFor ('video')];
+      vid_info (frame, y.width, y.height, 0); });
+}
+////////////////////
+
+var formats_m3u8 = function (levels)
+{
+  var i, j, k, w, h, b, f = [0,0,0,0,0,0,0,0], p = [0,0,0,0], r = [0,0,0,0];
+
+  if (!levels || !levels.length) return (f);
+
+  for (i = 0; i < levels.length; i++)
+  {
+    if (!(w = levels[i].width)) w = 0;
+    if (!(h = levels[i].height)) h = 0;
+    if (!(b = levels[i].bitrate)) b = 0;
+
+    if (!h) if ((b -= 175000) < 0) continue; else
+    { h = Math.trunc (Math.sqrt (b * 0.2)); b = -1 } else
+    { if (b) b -= w * h * 2 + 250000; if (b > 0) b *= 3; else b *= -2; }
+
+    if ((j = chkformat (h)) < 0 || (b < 0 && r[j])) continue;
+
+    k = ((b >= 0 && !r[j]) || (p[j] == h && b < r[j]));
+    if (k || p[j] < h) { f[j] = i + 1; p[j] = h; r[j] = b + 1; }
+  }
+
+  if (f[1] && p[0] < 240) f[0] = 0; return (f);
+}
+////////////////////
+
+var chkformat = function (q)
+{
+  if (q > 100 && q <= 432) return 0;
+  if (q > 432 && q <= 580) return 1;
+  if (q > 580 && q <= 800) return 2;
+
+  return -1;
+}
+////////////////////
+
+var pixformat = function (q)
+{
+  if (q == 0 || q == 4) return 360;
+  if (q == 1 || q == 5) return 480;
+  if (q == 2 || q == 6) return 720;
+
+  return -1;
+}
+////////////////////
+
+var isdashfmt = function (fmt)
+{
+  if (fmt == 134) return 0;
+  if (fmt == 135) return 1;
+  if (fmt == 136) return 2;
+  if (fmt == 140) return 8;
+  if (fmt == 243) return 4;
+  if (fmt == 244) return 5;
+  if (fmt == 247) return 6;
+  if (fmt == 251) return 9;
+
+  return -1;
+}
+
+var argformat = function (fmt)
+{
+  if (fmt == 18) return 0;
+  if (fmt == 19) return 1;
+  if (fmt == 22) return 2;
+  if (fmt == 37) return 3;
+  if (fmt == 43) return 4;
+  if (fmt == 44) return 5;
+  if (fmt == 45) return 6;
+  if (fmt == 46) return 7;
+
+  return -1;
+}
+
+var getformat = function (f, fmt)
+{
+  if (f[0] <= 0 && f[1] <= 0 && f[2] <= 0 && f[3] <= 0)
+  {
+    if (fmt == 18) fmt = 43;
+    if (fmt == 19) fmt = 44;
+    if (fmt == 22) fmt = 45;
+    if (fmt == 37) fmt = 46;
+  }
+
+  if (f[4] <= 0 && f[5] <= 0 && f[6] <= 0 && f[7] <= 0)
+  {
+    if (fmt == 43) fmt = 18;
+    if (fmt == 44) fmt = 19;
+    if (fmt == 45) fmt = 22;
+    if (fmt == 46) fmt = 37;
+  }
+
+  var m = 0, n = fmt;
+
+  if (n == 37) if (f[3]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 18;
+  if (n == 18) if (f[0]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 18) if (f[0]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 37;
+  if (n == 37) if (f[3]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 46) if (f[7]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 43;
+  if (n == 43) if (f[4]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 43) if (f[4]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 46;
+  if (n == 46) if (f[7]) m = n;
+
+  return m;
+}
+////////////////////
+
+</script>
+
+</html>

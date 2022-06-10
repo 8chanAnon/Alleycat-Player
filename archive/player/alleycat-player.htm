@@ -1,0 +1,3480 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+
+<title>Alleycat Player</title>
+
+<style type="text/css">
+
+body {
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: navajowhite;
+}
+
+.widevid {
+  width: 736px; height: 414px;
+  position: relative; overflow: hidden;
+  border: 2px solid red; background-color: indigo;
+}
+
+.widevid:fullscreen {
+  border: none;
+}
+
+.widevid img {
+  position: absolute; width: 100%;
+  top: 0; left: 0; right: 0; bottom: 0;
+  height: auto; margin: auto; border: none;
+}
+
+.msgbox {
+  position: absolute; top: 35%; left: 40%; right: 40%; display: block;
+  text-align: center; border-radius: 10px;
+  color: paleturquoise; background-color: slateblue;
+  font-style: italic; cursor: pointer;
+}
+
+iframe {
+  width: 100%; height: 100%;
+  position: absolute; border: none;
+  background-color: transparent;
+  pointer-events: none;
+}
+
+.popbox {
+  z-index: -1; width: 100%; height: 100%;
+  position: absolute; pointer-events: none;
+}
+
+.popbox table {
+  width: 100%; border:none; margin: 0; table-layout: fixed;
+}
+
+.popbox td {
+  padding: 6px 8px 2px 8px;
+}
+
+.popbox button {
+  width: 100%; height: auto;
+  text-align: left; text-overflow: ellipsis;
+  white-space: nowrap; overflow: hidden;
+  font-size: 12px; font-family: 'segoe ui', serif;
+  line-height: 14px; padding: 2px 5px 2px 5px;
+  border-width: 1px; color: maroon; pointer-events: auto;
+}
+
+.ranger button {
+  vertical-align: top;
+  font-size: 13px; line-height: 17px;
+  padding: 1px 4px 1px 4px; margin-top: 1px;
+  color: maroon; background-color: blanchedalmond;
+}
+
+.ranger input {
+  width: 60px;
+}
+
+input {
+  height: 17px; font-size: 13px;
+  font-family: 'helvetica', sans-serif;
+  border-width: 2px; border-style: solid;
+  border-color: tan lemonchiffon lemonchiffon burlywood;
+  padding: 3px 5px 1px 5px; caret-color: navy; outline: none;
+}
+
+input[type=radio] {
+  vertical-align: bottom; margin: 0 1px 2px 2px;
+  filter: contrast(1.0) brightness(1.2) opacity(90%);
+}
+
+input[type=checkbox] {
+  vertical-align: bottom; margin: 0 2px 1px 2px;
+  filter: contrast(1.0) brightness(1.2) opacity(90%);
+}
+
+input.idspec {
+  width: 100%; margin: -4px 0 -2px -7px;
+  color: sienna; background-color: cornsilk;
+}
+
+input.urlspec {
+  width: 60%; padding: 4px 6px 3px 6px; margin: -2px 1px 1px 1px;
+  color: slateblue; background-color: cornsilk;
+}
+
+input.static {
+  margin: 0 1px 0 2px; padding: 3px 0 3px 0; text-align: center;
+  color: mediumvioletred; background-color: papayawhip;
+  border-radius: 3px; border: 1px solid darkorange;
+}
+
+.dropbox {
+  width: 100%; position: relative;
+  display: inline-block; white-space: nowrap;
+  color: firebrick; background-color: papayawhip;
+}
+
+.dropbox input {
+  vertical-align: top;
+  width: calc(100% - 32px); margin: -2px 0 -2px 0;
+  color: inherit; background-color: inherit;
+}
+
+.dropbox button, .dropbox button:hover:active {
+  vertical-align: top; width: 24px; height: 25px;
+  margin: -2px 0 -2px 0; padding: 0 0 4px 0;
+  line-height: 17px; font-size: 16px; font-family: 'segoe ui', serif;
+  font-weight: bold; border-width: 2px; border-style: solid;
+  border-color: tan lemonchiffon lemonchiffon burlywood;
+  color: indianred; background-color: mistyrose;
+}
+
+.dropbox0 {
+  width: 160px; color: sienna; background-color: cornsilk;
+}
+
+.dropbox1 {
+  max-width: 320px; width: calc(100% + 9px); margin-left: -7px;
+}
+
+.dropbox2 {
+  max-width: 270px; width: calc(100% + 9px);
+  margin-left: -7px; margin-bottom: 1px; color: red;
+}
+
+.dropbox3 {
+  width: 140px; margin-left: -7px; margin-bottom: 2px;
+}
+
+.dropdown {
+  z-index: 2; max-height: 50vh;
+  position: absolute; display: none;
+  overflow-x: hidden; overflow-y: auto;
+  margin: 4px 0 0 1px; outline: 1px solid peru;
+  border-top: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  font-size: 13.5px; font-style: normal; font-weight: normal;
+  font-family: 'consolas', 'lucida console', monospace;
+  color: darkgreen; background-color: ivory; cursor: default;
+}
+
+.dropdown option {
+  height: 15px; min-height: 15px; max-height: 15px;
+  line-height: 15px; position: relative; text-align: left;
+  margin: 0 3px 0 3px; padding: 0 22px 0 6px;
+}
+
+.dropdown0 {
+}
+
+.dropdown1 {
+  max-height: calc(28 * 15px);
+}
+
+.dropdown2 {
+  max-height: calc(26 * 15px);
+}
+
+.dropdown3 {
+}
+
+.pickpanel {
+  z-index: 0; width: 166px; height: auto;
+  position: relative; display: inline-block;
+  overflow: hidden; margin: -1px 0 -1px 0; padding: 2px;
+  outline: 1px solid thistle; border: 2px solid skyblue;
+  color: mediumvioletred; background-color: cornsilk;
+}
+
+.pickpanel option {
+  text-align: center; margin: 0; padding: 0 0 0 2px;
+}
+
+th {
+  border: 2px solid lightsalmon;
+  color:crimson; background-color: pink;
+}
+
+table {
+  border: 3px solid green;
+}
+
+table.list {
+  border: 2px solid olivedrab;
+}
+
+td {
+  font-size: 14px; line-height: 13px;
+  padding: 0 4px 0 6px; color: saddlebrown;
+  text-align: left; vertical-align: top;
+}
+
+td.textbox {
+  font-size: 14px; line-height: 17px;
+  width: 30vw; padding: 0 15px 0 14px;
+  text-align: center; white-space: nowrap;
+}
+
+td.vidbox {
+  font-size: 15px; line-height: normal;
+  padding: 0 0 0 2px; vertical-align: middle;
+  border-left: 1px solid firebrick;
+}
+
+td.grill {
+  width: 0; margin: 0; padding: 0;
+  vertical-align: middle; text-align: center;
+  background: radial-gradient(goldenrod 15%,transparent 40%);
+  background-size: 12px 6px; border-left: 1px solid firebrick;
+}
+
+button {
+  width: auto; height: auto;
+  font-size: 12px; line-height: 18px;
+  padding: 1px 6px 0 6px; margin: 0;
+  font-family: 'helvetica', sans-serif;
+  color: darkblue; background-color: powderblue;
+  outline: none; border-style: solid;
+  border-color: #e8e8e8 #9c9c9c #9c9c9c #ececec;
+}
+
+button:hover:active {
+  border-color: #a8a8a8 #f8f8f8 #f4f4f4 #acacac;
+}
+
+button.is_off {
+  background-color: pink;
+  border-color: #e8e8e8 #9c9c9c #9c9c9c #ececec;
+}
+
+button.is_on {
+  background-color: lightgreen;
+  border-color: #a8a8a8 #f8f8f8 #f4f4f4 #acacac;
+}
+
+button.wrapper {
+  width: 58px; height: 18px; font-size: 13px; line-height: 16px;
+  margin: 1px 0 0 0; padding: 0; border: 1px solid gold;
+  color: red; background-color: blanchedalmond;
+}
+
+button.stack {
+  font-size: 19px; line-height: 22px;
+  padding: 2px 10px 2px 10px; background-color: pink;
+}
+
+.slider {
+  appearance: none; -moz-appearance: none; -webkit-appearance: none;
+  background: transparent; border-radius: 7px; border: 2px solid orange;
+  vertical-align: top; height: 12px; padding: 0; margin: 4px 0 0 0;
+}
+
+.slider::-moz-range-thumb {
+  -moz-appearance: none; width: 4px; height: 20px;
+  background: powderblue; border: 1px solid cadetblue; border-radius: 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 6px; height: 22px;
+  background: powderblue; border: 1px solid cadetblue; border-radius: 0;
+}
+
+.header {
+  padding: 2px 8px 4px 6px; margin-left: -1px;
+  color: crimson; background-color: oldlace;
+  border: 1px solid lightsalmon; border-radius: 4px;
+  font-size: 19px; line-height: 23px; font-weight: bold;
+}
+
+.header a {
+  color: green; text-decoration: none;
+}
+
+.box {
+  padding: 4px 3px 2px 2px; outline: 1px solid lightsteelblue;
+}
+
+hr {
+  border-color: thistle; border-style: solid;
+}
+
+hr.skinny {
+  border: 0 solid indigo; border-width: 1px 0 0 0;
+  padding: 0; margin: 4px -1px 2px -3px;
+}
+
+h3.skinny {
+  margin: 0 0 8px 1px; padding-top: 2px;
+}
+
+h3 {
+  vertical-align: top; padding: 0; margin: 0 2px 11px 1px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+.ir input {
+  height: 17px; margin: 2px 5px -2px -1px;
+}
+
+.ir a {
+  color: crimson; text-decoration: none;
+}
+
+::selection {
+  color: yellow; background-color: orchid;
+}
+
+option:hover {
+  color: yellow; background-color: orchid;
+}
+
+.mark {
+  background-color: lightgray;
+}
+
+.show {
+  display: block;
+}
+
+.r { color: crimson; }
+.g { color: seagreen; }
+.b { color: blue; }
+.w { color: #A02000; }
+
+r_ { color: crimson; }
+g_ { color: seagreen; }
+b_ { color: blue; }
+w_ { color: #A02000; }
+
+</style></head>
+
+<body
+  onload="javascript:load_all()" onunload="javascript:dump_all()" onresize="javascript:resize_all()"
+  onclick="javascript:MEOW(event)" onkeydown="javascript:MEOW(event)">
+
+<div>
+
+<h1><g_>A<r_>ll<g_>ey<r_>cat <g_>Pl<r_>ay<g_>er <w_><small>-- demo version (November 17, 2021)</small></h1>
+
+<p><hr><p>
+
+<div><g_>Pick a Proxy:</g_>&nbsp;
+<div class="dropbox dropbox0" style="width:300px"><input type=text disabled
+  value="To use this app, you must enable Javascript."><button>+</button>
+<div id="proxy" class="dropdown dropdown0">
+  <option value="LOCAL://localhost:8080/" class="r" checked>Local Proxy Server (Kraker)
+  <option value="https://xyss5.herokuapp.com/">xyss5.herokuapp.com
+  <option value="https://api.allorigins.win/raw?url=">api.allorigins.win
+  <option value="">None
+</div></div>
+&nbsp; &nbsp; &nbsp; <b>Go to </b><a href="#info">Video Viewer</a>
+</div>
+
+<p><hr><p>
+CORS Unblockers:&nbsp;
+<g_>Allow CORS</g_> --
+<a href="https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/"
+  target=_blank>Firefox</a> or
+<a href="https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf"
+  target=_blank>Chrome-based</a> &nbsp;
+<g_>CORS Everywhere</g_> -- <a href="https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/"
+  target=_blank>Firefox only</a>
+
+<p><hr><p>
+<b>Instruction Manuals (<r_>GitHub Pages</r_>) -- </b>
+<a href="https://8chananon.github.io/Alleycat-Player/current/installation-v2.htm" target=_blank>Installation</a> --
+<a href="https://8chananon.github.io/Alleycat-Player/current/manual-alleycat-v2.htm" target=_blank>Alleycat Player</a> --
+<a href="https://8chananon.github.io/Alleycat-Player/current/manual-kraker-v2.htm" target=_blank>Local Proxy Server</a>
+&nbsp;|&nbsp; <a href="https://8chananon.github.io" target=_blank>Check for Updates</a>
+<p>
+If you have not installed the <b>Kraker Local Proxy Server</b> then please go read the Installation Manual.
+<br>
+Alleycat Player <u>does not auto-update</u>. Please check for an update every two to four weeks at the link shown above.
+<p>
+<b><b_>Your feedback is appreciated (suggestions or bug reports):</b>&nbsp;
+<a target=_blank href="https://8kun.top/alleycat/catalog.html">Alleycat BBS</a>
+
+<p><hr><p>
+This application is a reduced implementation of Alleycat Player. YouTube, BitChute, Vimeo, InfoWars and Brighteon
+are supported.
+<br>
+Internet TV is included but only a handful of channels. Also Internet Radio. There is just one video viewer instead of three.
+<p>
+Press the "<b>End</b>" key to go to the bottom of the page. Click a radio button to <b>play the radio</b>.<br>
+
+<p><hr><p>
+
+<div style="width: 90vw; height: 80vh"></div>
+
+<p><hr><p>
+
+<h3 id="sites" class="skinny"><r_>Sites List</r_>
+  <small> -- Go to <a href="#info">Video Viewer</a></small></h3>
+
+There are three symbols used to indicate the options available for a particular site. [#]&nbsp;means no DIG option because
+the video ID is always exposed. [?]&nbsp;means that video ID numbers are not available (you have to DIG). [+]&nbsp;means
+that both ID numbers and the DIG option are supported.
+<p>
+Here is a rundown of each site, the available video formats and the site URL (link will open a new tab or window):
+<p>
+
+<table class="list" style="padding:1px 0 1px 0">
+
+<tr><td>YouTube		</td><td>mp4/webm	</td><td>*</td><td>[#] KRAK !</td>
+<td><a target=_blank href="https://www.youtube.com">www.youtube.com</a></td></tr>
+
+<tr><td>BitChute	</td><td>mp4		</td><td>?</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://www.bitchute.com">www.bitchute.com</a></td></tr>
+
+<tr><td>Rumble		</td><td>mp4/webm	</td><td>*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://rumble.com">rumble.com</a></td></tr>
+
+<tr><td>Vimeo		</td><td>mp4		</td><td>*</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://vimeo.com">vimeo.com</a></td></tr>
+
+<tr><td>InfoWars	</td><td>m3u8/mp4	</td><td>?</td><td>[+] No Proxy</td>
+<td><a target=_blank href="https://www.infowars.com">www.infowars.com</a></td>
+<td><a target=_blank href="https://banned.video">banned.video</a></td></tr>
+
+<tr><td>Brighteon	</td><td>m3u8		</td><td>*</td><td>[+] KRAK !</td>
+<td><a target=_blank href="https://www.brighteon.com">www.brighteon.com</a></td>
+<td><a target=_blank href="https://www.naturalnews.com">www.naturalnews.com</a></td></tr>
+
+</table><p>
+
+? = unknown or auto-select (m3u8/mpd)<br>
+* = user selectable (via format box)<br>
+! = use the Sandbox option to embed the video.<br>
+KRAK = only accessible with the Local Proxy Server (Kraker)<br>
+CORS = only accessible with a CORS unblocker (or Kraker)
+
+</div><div style="width: 90vw; height: 80vh"></div>
+
+<!--
+/////////////////////////////
+///// DEMO VIDEO VIEWER /////
+/////////////////////////////
+//-->
+
+<div id="info" style="padding:7px 2px 8px 0">
+
+<span class="header" style="vertical-align:middle">Demonstration Video Viewer &nbsp;--&nbsp; <small>
+  <a href="#sites">Sites List</a> &nbsp;|&nbsp; <a href="#info">snap</a></small></span>
+
+<span style="float:right">
+
+<div class="dropbox dropbox0"><input type=text disabled><button>+</button>
+<div id="ctr5z" class="dropdown dropdown0">
+  <option value= 1  >youtube.com
+  <option value= 11 class="w">vid.puffyan.us (us)
+  <option value= 12 class="w">invidious.namazso.eu (de)
+  <option value= 13 class="w">tube.connect.cafe (fr)
+  <option value= 9  class="r" checked>Youtube DASH
+</div></div> &nbsp; &nbsp;&nbsp;
+
+<span class="ranger">
+<button onclick="javascript:brightness(5,1)">&lt;</button>
+<input type=text value="Brt:  0" id="ctr5x" class="static" disabled>
+<button onclick="javascript:brightness(5,2)">&gt;</button>&nbsp;&nbsp;
+<button onclick="javascript:brightness(5,3)">&lt;</button>
+<input type=text value="Sat:  0" id="ctr5y" class="static" disabled>
+<button onclick="javascript:brightness(5,4)">&gt;</button> &nbsp;&nbsp;
+<button onclick="javascript:brightness(5,5)">&nbsp;Reset&nbsp;</button>
+</span>
+
+</span></div><table><tr><td class="textbox">
+
+<a id="dload5" onclick="return false">
+<button onclick="javascript:open_downloader(5)"><b_>DLoad</b_></button></a>
+<button onclick="javascript:loadid(5,0)">Play ID</button>
+<button onclick="javascript:reset_frame(5)">Clear</button>
+<p></p>
+
+<input type=text id="id5" maxlength=256 class="idspec" onfocus="javascript:hidelist(5)"
+  onclick="javascript:input_onclick('id5')" onblur="javascript:input_onblur('id5')">
+<p></p>
+
+<div class="dropbox dropbox1"><input type=text disabled><button>+</button>
+<div id="stk5" class="dropdown dropdown1">
+  <option value="" class="w">Select a video stack
+</div></div><p></p>
+
+<div class="dropbox dropbox2"><input type=text disabled><button>+</button>
+<div id="src5" class="dropdown dropdown2">
+  <option value= 0 class="w">YouTube / Invidious
+  <option value= 1 ># mp4 - BitChute
+  <option value= 14>+ mp4 - Rumble
+  <option value= 2 ># mp4 - Vimeo
+  <option value= 3 >+ m3u - InfoWars
+  <option value= 4 >+ m3u - Brighteon
+</div></div>
+
+<p><span class="box">
+<input type=checkbox id="mov5f" checked> Format (m3u8) &nbsp;
+<input type=checkbox id="mov5p" checked> Use Proxy
+</span></p>
+
+<div><div id="fmt5" class="dropdown pickpanel">
+  <option value= 18 >&nbsp;mp4 [18] 360p &nbsp;*
+  <option value= 19 >&nbsp;mp4 [19] 480p &nbsp;*
+  <option value= 22 >&nbsp;mp4 [22] 720p &nbsp;*
+  <option value= 43 >webm [43] 360p &nbsp;*
+  <option value= 44 >webm [44] 480p &nbsp;*
+  <option value= 45 >webm [45] 720p &nbsp;*
+</div></div><p></p>
+
+<div class="dropbox dropbox3"><input type=text disabled><button>+</button>
+<div id="win5" class="dropdown dropdown3">
+  <option value="320:180">[16:9]&nbsp; 320 x 180
+  <option value="480:270">[16:9]&nbsp; 480 x 270
+  <option value="640:360">[16:9]&nbsp; 640 x 360
+  <option value="960:540">[16:9]&nbsp; 960 x 540
+  <option value="1280:720">[16:9] 1280 x 720
+  <option value="240:180">&nbsp;[4:3]&nbsp; 240 x 180
+  <option value="360:270">&nbsp;[4:3]&nbsp; 360 x 270
+  <option value="480:360">&nbsp;[4:3]&nbsp; 480 x 360
+  <option value="720:540">&nbsp;[4:3]&nbsp; 720 x 540
+  <option value="960:720">&nbsp;[4:3]&nbsp; 960 x 720
+</div></div><p></p>
+
+<p style="margin:0 -6px"> <!-- for Pale Moon -->
+<button id="btn5a" class="is_off" onclick="javascript:buttonpress(5,0)">New Window</button> &nbsp;&nbsp;
+<button id="btn5b" class="is_off" onclick="javascript:buttonpress(5,1)">Popup Window</button>
+</p><p style="margin-top:-2px"></p>
+
+<input type=checkbox id="mov5m"> Allow Multiple &nbsp;&nbsp;
+<input type=checkbox id="mov5n"> No Play
+<p style="margin-top:-3px"></p>
+
+<input type=radio id="mov5a" name="chk5"> Raw&nbsp;
+<input type=radio id="mov5b" name="chk5" checked><button onclick="javascript:toggle_hls(5,0)"
+  class="wrapper" id="hls5">Wrapper</button><input type=radio id="mov5c" name="chk5"> Sandbox
+
+</td><td class="vidbox">
+
+<!-- VIDEO -->
+<div class="widevid"><div class="popbox" id="pop5"></div>
+<h2 id="vid5" class="msgbox" onclick="javascript:popper(5,1)">No Video</h2>
+<iframe id="mov5" name="mov5" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen controls></iframe>
+
+</div></td><td class="grill"></td></tr></table>
+
+<p style="text-align:center">
+<button onclick="javascript:loadid(5,1)">Play URL</button>
+<button onclick="javascript:urlcopy(5,true)">Copy</button>
+<button onclick="javascript:digid(5)"><b_>DIG</b_></button>
+
+<input type=text id="line5" maxlength=2048 class="urlspec"
+  onclick="javascript:input_onclick('line5')" onblur="javascript:input_onblur('line5')">
+
+<input type=text id="meta5" class="static" disabled style="width:78px">
+
+<span class="ranger" style="white-space:nowrap;margin-left:4px">
+<button onclick="javascript:scalingfactor(5,1)">&lt;</button>
+<input type=text value="100" id="ctr5w" class="static" style="width:36px" disabled>
+<button onclick="javascript:scalingfactor(5,2)">&gt;</button>
+</span>
+
+<p style="text-align:center">
+<button class="stack" id="stk5-1" onclick="javascript:copylist(5,1)">Stack 1</button>
+<button class="stack" id="stk5-2" onclick="javascript:copylist(5,2)">Stack 2</button>
+<button class="stack" id="stk5-3" onclick="javascript:copylist(5,3)">Stack 3</button>
+&nbsp;
+<button class="stack" id="stk5-4" onclick="javascript:copylist(5,4)">BitChute</button>
+<button class="stack" id="stk5-5" onclick="javascript:copylist(5,5)">Vimeo</button>
+&nbsp;
+<button class="stack" id="stk5-6" onclick="javascript:copylist(5,6)">Music TV</button>
+<button class="stack" id="stk5-7" onclick="javascript:copylist(5,7)">News TV</button>
+</p>
+
+<div style="width: 90vw; height: 50vh"></div>
+
+<!--
+//////////////////////////
+///// INTERNET RADIO /////
+//////////////////////////
+//-->
+
+<div style="text-align:center"><h1><r_>Internet Radio</r_></h1>
+
+<div style="margin:-7px 0 11px 0">
+<button onclick="javascript:ir_action(0)">Stop</button>
+<button onclick="javascript:ir_action(1)">Pause</button>
+<button onclick="javascript:ir_action(2)">Play</button>&nbsp;
+<input type=text value="Stopped" class="static" id="ir_status" style="width:80px" disabled>&nbsp;
+<button onclick="javascript:ir_action(3)" class="is_off" id="ir_popup">Popup</button>
+&nbsp;&nbsp; <r_>Volume</r_> :&nbsp;
+<button onclick="javascript:ir_action(4)" style="font-size:13px;line-height:17px">&lt;</button>
+<input type=text value="50" class="static" id="ir_volume" style="width:40px" disabled>
+<button onclick="javascript:ir_action(5)" style="font-size:13px;line-height:17px">&gt;</button>
+
+</div><table class="list ir" style="width:100%;padding-bottom:2px">
+
+ <tr><th>Talk Radio
+</th><th>Cool Music
+</th><th>Funky Music
+</th><th>Just Garbage
+</th><th>More Garbage
+</th></tr><tr>
+
+<td><input type=radio name="ir" onclick="javascript:radio
+  ('https://streaming-ent.shoutcast.com/foxnews')"><a target=_blank
+    href='https://radio.foxnews.com/'>Fox News Talk</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://radio.talkradio.co.uk/stream')"><a target=_blank
+    href='https://ukradiolive.com/talkradio/schedule'>Talk Radio UK</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://18323.live.streamtheworld.com/KTIEAMAAC.aac')"><a target=_blank
+    href='https://am590theanswer.com/'>Conservative Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://live.wostreaming.net/direct/redapple-wabcamaac-imc1')"><a target=_blank
+    href='https://wabcradio.com/show-schedule/'>WABC Talk Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://216.240.133.178:3005/;')"><a target=_blank
+    href='http://republicbroadcasting.org/program-schedule/'>Republic Broadcasting</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://mediaserver3.afa.net:8443/talk.mp3')"><a target=_blank
+    href='https://afr.net/podcasts/afr-program-lineup/'>American Family Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://19303.live.streamtheworld.com/BLZE_1AAC.aac')"><a target=_blank
+    href='https://www.theblaze.com/st/radio'>The Blaze Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://s2.radio.co/s572ad25f7/listen')"><a target=_blank
+    href='http://redstatetalkradio.com/radio-schedule/'>Red State Talk</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://ice42.securenetsystems.net/KTLKDB')"><a target=_blank
+    href='https://thefringe.fm/'>The Fringe FM</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://tfrlive.net:8000/stream')"><a target=_blank
+    href='https://tfrlive.com/listen-live/'>Truth Frequency Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://edge.mixlr.com/channel/etrnk')"><a target=_blank
+    href='http://darkmatterdigitalnetwork.com/'>Dark Matter Digital</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://darnwi.com:8000/stream')"><a target=_blank
+    href='http://darnwi.com/live-stream-2/'>Devil's Advocates Radio</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://ice8.securenetsystems.net/VARIETY')"><a target=_blank
+    href='https://www.voiceamerica.com/#home-schedule'>Voice America</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://cast.bbstalkradio.com/proxy/bbsradio?mp=/stream')"><a target=_blank
+    href='https://bbsradio.com/station1and2schedule'>BBS Talk Radio 1</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://cast.bbstalkradio.com/proxy/bbsradio2?mp=/stream')"><a target=_blank
+    href='https://bbsradio.com/station1and2schedule'>BBS Talk Radio 2</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://192.240.107.134:80/alexjonesshow-mp3')"><a target=_blank
+    href='https://banned.video/channel/the-alex-jones-show'>InfoWars - Alex Jones</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://192.240.107.134:80/realnews-mp3')"><a target=_blank
+    href='https://banned.video/channel/the-american-journal'>InfoWars - Harrison Smith</a>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://192.240.107.134:80/warroom-mp3')"><a target=_blank
+    href='https://banned.video/channel/war-room-with-owen-shroyer'>InfoWars - Owen Shroyer</a>
+</td>
+
+<td><input type=radio name="ir" onclick="javascript:radio
+  ('http://85.25.43.55/rock_classics.mp3')">Star FM Rock Classics
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://radio.rockindocradio.net:8600/;')">Rockin Doc Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://rock-lynxradio.radioca.st/;')">Lynx Classic Rock
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://pl-play.adtonos.com/rock-radio')">Rock Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://62.210.10.4:8928/;')">Gem Radio New Wave
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://149.56.183.178:8014/;')">Retro Hits
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.dancewave.online:8080/dance.mp3')">Dance Wave
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://colombiawebs.com.co:8106/;')">Salsa Mexico
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://discoclassicradio.nl/stream')">Disco Classics Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://nl1.lounge-radio.com:8010/;')">Lounge Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://strm112.1.fm/trance_mobile_mp3')">Absolute Trance Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://centova.radioservers.biz:8021/;')">Starlite Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+</td>
+
+<td><input type=radio name="ir" onclick="javascript:radio
+  ('http://virtualdjradio.com:8000/channel1.mp3')">Virtual DJ: ClubZone
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://virtualdjradio.com:8000/channel2.mp3')">Virtual DJ: TheGrind
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://virtualdjradio.com:8000/channel3.mp3')">Virtual DJ: Hypnotica
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://virtualdjradio.com:8000/channel4.mp3')">Virtual DJ: PowerBase
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://janus.cdnstream.com:5140/live')">Radio Free Americana
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://116.202.241.212:8010/;')">Venice Classic Radio Italia
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://tropicalisima.org:9002/;')">Tropicalisma FM
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://lin3.ash.fastserv.com:6026/stream_96')">Rockabilly Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://91.121.91.172:9414/;')">Dandelion Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://hi.entranced.fm:80/;')">Entranced FM
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://94.23.30.114:8071/;')">Toxxic Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.srg-ssr.ch/m/rsj/mp3_128')">Radio Swiss Jazz
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+</td>
+
+<td><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_one')">BBC Radio 1
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_1xtra')">BBC Radio 1-Extra
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_two')">BBC Radio 2
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_three')">BBC Radio 3
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_fourfm')">BBC Radio 4
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_four_extra')">BBC Radio 4-Extra
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_radio_five_live_online_nonuk')">BBC Radio 5-Live
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://stream.live.vc.bbcmedia.co.uk/bbc_6music')">BBC Radio 6-Music
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://server-14.stream-server.nl:8300/;')">Nashville FM
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://shoutcast.countrypowerstation.net:8000/;')">Country Power Station
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://listen.one.hiphop/live')">Old School Hip-Hop
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://s3.radio.co/s988c18e5c/listen')">Wu World Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('8tilKaOINmE')"><g_>Danheim: <i>Mannavegr</i></g_>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('RM_J5cFy70M')"><g_>Audiomachine: <i>Decimus</i></g_>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('v0Bu3M4r4K4')"><g_>Classic Rock - Greatest Hits</g_>
+</td>
+
+<td><input type=radio name="ir" onclick="javascript:radio
+  ('https://el-dorado.stream.laut.fm/el-dorado')">Radio El Dorado
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://igor.torontocast.com:1025/;')">Asia Dream Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://hi5.streamingsoundtracks.com:80/;')">Streaming Sound Tracks
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://136.0.17.26:8000/;')">Radio Africa Online
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://lion.radioca.st/;')">Radio Mi Amigo Int'l
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://jakarta.nagaswarafm.com:8088/stream')">Nagaswara FM
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://159.148.27.137:8760/;')">Schlager Time
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://67.212.238.178:7099/;')">iRie Rockers
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://sphera.fluidstream.eu/company.aac')">Company Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('https://cc6.beheerstream.com/proxy/src1?mp=/stream;stream.mp3')">SRC FM
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://rahvaraadio.ee:8000/rahvaraadio')">Rahva Radio
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('http://31.3.245.162:8000/;')">Splinterwood
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('')">
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('od23CVaq2SQ')"><g_>Nature Sounds</g_>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('gfXhmdjOqGI')"><g_><i>Star Trek</i> Music</g_>
+<br><input type=radio name="ir" onclick="javascript:radio
+  ('qaJjdrTW7C0')"><g_>The Cars: Full Album</g_>
+</td>
+
+</table>
+
+<audio id="internet_radio"
+  onerror="javascript:ir_action(-2)" ontimeupdate="javascript:ir_update()"></audio>
+
+<p style="margin:10px 0 -5px 0">
+<input type=text class="static" style="width:60px;border-radius:8px" disabled>&nbsp;
+
+<input type=range class="slider" onclick="javascript:ir_action(6)"
+  value=0.5 min=0 max=1 step=0.01 style="width:calc(100vw - 250px)">&nbsp;
+
+<input type=text class="static" style="width:60px;border-radius:8px" disabled>
+
+<p><input type=text class="urlspec" id="ir_url"
+  onclick="javascript:input_onclick('ir_url')" onblur="javascript:input_onblur('ir_url')">
+
+<p style="margin:-6px 0 2px 0"><a href="#info">Video Viewer</a>
+
+</div><div style="width:90vw;height:calc(100vh - 566px"></div>
+
+</body>
+
+<script>
+
+/////////////////////////
+///// User Settings /////
+/////////////////////////
+
+var invidious_site = [
+  "https://vid.puffyan.us",	// default
+  "", "", "", "", "", "", "", "", "",
+  "https://vid.puffyan.us",
+  "https://invidious.namazso.eu",
+  "https://tube.connect.cafe"
+];
+
+var invidious_url = invidious_site [0];
+
+var list_1 = [
+    ":NOZKLtIIUZE" , "Hitler Rant"
+  , ":m_MaJDK3VNE" , "Herding Cats"
+  , ":VEGcqoZYxLI" , "Mike Hammer"
+  , ":uaPKEbVypRQ" , "Typing Lesson"
+  , ":W-JhfjGtlp8" , "V - The Miniseries"
+  , ":kJAsn_vJyY4" , "Starship Enterprise"
+];
+
+var list_2 = [
+    ":We-HMZDSWFU" , "Me and You and a Dog Named Boo"
+  , ":8Pa9x9fZBtY" , "Sultans of Swing"
+  , ":6Ath-3JGk8M" , "Flashdance: What A Feeling"
+  , ":onJspmvJr0E" , "Flashdance: Love's Theme"
+  , ":FnV0LqHd3h8" , "Make America Great Again"
+  , ":xB4iFysPm9Q" , "Karolina Protsenko"
+];
+
+var list_3 = [
+    ":HtVdAasjOgU" , "Witcher 3 Trailer [age-gated]"
+  , ":CGq8Ee2gOe4" , "DooM at QuakeCon [age-gated]"
+  , ":0ZwfXUURS3g" , "Dukes of Hazzard"
+  , ":0pKfxbCHLoU" , "AKB48: Sustainable"
+  , ":vxl4gsvgEQY" , "Perfume: Tokyo Girl"
+  , ":vqGPq1zrD5E" , "Poppy: Interweb"
+];
+
+var list_4 = [
+    "b:fmOZPrv27xs"  , "Dil Jaaniye"
+  , "b:6wNFJIbTxNk"  , "Batla House"
+  , "b:sSKnCoWAbDos" , "Brother Nathaniel"
+  , "b:A7jZJfaEJK2p" , "Malice in the Palace"
+  , "b:Ol2plIF2otcI" , "QAnon Proofs"
+];
+
+var list_5 = [
+    "v:129463420" , "Miniatur Wunderland"
+  , "v:166403522" , "Some Kind of Quest"
+  , "v:31883614"  , "Star Trek: Aurora"
+  , "v:322694559" , "Great Martian War"
+  , "v:175806163" , "Martian American"
+];
+
+var list_6 = [
+    "?/1/504.1/1 8:http://vcndstv.teleosmedia.com/stream/dstv/dstv/playlist.m3u8"	, "DanceStar TV (US)"
+  , "?8:https://5b464b69d264e.streamlock.net/Channels_live/ngrp:MelodyChannel_all/playlist.m3u8" , "Melody Channel (Colombia)"
+  , "?8:http://capital_tv-lh.akamaihd.net/i/CapitalTv_1@183098/master.m3u8"		, "Radio Capital (Italy)"
+  , "?8:https://srv1.zcast.com.br/kpoptv/kpoptv/playlist.m3u8"				, "Sexy Kpop TV (Brazil)"
+  , "?/0/576.1/0 7:https://stream-33.mazana.tv:443/slagr2.m3u"				, "Slagr 2 (Czech Republic)"
+  , "?8:https://stirr.ott-channels.stingray.com/iota-classica/index.m3u8"		, "Stingray Classica (Canada)"
+  , "?8:https://dai2.xumo.com/amagi_hls_data_xumo1212A-xumostingrayqello/CDN/master.m3u8" , "Stingray Qello (Canada)"
+  , "?8:http://wms.shared.streamshow.it/visualradio/mp4:visualradio/playlist.m3u8"	, "Visual Radio (Turkey)"
+];
+
+var list_7 = [
+    "?8:https://live-hls-web-aje.getaj.net/AJE/index.m3u8"				, "Al Jazeera"
+  , "?8:https://cnn-cnninternational-1-gb.samsung.wurl.com/manifest/playlist.m3u8"	, "CNN International"
+  , "?8:https://dai2.xumo.com/amagi_hls_data_xumo1234A-lawcrime/CDN/master.m3u8"	, "Law & Crime"
+  , "?8:http://nmxlive.akamaized.net/hls/live/529965/Live_1/index.m3u8"			, "NewsMax TV"
+  , "?8:https://1117825885.rsc.cdn77.org/1117825885/playlist.m3u8"			, "NTD (New Tang Dynasty)"
+  , "?8:https://cdn.klowdtv.net/803B48A/oan_aws_ms/OAN.m3u8"				, "One America News"
+  , "?8:https://live.presstv.ir/liveprs/smil:liveprs.smil/playlist.m3u8"		, "Press TV"
+  , "?8:https://content.uplynk.com/channel/26bd482ffe364a1282bc3df28bd3c21f.m3u8"	, "Real America's Voice"
+];
+
+var list_8 = [
+];
+
+var list_9 = [
+];
+
+////////////////////////////////
+///// End of User Settings /////
+////////////////////////////////
+
+var head = "<!DOCTYPE html><html><head><meta charset='utf-8'>" +
+           "<title>Downloader</title></head><body><h2>Downloader</h2>";
+
+var tail = "</body></html>", download_doc = head + tail;
+
+var last_h = last_w = last_raw = last_time = the_time = busy = 0;
+var cors_bypass = cors_kraker = error = "", vidwin = null;
+var freetv = new Object (), cookies = new Object ();
+
+var localhost, response, textData, jsonData, event_time, dropdown, dloading;
+
+var dump_all = function ()
+{
+  // shut down streams
+  clear_video (5); ir_action (0);
+  // destroy iframes so browser won't try to reload them on page refresh
+  clear_frame (5);
+}
+////////////////////
+
+var clear_frame = function (frame)
+{
+  var win = document.getElementById ("mov" + frame); win.parentNode.removeChild (win);
+}
+////////////////////
+
+var load_all = function ()
+{
+  init_box ("proxy"); load_boxes (5); resize_all ();
+
+  if (!(localhost = document.location.hostname == "localhost")) alert (
+    "The origin of this document is not the preferred origin (http://localhost).\n\n" +
+    "This app might not work as intended and some features may be unavailable.\n\n" +
+    "Trust the Plan -- WWG1WGA -- Where We Go On We Go All");
+
+  var blank = "<!DOCTYPE html><html><head><meta charset='utf-8'>\n" +
+    "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n" +
+    "</head><body></body></html>";
+
+  if (localhost) fetch ("~_blank_page_.htm", { method: "PUT", body: blank });
+}
+////////////////////
+
+var load_boxes = function (frame)
+{
+  init_box ("ctr" + frame + "z"); init_box ("fmt" + frame);
+  init_box ("stk" + frame); init_box ("src" + frame); init_box ("win" + frame);
+}
+////////////////////
+
+var resize_all = function()
+{
+  resize_frame ("info", 5);
+}
+////////////////////
+
+var resize_frame = function (name, frame)
+{
+  var win = document.getElementById (name).nextElementSibling;
+  var sib = win.firstElementChild.firstElementChild.children;
+  var a = sib [0].clientWidth, b = sib [2].clientWidth;
+
+  sib [2].style.width = (a < 300 && b < 40) ? "0" : "35vw";
+  a += b; sib = sib [2]; b = sib.children.length;
+
+  if (a > 400)
+  {
+    if (!b) for (b = 1; b <= 9; b++)
+    {
+      if (!(win = document.getElementById ("stk" + frame + "-" + b))) break;
+      sib.appendChild (win.cloneNode (true)); win.style.visibility = "hidden";
+      sib.appendChild (document.createElement ("P"));
+    }
+    sib.style.minWidth = "100px";
+  }
+  else
+  {
+    sib.innerHTML = ""; sib.style.minWidth = 0;
+
+    for (b /= 2; b > 0; b--)
+      document.getElementById ("stk" + frame + "-" + b).style.visibility = "visible";
+  }
+}
+////////////////////
+
+var init_box = function (name)
+{
+  var win = document.getElementById (name), list = win.children;
+  var panel = win.parentNode.firstElementChild.nodeName == "DIV";
+  win.onclick = function(event) { listpick (event.target, panel); }
+
+  var m = 0, val = "", txt = list[0].innerText;
+
+  for (var n = 0; n < list.length; n++) if (list[n].hasAttribute ("checked")) m = n;
+
+  val = list[m].value; txt = list[m].innerText; list[m].classList.add ("mark");
+
+  win.value = val; if (panel) return;
+
+  var doc = win.parentNode.firstElementChild; doc.value = txt;
+  doc.nextElementSibling.addEventListener ("click", function(){ listbox (this); });
+}
+////////////////////
+
+var listbox = function (item)
+{
+  var box = item.nextElementSibling, doc = box.classList; doc.toggle ("show");
+  if (dropdown && box != dropdown) dropdown.classList.remove ("show");
+  event_time = 0; dropdown = doc.contains ("show") ? box : null;
+
+  var w = item.clientWidth + item.parentNode.firstElementChild.clientWidth + 4;
+  box.style.minWidth = w + "px";
+}
+////////////////////
+
+var listpick = function (item, panel)
+{
+  var list = item.parentNode.children; if (item.nodeName == "DIV") return;
+
+  for (var n = 0; n < list.length; n++) if (list[n].classList.contains ("mark"))
+  {
+    list[n].classList.remove ("mark"); break;
+  }
+
+  item.classList.add ("mark"); item.parentNode.value = item.value;
+  if (!panel) item.parentNode.parentNode.firstElementChild.value = item.innerText;
+}
+////////////////////
+
+var MEOW = function (event)
+{
+  if (event.type != "click" && event.type != "keydown") return;
+
+  if (dropdown && event_time > 0 && event_time != event.timeStamp)
+  {
+    dropdown.classList.remove ("show"); dropdown = null;
+  }
+  event_time = event.timeStamp;
+} 
+////////////////////
+
+var copylist = function (frame, num)
+{
+  var name, list, box, item, val, txt, i, j;
+
+  var iptv = num < 0; if (iptv) num = -num; if (!num) return;
+
+  if (num < 10)
+  {
+    name = "video";
+    if (num == 1) list = list_1; else
+    if (num == 2) list = list_2; else
+    if (num == 3) list = list_3; else
+    if (num == 4) list = list_4; else
+    if (num == 5) list = list_5; else
+    if (num == 6) list = list_6; else
+    if (num == 7) list = list_7; else
+    if (num == 8) list = list_8; else
+    if (num == 9) list = list_9; else return;
+  }
+  else return;
+
+  box = document.getElementById ("stk" + frame); item = box.children;
+
+  for (i = item.length - 1; i > 0; i--) box.removeChild (item [i]);
+
+  for (i = 0, j = 1; i < list.length; i += 2, j++)
+  {
+    txt = list [i+1];
+    if (!(val = list [i])) val = txt; 
+    if (val [0] != "?") if (iptv) val = "?" + val;
+    if (val [val.length - 1] == ":") val = val + txt;
+    box.appendChild (new Option ("[" + (j < 10 ? "0" : "") + j + "] " + txt, val));
+  }
+
+  list = document.getElementById ("stk" + frame + "-" + num).innerText;
+  name = "Select a " + name + " (" + list + ")";
+
+  item[0].innerText = box.parentNode.firstElementChild.value = name;
+  box.value = 0; popper (frame, 0);
+}
+////////////////////
+
+var select_site = function (frame, value)
+{
+  var doc = document.getElementById ("src" + frame);
+  var box = doc.parentNode.firstElementChild;
+  doc.value = value; doc = doc.children;
+
+  for (var d, n = 0; n < doc.length; n++)
+    if ((d = doc [n]).value == value)
+    {
+      box.value = d.innerText; d.classList.add ("mark");
+    }
+    else if (d.classList.contains ("mark")) d.classList.remove ("mark");
+}
+////////////////////
+
+var hidelist = function (frame)
+{
+  var doc = document.getElementById ("stk" + frame);
+  var box = doc.children[0]; doc.value = box.value;
+  doc.parentNode.firstElementChild.value = box.innerText;
+}
+////////////////////
+
+var toggle_hls = function (frame, state)
+{
+  if (state < 0) return;
+
+  var doc = document.getElementById ("hls" + frame);
+  var hls = doc.checked; if (hls == undefined) hls = 0;
+
+  var txt = "Wrapper"; if (++hls > 2) hls = 0; if (state > 0) hls = state - 1;
+  if (hls == 1) txt = "M3U8"; else if (hls == 2) txt = "DASH";
+
+  doc.checked = hls; doc.innerHTML = txt;
+
+  if (!state) document.getElementById ("mov" + frame + "b").checked = true;
+}
+////////////////////
+
+var buttonpress = function (frame, num)
+{
+  var id1, id2, doc1, doc2, chk, txt;
+
+  id1 = "btn" + frame + "a"; id2 = "btn" + frame + "b";
+
+  doc1 = document.getElementById (num ? id2 : id1);
+  doc2 = document.getElementById (num ? id1 : id2);
+
+  chk = doc1.checked; doc1.checked = !chk;
+  doc1.className = (chk ? "is_off" : "is_on");
+  doc2.checked = false; doc2.className = "is_off";
+}
+////////////////////
+
+var brightness = function (frame, mode)
+{
+  var win = document.getElementById ("mov" + frame), vid = win.contentDocument;
+  if (vid) vid = vid.getElementById ("video"); if (!vid) vid = win;
+
+  var LVL = document.getElementById ("ctr" + frame + "x");
+  var SAT = document.getElementById ("ctr" + frame + "y");
+
+  var lvl = LVL.value.substr (5) * 1;
+  var sat = SAT.value.substr (5) * 1;
+  var con, lo = -9, hi = 9;
+
+  if (mode == 1) if ((lvl -= 1) < lo) lvl = lo;
+  if (mode == 2) if ((lvl += 1) > hi) lvl = hi;
+  if (mode == 3) if ((sat -= 1) < lo) sat = lo;
+  if (mode == 4) if ((sat += 1) > hi) sat = hi;
+  if (mode == 5)
+  {
+    var x = LVL.step * 1, y = SAT.step * 1, z = lvl || sat;
+    if (z) { LVL.step = lvl; lvl = 0; } else lvl = x ? x : 0;
+    if (z) { SAT.step = sat; sat = 0; } else sat = y ? y : 0;
+  }
+
+  LVL.value = "Brt:  " + (lvl > 0 ? "+" : "") + lvl;
+  SAT.value = "Sat:  " + (sat > 0 ? "+" : "") + sat;
+
+  lvl = lvl * 0.05 + 1; sat = sat * 0.1 + 1;
+  sat = sat * (3 - lvl) / 2; con = (2 - lvl * (3 - lvl)) * (2.5 - sat) + 1;
+
+  lvl = lvl.toFixed (3); con = con.toFixed (3); sat = sat.toFixed (3);
+  lvl = "brightness(" + lvl + ") contrast(" + con + ") saturate(" + sat + ")";
+  vid.style.filter = win.value = lvl;
+}
+////////////////////
+
+var scalingfactor = function (frame, mode)
+{
+  var win = document.getElementById ("ctr" + frame + "w"), scale = win.value * 1;
+  var vid = document.getElementById ("mov" + frame).contentDocument;
+  if (vid) vid = vid.getElementById ("video");
+
+  if (mode == 1) if ((scale -= 5) <  50) scale = 50;
+  if (mode == 2) if ((scale += 5) > 150) scale = 150;
+
+  win.value = scale; if (vid) vid_scaler (vid, 0, scale);
+}
+////////////////////
+
+var urlcopy = function (frame, copy)
+{
+  var url = document.getElementById ("line" + frame);
+  var btn = document.getElementById ("dload" + frame);
+
+  if (copy && !document.getElementById ("mov" + frame + "m").checked)
+    { url.select(); document.execCommand ("copy"); }
+
+  url = url.value; if (copy) popper (frame, 2);
+  if (!url) btn.removeAttribute ("href"); else btn.href = url;
+}
+////////////////////
+
+var input_onclick = function (id)
+{
+  var doc = document.getElementById (id);
+  if (!doc.checked && doc.selectionStart >= doc.selectionEnd - 1) doc.select();
+  doc.checked = true;
+}
+////////////////////
+
+var input_onblur = function (id)
+{
+  document.getElementById (id).checked = false;
+}
+////////////////////
+
+var is_busy = function (frame)
+{
+  if (busy) return 1;
+  document.getElementById ("vid" + frame).innerHTML = "Busy";
+  no_format (frame); busy = 1; error = ""; return 0;
+}
+////////////////////
+
+var no_fail = function (frame)
+{
+  if (busy) toggle_hls (frame, busy); else
+  {
+    document.getElementById ("vid" + frame).innerHTML = "Error";
+    if (error != "") document.getElementById ("id" + frame).value = "err: " + error;
+    no_format (frame);
+  }
+  var Busy = busy; busy = 0; return (Busy);
+}
+////////////////////
+
+var stream_all = function (frame, type)
+{
+  if (busy) busy = type + 1;
+  if (type < 2) return (!document.getElementById ("mov" + frame + "f").checked);
+  return 1;
+}
+////////////////////
+
+var reset_frame = function (frame)
+{
+  clear_video (frame); ir_action (-1); busy = 0;
+}
+////////////////////
+
+var clear_video = function (frame)
+{
+  loadwindow ("", frame, ""); popper (frame, 3);
+  brightness (frame, 0); vid_info (frame, 0, 0, 1);
+  document.getElementById ("meta" + frame).step = 0;
+}
+////////////////////
+
+var setup_cors = function (frame)
+{
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  if (cors_bypass.substr (0, 6) != "LOCAL:") cors_kraker = ""; else
+    cors_kraker = cors_bypass = "http" + cors_bypass.substr (5);
+
+  return true;
+}
+////////////////////
+
+var allow_cookie = function (source, cookie)
+{
+  if (!cors_kraker) return ({});
+
+  if (source) if (cookie) cookies [source] = cookie; else cookie = cookies [source];
+
+  if (!cookie) cookie = "null"; return ({ headers: { 'Accept': '**' + cookie } });
+}
+////////////////////
+
+var saved_path = function (name)
+{
+  var path, time, timeout;  // default timeout = 14280 = 119 minutes x 120 half-seconds
+
+  if (!(path = freetv [name])) path = ""; else
+  {
+    path = path.split (" "); time = path [0] * 1; timeout = path [1] * 120;
+    if (!timeout) timeout = 14280; path = (time > the_time - timeout) ? path [2] : "";
+  }
+  return (path);
+}
+////////////////////
+
+var pullstring = function (s, t, u)
+{
+  var m = t.length, n = s.indexOf (t) + m;
+  m = n < m ? -1 : (u ? s.indexOf (u, n) : s.length);
+  return (m < 0 ? "" : s.substr (n, m - n));
+}
+////////////////////
+
+var get_time = function ()
+{
+  the_time = Date.now() / 500; return (the_time);
+}
+////////////////////
+
+////////////////////////////////
+///// INFO + ENTERTAINMENT /////
+////////////////////////////////
+
+var loadid = function (frame, mode)
+{
+  var url, fmt, doc, sub, src;
+
+  if (busy) return; clear_video (frame); setup_cors (frame);
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.children[0].value;
+
+  if (mode == 0)
+  {
+    url = document.getElementById ("stk" + frame).value;
+    if (!url) url = document.getElementById ("id" + frame).value;
+  }
+  else if (mode == 1)
+  {
+    url = document.getElementById ("line" + frame).value;
+    url = url.replace (/\\u002F/g, "/"); url = url.replace (/\\/g, "");
+  }
+  else url = error;
+
+  if (url.substr (0,1) == "?") { open_livestream (url, frame, fmt); return; }
+  if (mode == 1) { loadwindow (url, frame, ""); return; }
+
+  src = document.getElementById ("src" + frame).value;
+  if (!src) src = 0; sub = url.split (": ");
+
+  if (sub.length > 1) url = sub [sub.length - 1]; else
+  {
+    sub = url.split (":"); doc = sub [0];
+    if (sub.length > 1 && doc.length < 4)
+    {
+      src = 0; url = sub [sub.length - 1];
+      if (doc == "b") src = 1;
+      if (doc == "v") src = 2;
+      select_site (frame, src);
+    }
+  }      
+  if (url == "") return;
+
+  if (src == 1  && (url = getid (url,-12))) req_bitchute (url, frame, fmt); else
+  if (src == 14 && (url = getid (url,  6))) req_rumble (url, frame, fmt); else
+  if (src == 2  && (url = getid (url, -9))) req_vimeo (url, frame, fmt); else
+  if (src == 3  && (url = getid (url, 24))) req_infowars (url, frame, fmt); else
+  if (src == 4  && (url = getid (url,  0))) req_brighteon (url, frame, fmt); else
+
+  if (src == 0  && (url = getid (url, 11))) request (url, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = (url ? "Not supported" : "Invalid ID");
+}
+////////////////////
+
+var getid = function (url, len)
+{
+  if (!len) return (url);
+
+  tst = url.substr (url.length - 5, 5);
+  var n = tst.indexOf ("."); if (n < 0) n = tst.indexOf ("/");
+  if (n >= 0) url = url.substr (0, url.length + n - 5);
+
+  if ((tst = url.indexOf ("*")) >= 0) return (url.substr (tst+1));
+  if (!len) return (url);
+
+  if (len < 0)
+  {
+    len = -len;
+    if (url.length < len - 2) return "";
+    if (url.length == len - 2) return url;
+    if (url.length == len - 1) return url;
+    if (url.length == len) return url;
+
+    url = url.substr (url.length - len, len);
+    if ((len = url.indexOf ("/")) > 1) url = "";
+    if (len < 0 && (len = url.indexOf ("=")) > 1) url = "";
+    if (len < 0 && (len = url.indexOf ("-")) > 1) url = "";
+
+    if (len >= 0) url = url.substr (len + 1);
+    return url;
+  }
+
+  if (url.length < len) return "";
+  if (url.length == len) return url;
+
+  url = url.substr (url.length - len, len);
+  if (url.indexOf ("/") >= 0) url = "";
+  if (url.indexOf ("=") >= 0) url = "";
+  return url;
+}
+////////////////////
+
+var request = function (id, frame, fmt)
+{
+  if (document.getElementById ("mov" + frame + "c").checked)
+  {
+    var url = "https://www.youtube.com/embed/" + id;
+    if (!busy) loadwindow (url, frame, "youtube: " + id);
+    return;
+  }
+
+  var src = document.getElementById ("ctr" + frame + "z").value;
+
+  if (src == 1) if (fmt < 0) src = 0; else { request_new_youtube (id, frame, fmt); return; }
+  if (src == 9) if (fmt < 0) src = 0; else { request_new_youtube (id, frame, -fmt); return; }
+
+  if (!src && cors_kraker) { request_new_youtube (id, frame, fmt); return; }
+
+  invidious_url = invidious_site [src]; request_invidious (id, frame, (fmt < 0 ? -fmt : fmt));
+}
+////////////////////
+
+const request_invidious = async (id, frame, fmt) =>
+{
+  var i, j, n, f = [0,0,0,0,0,0,0,0];
+
+  var tag = "invidious"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = invidious_url + "/api/v1/videos/" + id + "?fields=formatStreams,hlsUrl";
+
+try
+{
+  response = await fetch (cors_kraker + url);
+  jsonData = await response.json();
+
+  var sub = jsonData.formatStreams; if (!sub) throw ("!!!"); n = sub.length;
+
+  for (i = 0; i < n; i++)
+  {
+    if ((j = argformat (sub[i].itag)) >= 0) f[j] = i + 1;
+  }
+    
+  if ((n = getformat (f, fmt)))
+  {
+    fmt = n; fixformat (f, frame); n = f[argformat(n)] - 1;
+    url = (sub[n].url.search ("&gcr=") > 0) ? "local=true&" : "";  // geo-restricted?
+    url = invidious_url + "/latest_version?" + url + "itag=" + fmt + "&id=" + id;
+  }
+  else   // live stream
+  {
+    url = jsonData.hlsUrl; if (!url) throw ("!!!");
+    if (url.substr (0,1) == "/") url = invidious_url + url;
+    sub = url = url + "?local=true";
+
+    if (stream_all (frame, 1)) fmt = 0; else
+    {
+      response = await fetch (url);
+      textData = await response.text();
+
+      url = crack_m3u8 (url, textData, frame, fmt); if (!url) throw ("!!!");
+      fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+    }
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const request_new_youtube = async (id, frame, fmt) =>
+{
+  var i, j, s, t, sub, vid, aud, key, sig, webm, f = [0,0,0,0,0,0,0,0,0,0];
+
+  var tag = "youtube"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = cors_kraker + "https://www.youtube.com/youtubei/v1/player?key=AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8";
+
+try
+{
+  if (!cors_kraker) throw ("???");
+
+  t = { videoId: id, context: { client: { gl: 'US', hl: 'en', clientName: 'ANDROID', clientVersion: '16.02' }}};
+  s = JSON.stringify (t);
+
+  response = await fetch (url, { method: 'POST', headers: {'content-type': 'application/json'}, body: s });
+  jsonData = await response.json();
+
+  if (!(sub = jsonData.streamingData))
+  {
+    t.context.thirdParty = {'embedUrl': 'http://localhost'};
+    t.context.client.clientScreen = "EMBED";
+    s = JSON.stringify (t);
+
+    response = await fetch (url, { method: 'POST', headers: {'content-type': 'application/json'}, body: s });
+    jsonData = await response.json();
+
+    if (!(sub = jsonData.streamingData)) throw ("!!!");
+  }
+
+  if (fmt < 0 && (fmt = -fmt) && (t = sub.adaptiveFormats))
+  {
+    for (i = 0; i < t.length; i++)
+      if ((s = t[i].itag) && (j = isdashfmt (s)) >= 0)
+        if (t[i].approxDurationMs || t[i].targetDurationSec) f[j] = i + 1;
+
+    if (!f[8]) f[0] = f[1] = f[2] = 0;
+    if (!f[9]) f[4] = f[5] = f[6] = 0;
+    if (getformat (f, fmt)) tag = "";
+  }
+
+  if (tag && (t = sub.formats))
+    for (i = 0; i < t.length; i++) if ((s = t[i].itag) && (j = argformat (s)) >= 0) f[j] = i + 1;
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((i = argformat (fmt)) < 0 || (j = f [i] - 1) < 0) throw ("!!!");
+
+  webm = i > 3; if (!tag) aud = new_yt_split (t [f [webm + 8] - 1]);
+  vid = new_yt_split (t [j]); url = vid [0]; sig = vid [1]; if (!url) throw ("!!!");
+
+/*
+  if (sig)
+  {
+    response = await fetch (cors_kraker + "https://www.youtube.com/embed/" + id);
+    textData = await response.text();
+
+    s = textData.substr (textData.indexOf ("base.js") - 100, 107);
+    if ((i = s.indexOf ("/s/player/")) < 0) throw ("!!!"); s = s.substr (i);
+
+    if (!(key = cookies [s]))
+    {
+      response = await fetch (cors_kraker + "https://www.youtube.com" + s);
+      textData = await response.text();
+
+      key = yt_algo (textData); cookies [s] = key;
+    }
+    eval (key); url += "&sig=" + sig;
+  }
+*/
+
+  if (!tag) if (!(sub = aud [0])) throw ("!!!"); else
+  {
+    var v = aud [3] + "," + vid [3], w = "wanna_boot_dash";
+
+    download_doc = head + "YouTube DASH download links (" + id + ") -- " +
+      "<a href='" + sub + "'>Audio</a> &nbsp;" +
+      "<a href='" + url + "'>Video</a>" + tail;
+
+    // if (key && (sig = aud [1])) { eval (key); sub += "&sig=" + sig; }
+
+    if (!(s = vid [2]))
+    {
+      v = "x-head-seqnum"; w = "x-head-time-sec";
+      s = "~range=bytes=0-499|" + v + "|" + w + "|*";
+
+      response = await fetch (cors_kraker + s + url);
+      v = response.headers.get (v); if (!v) throw ("!!!");
+      w = response.headers.get (w); if (!w) throw ("!!!");
+
+      var seg_num = v * 1; var seg_ofs = w * 1;
+      var seg_dur = Math.round (10 * seg_ofs / seg_num) / 10;
+      n = Math.ceil (90 / seg_dur); // initial 90-second progress bar; can be up to 3 hours
+
+      seg_num -= n; seg_ofs -= Math.round (n * 10 * seg_dur) / 10;
+      if (seg_num < 1 || seg_ofs < 1) seg_num = seg_ofs = 0;
+
+      v = seg_num + "," + seg_ofs + "," + seg_dur + ",";
+      w = "wanna_boot_dash_live"; s = "";
+    }
+
+    tag = fmt + "(" + id + ").mpd";
+    s += "|" + (webm ? "audio/webm" : "audio/mp4") + "|" + (webm ? "opus" : "mp4a.40.2");
+    s += "|" + (webm ? "video/webm" : "video/mp4") + "|" + (webm ? "vp9" : "avc1.4d401e");
+    s += "|" + v + "|" + tag + "|" + sub + "|" + url + "|";
+
+    await fetch (cors_kraker + w, { method: 'POST', body: s } );
+    url = cors_kraker + "_" + w + "_" + tag; tag = "yt-dash"; stream_all (frame, 2);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+var new_yt_split = function (data)
+{
+  var d, i = r = s = "", u = data.url;
+
+  if (!u) if (!(u = data.signatureCipher)) u = ""; else
+  {
+    u = u.replace (/%25/g, "%"); u = decodeURIComponent (u);
+    s = pullstring (u, "s=", "&"); u = pullstring (u, "url=", "");
+  }
+
+  i = (d = data.initRange)  ? d.start + "-" + d.end : "";
+  r = (d = data.indexRange) ? d.start + "-" + d.end : "";
+
+  if (!(d = data.approxDurationMs)) d = 0;
+
+  return ([u, s, d / 1000, i + "," + r]);
+}
+////////////////////
+
+const req_bitchute = async (id, frame, fmt) =>
+{
+  var tag = "bitchute"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = "https://www.bitchute.com/embed/" + id + "/";
+
+try
+{
+  response = await fetch (cors_bypass + url);
+  textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.indexOf (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.indexOf ('"'));
+
+  if (!url) throw ("!!!"); if (cors_kraker) url = cors_kraker + "~" + url;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_rumble = async (id, frame, fmt) =>
+{
+  var n, p, q, r, f = [0,0,0,0,0,0,0,0], u = [0,0,0,0,0,0,0,0];
+
+  var tag = "rumble"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = "https://rumble.com/embedJS/u3/?request=video&ver=2&v=" + id;
+
+try
+{
+  response = await fetch (cors_kraker + url);
+  jsonData = await response.json();
+
+  if (!(p = jsonData.evt)) throw ("!!!");
+  if (!(p = p.t) || !(p.includes ("." + id.substr (1) + "."))) throw ("!!!");
+  if (!(p = jsonData.ua)) throw ("!!!");
+
+  if (!p.hls || !p.hls.auto || !(url = p.hls.auto.url))
+  {
+    if (q = p.mp4)
+    {
+      if ((r = q["360"]) && (u[0] = r.url)) f[0] = 360;
+      if ((r = q["480"]) && (u[1] = r.url)) f[1] = 480;
+      if ((r = q["720"]) && (u[2] = r.url)) f[2] = 720;
+      if ((r = q["1080"]) && (u[3] = r.url)) f[3] = 1080;
+    }
+    if (q = p.webm)
+    {
+      if ((r = q["360"]) && (u[4] = r.url)) f[4] = 360;
+      if ((r = q["480"]) && (u[5] = r.url)) f[5] = 480;
+      if ((r = q["720"]) && (u[6] = r.url)) f[6] = 720;
+      if ((r = q["1080"]) && (u[7] = r.url)) f[7] = 1080;
+    }
+
+    fmt = getformat (f, fmt); fixformat (f, frame);
+    if ((n = argformat (fmt)) < 0) throw ("!!!");
+    fmt = f[n]; url = u[n];
+  }
+  else if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (cors_kraker + url);
+    textData = await response.text();
+
+    url = response.url.substr (cors_kraker.length);
+    url = crack_m3u8 (url, textData, frame, fmt); if (!url) throw ("!!!");
+    fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_vimeo = async (id, frame, fmt) =>
+{
+  var i, j, k, f = [0,0,0,0,0,0,0,0], r = [0,0,0,0];
+
+  var tag = "vimeo"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = "https://player.vimeo.com/video/" + id + "/config";
+
+try
+{
+  response = await fetch (cors_bypass + url);
+  jsonData = await response.json();
+
+  if (jsonData.request == undefined)   // privacy lock, go long way around
+  {
+    response = await fetch (cors_bypass + "https://vimeo.com/" + id);
+    textData = await response.text();
+
+    var s = '"config_url":"';
+    var n = textData.indexOf (s); if (n < 0) throw ("!!!");
+
+    url = textData.substr (n + s.length, 500);
+    url = url.substr (0, url.indexOf ('"'));
+    url = url.replace (/\\/g, "");
+
+    response = await fetch (cors_bypass + url);
+    jsonData = await response.json();
+  }
+
+  if (!(url = jsonData.request.files.progressive) || !url.length)  // livestream
+  {
+    if (!(url = jsonData.request.files.hls) || !(url = url.cdns)) throw ("!!!");
+    if (!(s = url.fastly_live) && !(s = url.fastly_skyfire)) s = url.akamai_live;
+    if (!s && !(s = url.akfire_interconnect_quic)) throw ("!!!");
+    if (!(url = s.url)) throw ("!!!");
+
+    if (cors_kraker) url = cors_kraker + "~" + url;
+
+    if (stream_all (frame, 1)) fmt = 0; else
+    {
+      response = await fetch (url);
+      textData = await response.text();
+      url = response.url;
+
+      url = crack_m3u8 (url, textData, frame, fmt); if (!url) throw ("!!!");
+      fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+    }
+  }
+  else
+  {
+    for (i = 0; i < url.length; i++)
+    {
+      k = url[i].quality; k = k.substr (0, k.indexOf ("p"));
+      if ((j = chkformat (k)) >= 0) if (r[j] < k) { f[j] = i + 1; r[j] = k; }
+    }
+    fmt = getformat (f, fmt); fixformat (f, frame);
+    if ((j = argformat (fmt)) < 0 || (j = f[j] - 1) < 0) throw ("!!!");
+    fmt = url[j].height; if ((url = url[j].url) == undefined) throw ("!!!");
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_infowars = async (id, frame, fmt) =>
+{
+  var tag = "infowars"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+  var url = "https://api.infowarsmedia.com/embed/" + id;
+
+try
+{
+  response = await fetch (cors_kraker + url);
+  textData = await response.text();
+
+  url = pullstring (textData, 'downloadUrl="', '"');
+  if (!url) url = pullstring (textData, '"directUrl":"', '"');
+
+  download_doc = head + "InfoWars download link: ";
+
+  if (url.indexOf ("http") == 0)
+    download_doc = download_doc + "<a href='" + url + "'>" + url + "</a>" + tail; else
+    download_doc = download_doc + "Not available" + tail;
+
+  var s = pullstring (textData, '<source src="', '"');
+  if (!s) s = pullstring (textData, '"streamUrl":"', '"');
+  if (s) url = s; if (!url) throw ("!!!");
+
+  if (!url.includes (".m3u8") || stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (!url) throw ("!!!");
+    fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_brighteon = async (id, frame, fmt) =>
+{
+  var tag = "brighteon"; if (is_busy (frame)) return;
+  var url = getid (id, 36); if (!url) url = getid (id, 13);
+  if (!url) { document.getElementById ("id" + frame).value = "Invalid ID"; return; }
+
+  id = url; url = "https://www.brighteon.com/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  response = await fetch (cors_bypass + url);
+  textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.indexOf (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 300);
+  url = url.substr (0, url.indexOf ('"'));
+  url = url.replace (/&#x3D;/g, "=");
+
+  if (url.indexOf ("m3u8") < 0) throw ("!!!");
+  url = (cors_kraker ? cors_kraker + "~" : cors_bypass) + url;
+
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (!url) throw ("!!!");
+    fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+///////////////////
+///// DIG DUG /////
+///////////////////
+
+var digid = function (frame)
+{
+  var doc, src, fmt;
+
+  if (busy) return; clear_video (frame); setup_cors (frame);
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.children[0].value;
+
+  src = document.getElementById ("src" + frame).value;
+  doc = document.getElementById ("line" + frame).value.trim();
+
+  if (src == 14) dig_rumble (doc, frame, fmt); else
+  if (src == 3 ) dig_infowars (doc, frame, fmt); else
+  if (src == 4 ) dig_brighteon (doc, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = "Not supported";
+}
+////////////////////
+
+const dig_rumble = async (doc, frame, fmt) =>
+{
+  var tag = "rumble"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+  var url = cors_bypass + doc;
+
+try
+{
+  response = await fetch (url);
+  textData = await response.text();
+
+  url = pullstring (textData, '"video":"', '"');
+
+  if (url.length < 5 || url.length > 6) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_rumble (url, frame, fmt);
+}
+////////////////////
+
+const dig_infowars = async (doc, frame, fmt) =>
+{
+  var tag = "infowars"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+  var url = cors_kraker + doc; if (url.indexOf ("infowars") < 0) url = cors_bypass + doc;
+
+try
+{ 
+  response = await fetch (url);
+  textData = await response.text();
+
+  var s = 'data-video-id="';
+  var n = textData.indexOf (s);
+  
+  if (n > 0) url = textData.substr (n + s.length, 200); else
+  {
+    n = textData.indexOf ('<iframe src="'); if (n < 0) throw ("!!!");
+    url = textData.substr (n, 200);
+
+    n = url.indexOf ("/embed/"); if (n < 0) throw ("!!!");
+    url = url.substr (n + 7);
+  }
+
+  url = url.substr (0, url.indexOf ('"'));
+  if ((n = url.indexOf ("?")) > 0) url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_infowars (url, frame, fmt);
+}
+////////////////////
+
+const dig_brighteon = async (doc, frame, fmt) =>
+{
+  var tag = "brighteon"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+  var url = cors_bypass + doc;
+
+try
+{ 
+  response = await fetch (url);
+  textData = await response.text();
+
+  var s = "/embed/"; var n = textData.indexOf (s);
+  if (n < 0) { s = '"videoKey":"'; n = textData.indexOf (s); }
+  if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.indexOf ('"'));
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_brighteon (url, frame, fmt);
+}
+////////////////////
+
+var chkformat = function (q)
+{
+  if (q > 100 && q <= 432) return 0;
+  if (q > 432 && q <= 580) return 1;
+  if (q > 580 && q <= 800) return 2;
+
+  return -1;
+}
+////////////////////
+
+var pixformat = function (q)
+{
+  if (q == 0 || q == 4) return 360;
+  if (q == 1 || q == 5) return 480;
+  if (q == 2 || q == 6) return 720;
+
+  return -1;
+}
+////////////////////
+
+var isdashfmt = function (fmt)
+{
+  if (fmt == 134) return 0;
+  if (fmt == 135) return 1;
+  if (fmt == 136) return 2;
+  if (fmt == 140) return 8;
+  if (fmt == 243) return 4;
+  if (fmt == 244) return 5;
+  if (fmt == 247) return 6;
+  if (fmt == 251) return 9;
+
+  return -1;
+}
+////////////////////
+
+var argformat = function (fmt)
+{
+  if (fmt == 18) return 0;
+  if (fmt == 19) return 1;
+  if (fmt == 22) return 2;
+  if (fmt == 37) return 3;
+  if (fmt == 43) return 4;
+  if (fmt == 44) return 5;
+  if (fmt == 45) return 6;
+  if (fmt == 46) return 7;
+
+  return -1;
+}
+////////////////////
+
+var getformat = function (f, fmt)
+{
+  if (f[0] <= 0 && f[1] <= 0 && f[2] <= 0 && f[3] <= 0)
+  {
+    if (fmt == 18) fmt = 43;
+    if (fmt == 19) fmt = 44;
+    if (fmt == 22) fmt = 45;
+    if (fmt == 37) fmt = 46;
+  }
+
+  if (f[4] <= 0 && f[5] <= 0 && f[6] <= 0 && f[7] <= 0)
+  {
+    if (fmt == 43) fmt = 18;
+    if (fmt == 44) fmt = 19;
+    if (fmt == 45) fmt = 22;
+    if (fmt == 46) fmt = 37;
+  }
+
+  var m = 0, n = fmt;
+
+  if (n == 37) if (f[3]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 18;
+  if (n == 18) if (f[0]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 18) if (f[0]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 37;
+  if (n == 37) if (f[3]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 46) if (f[7]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 43;
+  if (n == 43) if (f[4]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 43) if (f[4]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 46;
+  if (n == 46) if (f[7]) m = n;
+
+  return m;
+}
+////////////////////
+
+var fixlist = function (item, doc, state)
+{
+  var txt = doc.children[item].text.slice (0,-1);
+  if (state < 0) txt = txt + '*'; else if (state > 0) txt = txt + '+'; else txt = txt + '-';
+  doc.children[item].text = txt;
+}
+////////////////////
+
+var fixformat = function (f, frame)
+{
+  var doc = document.getElementById ("fmt" + frame);
+
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]); fixlist (2, doc, f[2]);
+  fixlist (3, doc, f[4]); fixlist (4, doc, f[5]); fixlist (5, doc, f[6]);
+
+/*
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]); fixlist (3, doc, f[3]);
+  fixlist (4, doc, f[4]); fixlist (5, doc, f[5]);
+  fixlist (6, doc, f[6]); fixlist (7, doc, f[7]);
+*/
+}
+////////////////////
+
+var no_format = function (frame)
+{
+  var doc = document.getElementById ("fmt" + frame);
+
+  fixlist (0, doc, -1); fixlist (1, doc, -1);
+  fixlist (2, doc, -1); fixlist (3, doc, -1);
+  fixlist (4, doc, -1); fixlist (5, doc, -1);
+}
+////////////////////
+
+//////////////////////////////
+///// INTERNET TV (IPTV) /////
+//////////////////////////////
+
+var open_livestream = function (url, frame, fmt)
+{
+  var n, z = frame, f = [0,0,0,0,0,0,0,0]; if (busy) return;
+
+  if (url.substr (0,1) == "?") url = url.substr (1);
+  if (url.substr (0,1) == "<") { open_dloader (url, frame, fmt); return; }
+
+  if (url [0] == "/")
+  {
+    var s = url.split (" "); var t = (s[0] + "/////").split ("/");
+    f[0] = t[1] * 1; f[1] = t[2] * 1; f[2] = t[3] * 1;
+    f[4] = t[4] * 1; f[5] = t[5] * 1; f[6] = t[6] * 1;
+    fmt = getformat (f, fmt); if ((n = argformat (fmt)) < 0) return;
+    n = f[n]; if (n != Math.trunc (n)) n = (n * 10) % 10;
+    url = s[n]; if (n <= 0 || !url) return;
+  }
+
+  n = url.search (":"); if (n > 3) return;
+  var src = url.substr (0, n); url = url.substr (n+1);
+
+  if (src == "0") { request (url, frame, -fmt); return; }
+
+  document.getElementById ("id" + frame).value = "Tuning...";
+
+  if (src == "7") open_tv0 (z, 0, f, fmt, url);
+  if (src == "8") open_tv0 (z, 1, f, fmt, url);
+  if (src == "9") open_tv0 (z, 1, f, fmt, cors_bypass + url);
+}
+////////////////////
+
+const open_dloader = async (url, frame, fmt) =>
+{
+  if (is_busy (frame)) return; else try
+  {
+    var n = document.getElementById ("hls" + frame).checked;
+    if (n != 1 || (n = url.indexOf (">")) < 2) throw ("???");
+    var name = url.substr (1, n - 1); url = url.substr (n + 1);
+    var resp = await fetch (url);
+    var data = await resp.text();
+  } catch (err) { console.log (err); busy = 0; }
+
+  error = ""; busy = -busy; if (!no_fail (frame)) return;
+  document.getElementById ("vid" + frame).innerHTML = "Download";
+  dloading = name; crack_m3u8 (url, data, frame, fmt); dloading = ""; 
+}
+
+const open_tv0 = async (frame, mode, f, fmt, url) =>
+{
+  var n; if (is_busy (frame)) return;
+
+  if (url.substr (0,1) == "*") if (cors_kraker) url = cors_kraker + "~" + url; else
+  {
+    url = url.substr (1); n = url.indexOf ("*"); if (n >= 0) url = url.substr (n + 1);
+  }
+
+  if (stream_all (frame, 1)) fmt = mode = 0; else
+  {
+    var x = 0; n = getformat (f, fmt);
+    if ((n = argformat (n)) >= 0)
+    {
+      x = pixformat (n); n = f[n]; var y = Math.trunc (n); if (n != y) x = y;
+    }
+    if (mode) mode = (x ? x : 2); else { fmt = x; if (x) mode = 1; }
+  }
+
+  if (mode > 1) try
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (response.url, textData, frame, fmt); if (!url) throw ("!!!");
+    fmt = pullstring (url, "<>", ""); url = pullstring (url, "", "<>");
+    if (fmt && mode > 2) fmt = mode; else mode = 0;
+
+  } catch (err) { console.log (err); busy = 0; }
+
+  if (mode) fixformat (f, frame); else if (!fmt) { fmt = 0; no_format (frame); }
+  fmt = " [" + fmt + "]"; if (no_fail (frame)) loadwindow (url, frame, "Internet TV" + fmt);
+}
+////////////////////
+
+//////////////////////////
+///// INTERNET RADIO /////
+//////////////////////////
+
+var radio = function (url)
+{
+  document.getElementById ("ir_url").value = url;
+  ir_action (0); if (url) ir_action (2);
+}
+////////////////////
+
+var ir_action = function (mode)
+{
+  var win = document.getElementById ("internet_radio");
+  var pop = document.getElementById ("ir_popup");
+  var sts = document.getElementById ("ir_status");
+  var vol = document.getElementById ("ir_volume");
+  var url = document.getElementById ("ir_url").value;
+
+  var src_ok = (win.src && win.src != "file:///");
+  var volume = vol.value * 1;
+
+  if (mode == 3)
+  {
+    sts = pop.checked; pop.checked = !sts;
+    pop.className = (sts ? "is_off" : "is_on");
+    return;
+  }
+
+  if (mode == 2 && url.length == 11 && url.indexOf (":") < 0)
+  {
+    var src = document.getElementById ("ctr5z").value; if (src < 10) src = 0;
+    url = invidious_site [src] + "/latest_version?local=true&itag=251&id=" + url;
+    document.getElementById ("ir_url").value = url;
+  }
+
+  if (mode == 2 && pop.checked && url)
+    { loadwindow (url, -volume, "Internet Radio"); return; }
+
+  if (mode == 2 && !src_ok) if (url)
+  {
+    if (last_time > get_time() - 2) mode = 0; else win.src = url; last_time = the_time;
+  }
+  else
+  {
+    url = document.getElementsByName ("ir");
+    for (var i = 0; i < url.length; i++) if (url[i].checked) url[i].onclick();
+    return;
+  }
+
+  if (mode == 0 || (mode == -2 && src_ok))
+  {
+    sts.value = (mode ? "ERROR" : "Stopped"); win.pause(); win.src = "file:///";
+    win = win.nextElementSibling; win.children [0].value = ""; win.children [2].value = "";
+    win.children [1].style.background = "transparent"; win.children [1].value = 0.5;
+  }
+
+  if (mode == 2 || (mode == -1 && src_ok))
+    { sts.value = "Playing"; win.play(); }
+
+  if (mode == 1 && src_ok)
+    { sts.value = "Paused"; win.pause(); }
+
+  if (mode == 4 && volume > 0) volume -= volume > 40 ? 10 : 5;
+  if (mode == 5 && volume < 100) volume += volume < 40 ? 5 : 10;
+
+  if (mode == 6) win.currentTime = win.duration * win.nextElementSibling.children [1].value;
+
+  win.muted = true; win.volume = volume / 100;
+  win.muted = false; vol.value = volume;
+}
+////////////////////
+
+var ir_update = function ()
+{
+  var win = document.getElementById ("internet_radio"); if (win.paused) return;
+
+  var t = win.currentTime, d = win.duration;
+  if (isNaN (t)) t = 0; if (isNaN (d) || !isFinite (d)) d = 0;
+  var z = (t > 0 && d > 0) ? 400 * t / d : 0; z = Math.round (z) * 0.25;
+
+  ts = Math.round (t), ds = Math.round (d);
+  var th = Math.trunc (ts / 3600), dh = Math.trunc (ds / 3600); ts -= th * 3600; ds -= dh * 3600;
+  var tm = Math.trunc (ts / 60), dm = Math.trunc (ds / 60); ts -= tm * 60; ds -= dm * 60;
+  t = th + ":" + (tm < 10 ? "0" : "") + tm + ":" + (ts < 10 ? "0" : "") + ts;
+  d = dh + ":" + (dm < 10 ? "0" : "") + dm + ":" + (ds < 10 ? "0" : "") + ds;
+
+  win = win.nextElementSibling; win.children [0].value = t; win.children [2].value = d;
+  win.children [1].style.background = "linear-gradient(90deg, lightpink " + z + "%, mistyrose 0%)";
+}
+////////////////////
+
+var popper = function (frame, mode)
+{
+  var i, j, k, val = txt = "";
+  var win = document.getElementById ("pop" + frame);
+  var index = win.style.zIndex; if (!index) index = -1;
+  var popup = document.getElementById ("mov" + frame + "m").checked;
+
+  if (busy) return;
+
+  if (mode.length != undefined)
+  {
+    txt = mode.substr (mode.indexOf ("<>") + 2);
+    val = mode.substr (0, mode.indexOf ("<>"));
+    txt = txt.substr (txt.indexOf (" ") + 1);
+    if (val == "") mode = 1;
+  }
+
+  if (mode && mode.length == undefined)
+  {
+    if (mode == 1) win.style.zIndex = -index;
+    if (mode == 2) win.style.zIndex = popup ? -index : index;
+    if (mode == 3) win.style.zIndex = -1;
+    if (mode == 4) win.style.zIndex = popup ? 1 : -1;
+    return;
+  }
+
+  var box = document.getElementById ("stk" + frame);
+  var doc = win.getElementsByTagName ("table");
+
+  if (doc.length < 2 || !(doc = doc [1])) doc = null;
+  if (doc) doc = doc.getElementsByTagName ("button");
+  if (!doc || doc.length < 2) doc = null;
+
+  if (mode)
+  {
+    if (doc)
+    {
+      for (i = 0; i < doc.length - 1; i++) if (txt == doc[i].innerText) break;
+
+      for (; i > 0; i--)
+      {    
+        doc[i].value = doc[i-1].value; doc[i].innerText = doc[i-1].innerText;
+      }
+      doc[0].value = mode; doc[0].innerText = txt;
+    }
+    error = val; box.value = "";
+    box.parentNode.firstElementChild.value = "@ " + txt;
+    if (frame == 5) loadid (frame, 2);
+    //if (frame == 6) loadnews (frame, 2);
+    //if (frame == 7) loadmovie (frame, 2);
+    return;
+  }
+
+  var start = '<button onclick="javascript:popper(' + frame + ',this.value)" value="';
+  var middle2 = '" style="background-color:lightblue">';
+  var middle1 = '" style="background-color:pink">';
+  var pop = "<table><tr><td>"; box = box.children;
+
+  var n = Math.floor (((i = box.length) + 2) / 3);
+  if ((i -= 45) > 0) n = 15; else i = 1;
+
+  for (j = k = 0; k < 3; i++)
+  {
+    if (i >= box.length) { val = ""; txt = "-"; } else
+      { val = box[i].value; txt = box[i].innerText; }
+    pop = pop + start + val + "<>" + txt + middle1 + txt + "</button><br>";
+    if (++j >= n) { j = 0; if (++k < 3) pop = pop + "</td><td>"; }
+  }
+  pop = pop + "</td></tr></table><table><tr><td>";
+
+  for (i = 0, j = k = 0; k < 3; i++)
+  {
+    if (!doc || i >= doc.length) { val = ""; txt = "-"; } else
+      { val = doc[i].value; txt = doc[i].innerText; }
+    pop = pop + start + val + middle2 + txt + "</button><br>";
+    if (++j >= 4) { j = 0; if (++k < 3) pop = pop + "</td><td>"; }
+  }
+  win.innerHTML = pop + "</td></tr></table>";
+  win.style.zIndex = 1;  //if (popup) win.style.zIndex = 1;
+}
+////////////////////
+
+//////////////////////
+///// LOADWINDOW /////
+//////////////////////
+
+var loadwindow = function (url, frame, site)
+{
+  get_time(); var h, w, win, raw, pmode, title, insert, specs;
+
+  var bstyle = "<body style='margin:0;padding:0;overflow:hidden;background-color:";
+  var istyle = " style='position:absolute;border:none;outline:none;width:100%;height:100%'";
+  var vstyle = " autoplay allowfullscreen ";
+
+  var frm = document.getElementById ("mov" + frame);
+  var msg = document.getElementById ("vid" + frame);
+
+  if (url == "")
+  {
+    // remove and append <iframe> to block history
+    msg.innerHTML = "No Video"; win = frm.parentNode; win.removeChild (frm);
+    frm.src = "about:blank"; frm.style.pointerEvents = "none"; win.appendChild (frm);
+    if (site) document.getElementById ("id" + frame).value = site;
+    return;
+  }
+
+  if (last_time > the_time - 2) return; last_time = the_time;
+
+  if (frame <= 0)  // Internet Radio popup window
+  {
+    insert = "<!DOCTYPE html><html><head><title>" + site + "</title></head>" + bstyle;
+    insert = insert + "cornflowerblue;color:turquoise;font-size:20px;line-height:22px;text-align:center'>";
+    insert = insert + "<audio controls style='position:absolute;left:0;bottom:0;width:100%;height:25vh'";
+    insert = insert + " id='audio'></audio><h1><i>" + site + "</i></h1></body></html>";
+    specs = "width=440,height=120,top=100,left=100";
+
+    win = window.open ("about:blank", "audiobox", specs); win.focus();
+    var doc = win.document; doc.open(); doc.write (insert); doc.close();
+    var aud = doc.getElementById ("audio"); doc = doc.body;
+    aud.src = url; aud.volume = frame / -100; aud.play();
+
+    doc.onresize = function()
+    {
+      var w = win.clientWidth, h = win.clientHeight;
+      if (w <= 0 || h <= 0) return; if (!this.count) this.count = 0;
+      w = 440 - w; h = 120 - h; if (++this.count > 3) w = h = 0;
+
+      if (w || h) win.resizeBy (w, h); else doc.onresize = null;
+    }
+    return;
+  }
+
+  var multi = document.getElementById ("mov" + frame + "m").checked;
+  var nplay = document.getElementById ("mov" + frame + "n").checked;
+  var pmode = document.getElementById ("ctr" + frame + "w").value * 10;
+
+  if (document.getElementById ("mov" + frame + "a").checked) raw = 0; else
+  if (document.getElementById ("mov" + frame + "b").checked) raw = 1; else
+  if (document.getElementById ("mov" + frame + "c").checked) raw = 2; else raw = 0;
+
+  if (site != "")
+  {
+    if (url [0] == "~") url = cors_kraker ? cors_kraker + url : url.substr (1);
+    specs = url.substr (0,4); pmode += document.getElementById ("meta" + frame).step * 1;
+
+    if (specs != "http" && specs != "file")
+    {
+      msg.innerHTML = "Bad URL"; return;
+    }
+    document.getElementById ("id" + frame).value = site;
+    document.getElementById ("line" + frame).value = url;
+    urlcopy (frame, false);
+
+    if (nplay)
+    {
+      msg.innerHTML = "No Play"; return;
+    }
+  }
+
+  if (raw == 1)
+  {
+    title = "Cat Wrapper (meow)";
+    insert = "'><video" + istyle + vstyle + "id='video'></video></body>";
+  }
+
+  if (raw == 2)
+  {
+    title = "Cat Sandbox (screech)";
+    insert = "'><iframe" + istyle + vstyle + "src='" + url +
+      "' sandbox='allow-scripts allow-same-origin allow-forms'></iframe></body>";
+  }
+
+  ir_action (1); var filter = frm.value; if (!filter) filter = "initial";
+
+  if (document.getElementById ("btn" + frame + "b").checked)
+  {
+    var lft, top;
+
+    win = document.getElementById ("win" + frame);
+    if (!(specs = win.value)) specs = win.children[0].value;
+
+    h = specs.indexOf (":");
+    w = specs.substr (0, h);
+    h = specs.substr (h + 1);
+
+    lft = (window.screen.width - w)  / 2;
+    top = (window.screen.height - h) / 3;
+
+    specs = "width=" + w + ",height=" + h + ",top=" + top + ",left=" + lft;
+  }
+
+  else if (document.getElementById ("btn" + frame + "a").checked)
+  {
+    h = w = 0; specs = "";
+  }
+
+  else
+  {
+    if (raw != 1)
+    {
+      frm.style.filter = filter; frm.src = url;
+    }
+    else
+    {
+      frm.style.filter = "initial";
+      win = frm.contentDocument; insert = bstyle + "black" + insert;
+      load_stream (frame, true, insert, url, win, filter, pmode);
+    }
+    frm.style.pointerEvents = "auto"; msg.innerHTML = "No Video"; return;
+  }
+
+  if (multi) vidwin = null; else if (h != last_h || w != last_w || raw != last_raw)
+  {
+    if (vidwin) vidwin.close(); vidwin = null;
+  }
+
+  var blank = localhost ? "~_blank_page_.htm" : "about:blank";
+  if (!vidwin || vidwin.closed) vidwin = window.open (blank, "_blank", specs);
+  last_h = h; last_w = w; last_raw = raw;
+
+  win = vidwin.document; if (win.body.onunload) win.body.onunload();
+
+  if (raw == 0) vidwin.location = url; else
+  {
+    if (localhost) win = null;
+    istyle = "<html><head><title>" + title + "</title></head>";
+    insert = istyle + bstyle + "black" + insert + "</html>";
+    load_stream (frame, false, insert, url, win, filter, pmode);
+  }
+  vidwin.focus(); msg.innerHTML = "";
+}
+////////////////////
+
+var vid_oops = function (frame, vid, fatal)
+{
+  if (fatal) setTimeout (function() { vid_error (vid); }, 500);
+}
+////////////////////
+
+var vid_info = function (frame, w, h, reset)
+{
+  if (!frame) return; var msg = w + " x " + h;
+  if (w <= 0 || h <= 0) if (reset) msg = ""; else return;
+  doc = document.getElementById ("meta" + frame).value = msg;
+}
+////////////////////
+
+const load_stream = async (frame, is_local, insert, url, doc, filter, pmode) =>
+{
+  if (!doc) for (var n = 0; n < 10; n++)
+  {
+    // June 23, 2021 - Firefox 89 will sometimes return a document with a null body
+    if ((doc = vidwin.document).doctype && doc.body) break;
+    await new Promise (x => setTimeout (x, 100));
+  }
+
+  if (doc.doctype)
+  {
+    var dom = new DOMParser(); dom = dom.parseFromString (insert, "text/html");
+    doc.title = dom.title; doc.body.replaceWith (dom.body);
+  }
+  else
+  {
+    doc.open(); doc.write ("<!DOCTYPE html>" + insert); doc.close();
+  }
+
+  var win = doc.getElementById ("video");
+  var fmt = document.getElementById ("fmt" + frame).value;
+  var hls = document.getElementById ("hls" + frame).checked;
+  if (!document.getElementById ("mov" + frame + "f").checked) fmt = 0;
+
+  if (!win)
+  {
+    win = doc.getElementsByTagName ("iframe")[0];
+    if (win) win.style.filter = filter; return;
+  }
+
+  doc = doc.body; if (!is_local) frame = 0;
+  win.value = frame; win.step = pmode; win.style.filter = filter;
+  is_local = is_local || !last_h || !last_w;  // treat tabs as local
+
+  // popup windows need to be resized (browser breakage)
+  // Firefox forces window dimensions to be multiples of 100
+  // Google and Brave are off by just one pixel on the width
+  // Opera has to be resized twice on the height
+
+  if (!is_local) doc.onresize = function()
+  {
+    var w = win.clientWidth, h = win.clientHeight;
+    if (w <= 0 || h <= 0) return; if (!this.count) this.count = 0;
+    w = last_w - w; h = last_h - h; if (++this.count > 3) w = h = 0;
+
+    if (w || h) vidwin.resizeBy (w, h); else
+    {
+      doc.onresize = null; create_controls (win);
+    }
+  }
+  if (is_local) create_controls (win); else doc.onresize();
+
+  win.onloadedmetadata = function()
+  {
+    var w = this.videoWidth, h = this.videoHeight; vid_info (frame, w, h, 0);
+    if (localhost && (w <= 0 || h <= 0)) vid_poster (this, "~poster.jpg");
+  }
+
+  if (!hls)
+  {
+    win.src = url; win.onerror = function() { vid_oops (frame, win, true); }
+  }
+
+  if (hls == 1)
+  {
+    var js = get_js ("HLS", !window.Hls);
+    js.onload = function() { play_hls (frame, url, doc, win, fmt); }
+    if (window.Hls) js.onload(); else if (localhost) js.src = "~hls_player.js";
+      else js.src = "https://cdn.jsdelivr.net/npm/hls.js@0.12.0/dist/hls.min.js";
+  }
+
+  if (hls == 2)
+  {
+    var js = get_js ("DASH", !window.dashjs);
+    js.onload = function() { play_dash (frame, url, doc, win, fmt); }
+    if (window.dashjs) js.onload(); else if (localhost) js.src = "~dash_player.js";
+      else js.src = "https://reference.dashif.org/dash.js/v3.0.2/dist/dash.all.min.js";
+  }
+}
+////////////////////
+
+var get_js = function (type, replace)
+{
+  var name = type + "_player", js = document.getElementById (name);
+  if (js) if (!replace) return js; else js.parentNode.removeChild (js);
+  js = document.createElement ("SCRIPT"); js.onerror = function() { err_play (type); }
+  js.id = name; document.body.appendChild (js); return js;
+}
+////////////////////
+
+var err_play = function (error)
+{
+  alert (error + " player seems to be missing! Server not serving.\n\n" +
+    " (o o)  ((( Could be that THEY are watching you ! )))  (o o)\n \n");
+}
+////////////////////
+
+var hls_select = function (levels, fmt)
+{
+  if (!fmt) return (-1); var f = formats_m3u8 (levels);
+  fmt = getformat (f, fmt); fmt = argformat (fmt);
+  if (fmt >= 0) fmt = f[fmt] - 1; return (fmt);
+}
+////////////////////
+
+var play_hls = function (frame, url, doc, win, fmt)
+{
+  var hls_cfg = {
+    debug: false,
+    startLevel: 2,
+    autoStartLoad: false,
+    capLevelOnFPSDrop: true,
+    capLevelToPlayerSize: true,
+    defaultAudioCodec: "mp4a.40.5",
+    fpsDroppedMonitoringPeriod: 3000,
+    fpsDroppedMonitoringThreshold: 0.1,
+    minAutoBitrate: 350000,
+    enableWebVTT: false,
+    enableCEA708Captions: false
+  };
+
+  var vid = new Hls (hls_cfg);
+  doc.onunload = function() { vid.destroy(); console.log ("HLS player unloaded."); }
+  vid.loadSource (url);
+  vid.attachMedia (win);
+  vid.on (Hls.Events.ERROR, function (event,data) { vid_oops (frame, win, data.fatal); });
+
+  vid.on (Hls.Events.MANIFEST_LOADED, function (event,data) {
+    this.loadLevel = hls_select (this.levels, fmt); this.startLoad(); });
+
+  if (frame > 0) vid.on (Hls.Events.BUFFER_CODECS, function (event,data) {
+    var x = data.video; if (x) vid_info (frame, x.metadata.width, x.metadata.height, 0); });
+}
+////////////////////
+
+var play_dash = function (frame, url, doc, win, fmt)
+{
+  var vid = dashjs.MediaPlayer().create();
+  doc.onunload = function() { vid.reset(); console.log ("DASH player unloaded."); }
+  // vid.getDebug().setLogToBrowserConsole(false);   // turn off fracking console messages! v2.5.0
+  vid.initialize (win, url, true);
+  vid.on (dashjs.MediaPlayer.events ["ERROR"], function () { vid_oops (frame, win, true); });
+
+  if (frame > 0) vid.on (dashjs.MediaPlayer.events ["QUALITY_CHANGE_RENDERED"], function ()
+    { var x = vid.getCurrentTrackFor ('video'); if (!x) return;
+      var y = x.bitrateList [vid.getQualityFor ('video')];
+      vid_info (frame, y.width, y.height, 0); });
+}
+////////////////////
+
+///////////////////////
+///// M3U8 LOADER /////
+///////////////////////
+
+var crack_m3u8 = function (path, data, frame, fmt)
+{
+  var i, j, k, b, h, w, sub, str, url, levels = [];
+
+  sub = data.replace (/\r\n|\r|\n/gm, "\n").split ("#EXT-X-STREAM-INF");
+
+  if (sub.length < 2)
+  {
+    if (dloading) make_downloader ("", path); return (path + "<>");
+  }
+
+  for (i = 1; i < sub.length; i++)
+  {
+    k = sub[i].split ("\n"); url = k[0];
+
+    if ((j = url.indexOf ("BANDWIDTH")) < 0) b = 0; else
+    {
+      str = url.substr (j + 10); j = str.indexOf (",");
+      if (j > 0) str = str.substr (0, j); b = str * 1;
+    }
+
+    if ((j = url.indexOf ("RESOLUTION")) < 0) w = h = 0; else
+    {
+      str = url.substr (j + 11); j = str.indexOf (",");
+      if (j > 0) str = str.substr (0, j); j = str.indexOf ("x");
+      h = str.substr (j + 1) * 1; w = str.substr (0, j) * 1;
+    }
+    levels [i-1] = { width: w, height: h, bitrate: b, url: k[1], dat: k[0] }
+  }
+
+  k = formats_m3u8 (levels); fixformat (k, frame); fmt = getformat (k, fmt);
+  if ((j = argformat (fmt)) < 0 || (i = k[j] - 1) < 0) return (path + "<>0");
+
+  if (!(fmt = levels [i].height)) fmt = pixformat (j);
+  // Sept. 8, 2021 - added trim() in case of leading spaces
+  url = levels [i].url.trim(); url = merge_url (path, url) + url;
+
+  audio = sub [0]; k = levels [i].dat.indexOf ("AUDIO=");
+  sub = audio.split ("#EXT-X-MEDIA");
+
+  for (i = 1, j = -1; i < sub.length; i++)
+  {
+    audio = sub[i];
+    if (audio.indexOf ("TYPE=AUDIO") < 0) continue;
+    if (audio.indexOf ("DEFAULT=YES") < 0 && k < 0) continue;
+    if ((j = audio.indexOf ('URI="')) > 0) break;
+  }
+
+  if (j < 0) audio = ""; else
+  {
+    audio = audio.substr (j + 5);
+    audio = audio.substr (0, audio.indexOf ('"'));
+    audio = merge_url (path, audio) + audio;
+  }
+
+  if (dloading) make_downloader (audio, url);
+  if (audio) return (path + "<>0"); else return (url + "<>" + fmt);
+}
+////////////////////
+
+var formats_m3u8 = function (levels)
+{
+  var i, j, k, w, h, b, f = [0,0,0,0,0,0,0,0], p = [0,0,0,0], r = [0,0,0,0];
+
+  if (!levels || !levels.length) return (f);
+
+  for (i = 0; i < levels.length; i++)
+  {
+    if (!(w = levels[i].width)) w = 0;
+    if (!(h = levels[i].height)) h = 0;
+    if (!(b = levels[i].bitrate)) b = 0;
+
+    if (!h) if ((b -= 175000) < 0) continue; else
+    { h = Math.trunc (Math.sqrt (b * 0.2)); b = -1 } else
+    { if (b) b -= w * h * 2 + 250000; if (b > 0) b *= 3; else b *= -2; }
+
+    if ((j = chkformat (h)) < 0 || (b < 0 && r[j])) continue;
+
+    k = ((b >= 0 && !r[j]) || (p[j] == h && b < r[j]));
+    if (k || p[j] < h) { f[j] = i + 1; p[j] = h; r[j] = b + 1; }
+  }
+
+  if (f[1] && p[0] < 240) f[0] = 0; return (f);
+}
+////////////////////
+
+var merge_url = function (path1, path2)
+{
+  var url = "", sub, str, i, j, k;
+
+  if (path2.indexOf ("http") == 0) return "";
+
+  if ((k = path1.indexOf ("?")) < 0) k = path1.length;
+  sub = path1.substr (0, k).split ("/"); str = path2.split ("/");
+
+  if (str[0] == "") k = str.length; else k = 1;
+  j = sub.length - k; if (j < 3) j = 3;
+
+  for (i = 0; i < j; i++) url = url + sub [i] + "/";
+
+  if (k > 1) url = url.substr (0, url.length - 1);
+
+  return url;
+}
+////////////////////
+
+//////////////////////
+///// DOWNLOADER /////
+//////////////////////
+
+var open_downloader = function ()
+{
+  var downloader = window.open ();
+  downloader.document.write (download_doc);
+  downloader.document.close ();
+}
+////////////////////
+
+var make_downloader = function (aud, vid)
+{
+  var scrip = "cancel=function(x){document.getElementsByTagName('button')[0].value='';}";
+
+  var bstyle = "<body style='margin:0;padding:0;text-align:center;" +
+    "background-color:cornflowerblue;color:yellow;font-size:20px'" +
+    " onunload='javascript:cancel()'>";
+
+  var istyle = "<input type=text size=10 disabled style='" +
+    "background-color:transparent;color:white;font-size:18px;" +
+    "font-family:inherit;text-align:right;border:none'>";
+
+  var insert = "<!DOCTYPE html><head><title>Download</title></head>" + bstyle +
+    "<div style='width:0;height:100%;position:absolute'></div>" +
+    "<h1 style='color:sandybrown;margin-top:12px'>" + dloading + "</h2>" +
+    "Audio Progress : &nbsp;&nbsp; " + istyle + "<p></p>" +
+    "Video Progress : &nbsp;&nbsp; " + istyle + "<p></p><br>" +
+    "<button onclick='javascript:cancel()' value='" + dloading + "'>Cancel</button>" +
+    "<script\>var " + scrip + "</script\>";
+
+  var specs = "width=400,height=240,top=100,left=100";
+  var win = window.open ("about:blank", "", specs), doc = win.document;
+  win.focus(); doc.open(); doc.write (insert); doc.close(); doc = doc.body;
+
+  doc.onresize = function()
+  {
+    var w = doc.clientWidth, h = doc.firstChild.clientHeight;
+    if (w <= 0 || h <= 0) return; if (!this.count) this.count = 0;
+    w = 400 - w; h = 240 - h; if (++this.count > 3) w = h = 0;
+
+    if (w || h) win.resizeBy (w, h); else
+    {
+      doc.onresize = null; download_m3u8 (win, doc, aud, vid);
+    }
+  }
+  doc.onresize();
+}
+////////////////////
+
+const download_m3u8 = async (win, doc, aud, vid) =>
+{
+  var i, j, k, resp, data, str, url, header;
+  var src, sub, name, count, errors, msg = "DONE";
+
+  var button = doc.getElementsByTagName ("button")[0];
+  var status = doc.getElementsByTagName ("input");
+  status[0].value = aud ? "Pending" : "No Track";
+  status[1].value = vid ? "Pending" : "No Track";
+
+  var fname = "+" + button.value;
+  if (cookies [fname]) { button.innerText = "GO AWAY"; return; }
+  cookies [fname] = "ok";
+
+try { for (i = 0; i < 2; i++)
+{ 
+  name = fname + (i ? "-vid" : "-aud");
+  try { resp = await fetch (name, { method: 'PUT' } ); } catch(e) { resp = ""; }
+  if (!resp || resp.status != 200) throw ("Error writing file");
+  src = i ? vid : aud; if (!src) continue;
+
+  for (k = 1; k < 5; k++)
+  {
+    try { resp = await fetch (src);
+          data = await resp.text(); } catch(e) { resp = ""; }
+    if (resp && resp.status == 200) break;
+    if (k > 3) throw ("Error loading m3u8");
+  }
+  k = data.indexOf ("#EXT-X-ENDLIST"); if (k < 0) k = data.length;
+  sub = data.substr (0, k).split ("#EXTINF:"); count = errors = 0;
+
+  for (j = 1; j < sub.length; j++)
+  {
+    url = ""; header = {}; str = sub [j].split ("\n");
+    for (k = str.length - 1; k > 0; k--)
+    {
+      if (!str [k]) { str.splice (k, 1); continue; }
+      if (!url && str [k][0] != "#") url = str [k];
+    }
+    if (!url) continue; url = merge_url (src, url) + url;
+
+    if ((k = str [1].indexOf ("#EXT-X-BYTERANGE:")) >= 0)
+    {
+      str = str [1].substr (k + 17).split ("@");
+      k = str [0] * 1 + str [1] * 1 - 1; str = str [1] + "-" + k;
+      header = { headers: { Range: "bytes=" + str }}; 
+    }
+    for (k = 1; k < 5; k++)
+    {
+      if (!button.value) throw ("STOPPED");
+      try { resp = await fetch (url, header);
+            data = await resp.arrayBuffer(); } catch(e) { resp = ""; }
+      if (resp && (resp.status == 200 || resp.status == 206))
+      {
+        await fetch ("~+" + name, { method: 'PUT', body: data } );
+        status[i].value = ++count + " of " + (sub.length - 1);
+        if (errors > 0) errors--; break;
+      }
+      if (k > 3)
+      {
+        console.log ("Error loading segment " + j + " in " + name);
+        if (++errors > 2) throw ("Server not responding");
+      }
+    }
+  }
+
+} } catch (err) { msg = err; }
+
+  button.innerText = msg; cookies [fname] = "";
+}
+////////////////////
+
+</script>
+
+<!--
+////////////////////////////
+/// Custom Video Control ///
+////////////////////////////
+//-->
+
+<!-- This element must be cloned and inserted into a video frame. -->
+
+<div id="video_control" style="display:none">
+
+<div class="v-control">
+  <input type=range value=1 min=0 max=1 step=0.01 style="width:490px;margin:2px 2px 6px 2px">
+  <button class="v-misc" style="width:48px;margin-right:1px">1.0</button>
+  <input type=text style="width:72px;color:azure;background-color:transparent" disabled>
+  <input type=text style="width:72px;color:azure;background-color:transparent" disabled>
+  <br>
+  <span class="play-lft"></span><span class="play-ctr"></span><span class="play-rgt"></span>
+  <span class="t-alpha t-alpha2" style="width:auto">Mute</span>
+  <input type=range value=1 min=0 max=1 step=0.05 style="min-width:40px;max-width:196px">
+  <span class="t-alpha t-alpha2" style="width:auto">Seek</span>
+  <input type=text value="0:0:0" style="width:78px">
+  <button class="v-seek" style="width:36px">5s</button>
+  <button class="v-seek" style="width:42px">15s</button>
+  <button class="v-seek" style="width:36px">1m</button>
+  <button class="v-seek" style="width:36px">2m</button>
+  <button class="v-seek" style="width:36px">5m</button>
+  <button class="v-seek" style="width:42px">10m</button>
+  <button class="v-misc" style="width:30px">B</button>
+  <button class="v-misc" style="width:30px">S</button>
+  <button class="v-misc" style="width:30px">Z</button>
+  <span class="t-alpha" style="width:8px;margin-left:1px">F</span>
+  <span class="t-alpha" style="width:8px">R</span>
+  <span class="t-alpha" style="width:14px">FS</span>
+</div>
+<span class="v-poster"></span>
+
+<style type="text/css">
+
+.v-poster {
+  display: block; position: absolute; top: 0; width: 100%; height: 100%;
+  background-position: center; background-size: contain; background-repeat: no-repeat;
+  z-index: -1; pointer-events: auto;
+}
+
+.v-control {
+  position: absolute; bottom: 0; text-align: center;
+  width: 100%; margin: 0; padding: 4px 0 4px 0;
+  font-family: 'segoe ui', serif;
+  font-size: 14px; line-height: 19px;
+  background-color: steelblue; cursor: default;
+  user-select: none;
+}
+
+.v-control span {
+  cursor: pointer;
+}
+
+.v-control input {
+  appearance: none; -moz-appearance: none; -webkit-appearance: none;
+  height: 13px; text-align: center; vertical-align: top;
+  padding: 1px 3px 1px 3px; margin: 2px 1px 2px 1px;
+  border: 1px solid darksalmon; border-radius: 7px;
+  color: darkviolet; background-color: lightpink;
+  font-family: 'consolas', 'lucida console', monospace;
+  font-size: 14px; line-height: 12px;
+  user-select: auto; outline: none;
+}
+
+.v-control input::-moz-range-thumb {
+  -moz-appearance: none; width: 4px; height: 19px;
+  background: greenyellow; border: none; border-radius: 0;
+}
+
+.v-control input::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 4px; height: 19px;
+  background: greenyellow; border: none; border-radius: 0;
+}
+
+.v-control input::selection {
+  color: yellow; background-color: orchid;
+}
+
+.v-control button {
+  height: 17px; vertical-align: top; margin: 2px 0 2px 0; padding: 0;
+  border-style: solid; border-radius: 4px; border-width: 1px 6px 1px 6px;
+  font-family: 'consolas', 'lucida console', monospace;
+  font-size: 14px; line-height: 12px;
+  cursor: pointer; outline: none;
+}
+
+.v-control button:hover {
+  border-color: mediumturquoise;
+}
+
+.v-seek {
+  border-color: mediumseagreen; color: snow; background-color: mediumslateblue;
+}
+
+.v-misc {
+  border-color: lightseagreen; color: snow; background-color: mediumpurple;
+}
+
+.t-alpha {
+  display: inline-block; vertical-align: top;
+  padding: 0 3px 1px 3px; margin: 1px 0 0 0;
+  color: yellow; background-color: mediumpurple;
+}
+
+.t-alpha2 {
+  padding: 0 4px 1px 4px; margin: 0 -1px 0 0; font-style: italic;
+}
+
+.play-lft {
+  display: inline-block; vertical-align: top; cursor: pointer;
+  width: 0; height: 0; margin: 1px 0 0 0;
+  border-style: solid; border-width: 9px 6px 9px 0px;
+  border-color: transparent yellow transparent yellow;
+}
+
+.play-ctr {
+  display: inline-block; vertical-align: top; cursor: pointer;
+  width: 0; height: 0; margin: 0;
+  border-style: solid; border-width: 9px 1px 9px 1px;
+  border-color: transparent;
+}
+
+.play-rgt {
+  display: inline-block; vertical-align: top; cursor: pointer;
+  width: 0; height: 0; margin: 1px 1px 0 0;
+  border-style: solid; border-width: 9px 0px 9px 6px;
+  border-color: transparent yellow transparent yellow;
+}
+
+.pause-lft {
+  height: 16px; margin: 2px 0 0 2px;
+  border-width: 0 2px 0 2px;
+}
+
+.pause-rgt {
+  height: 16px; margin: 2px 3px 0 0;
+  border-width: 0 2px 0 2px;
+}
+
+.anim-bar {
+  animation-name: waiting;
+  animation-delay: 5s;
+  animation-duration: 2.5s;
+  animation-fill-mode: both;
+  animation-direction: normal;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes waiting {
+   0%  { background-color: lightpink; }
+  30%  { background-color: lightpink; }
+  70%  { background-color: salmon; }
+ 100%  { background-color: lightpink; }
+}
+
+</style></div>
+
+<script>  // Video control script. NOT inserted into a video frame.
+
+var create_controls = function (vid)
+{
+  var control = document.getElementById ("video_control");
+  control = control.cloneNode (true);
+
+  var doc = vid.ownerDocument;		// document
+  var ctr = control.firstElementChild;	// video control
+  var sib = ctr.children;		// video control elements
+
+  sib [0].onchange = function() { vid_click (this, 1); }
+  sib [8].onclick  = function() { vid_click (this, 2); }
+  sib [9].onchange = function() { vid_click (this, 3); }
+  sib [10].onclick = function() { vid_click (this, 4); }
+  sib [21].onclick = function() { vid_click (this, 5); }
+  sib [22].onclick = function() { vid_click (this, 6); }
+  sib [23].onclick = function() { vid_click (this, 7); }
+
+  vid.onended      = function() { vid_cntrl (this, 1); }
+  vid.onclick      = function() { vid_cntrl (this, 2); }
+  vid.onplay       = function() { vid_cntrl (this, 3); }
+  vid.onpause      = function() { vid_cntrl (this, 4); }
+  vid.onseeking    = function() { vid_cntrl (this, 5); }
+  vid.onwaiting    = function() { vid_cntrl (this, 6); }
+  vid.onstalled    = function() { vid_cntrl (this, 7); }
+  vid.ontimeupdate = function() { vid_cntrl (this, 8); }
+
+  ctr.onmousemove = function(e) { vid_event (e, 0); }
+  vid.onmousemove = function(e) { vid_event (e, 1); }
+  ctr.onclick     = function(e) { vid_event (e, 2); }
+
+  ctr.onmouseleave = function() { vid_cntrl (vid, 0); }
+  ctr.onmouseenter = function() { vid_cntrl (vid, 1); }
+  doc.onfullscreenchange = function() { vid_cntrl (vid, 9); }
+
+  ctr = ctr.nextElementSibling; // background <span>
+  ctr.onmousemove = function(e) { vid.onmousemove (e); }
+  ctr.onclick     = function(e) { vid.onclick (e); }
+
+  sib [0].classList.add ("anim-bar");
+  control.style.display = "inline-block";
+  vid.checked = 0; vid_scaler (vid, 0, 0, sib);
+
+  doc.body.appendChild (control); vid_resize (vid);
+  doc.body.onresize = function() { vid_resize (vid); }
+}
+////////////////////
+
+var vid_error = function (vid)
+{
+  var ctr = vid.nextElementSibling.firstElementChild, sib = ctr.children;
+  vid.disabled = true; vid_cursor (vid, true); ctr.style.display = "initial";
+  sib [0].classList.remove ("anim-bar"); sib [0].style.background = "crimson";
+  if (!sib [2].value) sib [2].value = "ERROR"; sib [3].value = "!!!!!";
+}
+////////////////////
+
+var vid_cntrl = function (vid, mode)
+{
+  var ctr = vid.nextElementSibling.firstElementChild, sib = ctr.children;
+  if (ctr.value == undefined && mode > 2 && mode < 8) return;
+  if (vid.disabled && mode > 2 && mode < 9) return;
+
+  var t = vid.currentTime, d = vid.duration;
+  if (isNaN (t)) t = 0; if (isNaN (d) || !isFinite (d)) d = 0;
+  var z = (t > 0 && d > 0) ? 400 * t / d : 0; z = Math.round (z) * 0.25;
+
+  var no_action = ctr.value == undefined || vid.disabled;
+  var got_video = vid.videoWidth && vid.videoHeight;
+
+  if (mode == 0)  // hide
+  {
+    ctr.disabled = false; if (no_action) return;
+    ctr.value = 4; if (vid.paused && got_video) ctr.style.display = "none";
+  }
+  if (mode == 1)  // show
+  {
+    ctr.disabled = true; if (no_action) return;
+    ctr.value = 0; ctr.style.display = "initial";
+  }
+  if (mode == 2)  // play/pause
+  {
+    vid_cursor (vid, true);
+    if (vid.paused) vid.play(); else vid.pause();
+    if (no_action) vid_external (vid.value, mode); else
+      if (!ctr.disabled && !got_video) ctr.style.display = "none";
+  }
+  if (mode == 3)  // is playing
+  {
+    vid_external (vid.value, mode); mode = 10;
+    // special case of video paused at video start
+    if (!ctr.disabled && ctr.value <= 0) ctr.value = 1 - ctr.value;
+  }
+  if (mode == 4)  // is paused
+  {
+    vid_external (vid.value, mode); mode = 10;
+    // special case of video paused while doing countdown or countup
+    if (!ctr.disabled && ctr.value) { ctr.style.display = "none"; ctr.value = 0; }
+  }
+  if (mode == 5)  // is seeking
+  {
+    sib [0].style.background = "linear-gradient(90deg, darkorange " + z + "%, orange 0%)";
+  }
+  if (mode == 6)  // is waiting
+  {
+    sib [0].style.background = "linear-gradient(90deg, darkorange " + z + "%, orange 0%)";
+    setTimeout (function() { vid_timer (vid, ctr, t); }, 2000);
+  }
+  if (mode == 7)  // is stalled
+  {
+    sib [0].style.background = "linear-gradient(90deg, deeppink " + z + "%, hotpink 0%)";
+    setTimeout (function() { vid_timer (vid, ctr, t); }, 2000);
+  }
+
+  if (mode == 8)  // time update
+  {
+    if (t == vid.checked) return; vid.checked = t;
+    var v = ctr.value, ts = Math.round (t), ds = Math.round (d);
+    var th = Math.trunc (ts / 3600), dh = Math.trunc (ds / 3600); ts -= th * 3600; ds -= dh * 3600;
+    var tm = Math.trunc (ts / 60), dm = Math.trunc (ds / 60); ts -= tm * 60; ds -= dm * 60;
+
+    sib [0].style.background = "linear-gradient(90deg, skyblue " + z + "%, transparent 0%)";
+    sib [2].value = th + ":" + (tm < 10 ? "0" : "") + tm + ":" + (ts < 10 ? "0" : "") + ts;
+    sib [3].value = dh + ":" + (dm < 10 ? "0" : "") + dm + ":" + (ds < 10 ? "0" : "") + ds;
+
+    if (v != undefined) v = v * 1; else
+    {
+      v = (vid.paused || ctr.disabled) ? -5 : 6;
+      mode = 10; sib [0].classList.remove ("anim-bar");
+    }
+    if (v > 0 && !--v) { if (got_video) ctr.style.display = "none"; v = -5; }
+    if (v < 0 && !++v) vid_cursor (vid, false); ctr.value = v;
+  }
+
+  if (mode == 9)  // fullscreen change
+  {
+    var fs = vid.ownerDocument.fullscreen;
+    if (!no_action) { ctr.value = -8; ctr.disabled = false; ctr.style.display = "none"; }
+    //sib [23].style.outline = fs ? "1px solid pink" : "none";
+  }
+
+  if (mode == 10)
+  {
+    if (!vid.paused)
+      { sib [5].classList.add ("pause-lft"); sib [7].classList.add ("pause-rgt"); } else
+      { sib [5].classList.remove ("pause-lft"); sib [7].classList.remove ("pause-rgt"); }
+  }
+}
+////////////////////
+
+var vid_timer = function (vid, ctr, time)  // catch wait/stall false flags
+{
+  if (vid.currentTime == time)
+  {
+    if (!ctr.disabled) ctr.value = 4; ctr.style.display = "initial";
+  }
+}
+
+var vid_cursor = function (vid, mode)
+{
+  var style = mode ? "default" : "none"; if (vid.disabled) style = "default";
+  vid.style.cursor = vid.nextElementSibling.children [1].style.cursor = style;
+}
+
+var vid_external = function (param, mode)
+{
+  var frame = param.split("|")[0] * 1; if (frame) popper (frame, mode == 2 ? 1 : mode);
+}
+
+var vid_click = function (item, mode)
+{
+  var min_vt = 0, ctr = item.parentNode, vid = ctr.parentNode.previousElementSibling;
+
+  if (mode == 1)
+  {
+    var t = vid.duration * item.value; if (t < min_vt) t = min_vt; vid.currentTime = t;
+    if (!isNaN (t) && isFinite (t)) ctr.children [11].value = t.toFixed(2);
+  }
+
+  if (mode == 2) item.style.outline = (vid.muted = !vid.muted) ? "1px solid pink" : "none";
+
+  if (mode == 3) { var m = vid.muted; vid.muted = true; vid.volume = item.value; vid.muted = m; }
+
+  if (mode == 4)
+  {
+    var v = ctr.children[11].value.split (":"), i, j = v.length; if (!j) return;
+    var t = v[0][0]; if (t == "-") t = -1; else if (t == "+") t = 1; else t = 0;
+    if (t) v[0] = v[0].substr(1);
+
+    i = v[j-1] * 1; if (j > 1) i += v[j-2] * 60; if (j > 2) i += v[j-3] * 3600;
+    if (t) { i *= t; i += vid.currentTime; }
+
+    if (i < min_vt) i = min_vt; if (i > vid.duration) i = vid.duration; vid.currentTime = i;
+  }
+
+  if (mode == 5) vid_rotate (vid, ctr.children, 1);
+
+  if (mode == 6) vid_rotate (vid, ctr.children, 2);
+
+  if (mode == 7) if (vid.ownerDocument.fullscreen || vid.ownerDocument.fullscreenElement)
+    vid.ownerDocument.exitFullscreen(); else vid.parentNode.requestFullscreen();
+}
+////////////////////
+
+var vid_event = function (event, type)
+{
+  var min_vt = 0, item = event.target, node = item.nodeName;
+
+  if (type == 1)
+  {
+    if (node != "VIDEO") item = item.parentNode.previousElementSibling;
+
+    var ctr = item.nextElementSibling.firstElementChild;
+    vid_cursor (item, true); if (ctr.value == undefined) return;
+
+    var h = item.step, e = event.clientY, s = ctr.step * ctr.checked;
+    h = (h % 10) & 2 ? item.clientWidth : item.clientHeight;
+    if (s < 0) { h += s; s /= -2; } else { h -= s; s = 0; }
+
+    if (ctr.value <= 0) ctr.value = -8; if (e > h || e < s) vid_cntrl (item, 1);
+  }
+  if (type != 2 || node == "DIV") return;
+
+  var ctr = item.parentNode, vid = ctr.parentNode.previousElementSibling;
+
+  if (node == "SPAN")
+  {
+    var cls = item.classList; if (cls) cls = cls [0];
+    if (cls && cls.substr (0,5) == "play-") vid_cntrl (vid, 2);
+  }
+  if (node != "BUTTON") return;
+
+  var a = item.offsetLeft, b = item.offsetWidth / 2;
+  var c = Math.abs (ctr.step), d = ctr.clientWidth / 2;
+
+  var dir = (event.clientX < (a + b - d) * c + d) ? -1 : 1;
+  var txt = item.innerText, speed = txt * 1;
+
+  if (speed)
+  {
+    speed += dir * 0.1; if (speed > 0.4) speed += dir * 0.1;
+    if (speed > 2) speed += dir * 0.3; if (speed < 0.1) speed = 0.1; if (speed > 5) speed = 5;
+    item.innerText = speed.toFixed(1); vid.playbackRate = speed; return;
+  }
+
+  if (txt == "B") { vid_filter (vid, dir, 0); return; }
+  if (txt == "S") { vid_filter (vid, dir, 1); return; }
+  if (txt == "Z") { vid_scaler (vid, dir, 5); return; }
+
+  if (txt == "5s" ) dir *= 5;
+  if (txt == "15s") dir *= 15;
+  if (txt == "1m" ) dir *= 60;
+  if (txt == "2m" ) dir *= 120;
+  if (txt == "5m" ) dir *= 300;
+  if (txt == "10m") dir *= 600;
+
+  if ((dir += vid.currentTime) < min_vt) dir = min_vt;
+  vid.currentTime = dir > vid.duration ? vid.duration : dir;
+}
+////////////////////
+
+var vid_resize = function (vid)
+{
+  var i, j = 0, k, h, w = vid.step % 10;
+
+  var sib = vid.ownerDocument, fs = sib.fullscreen || sib.fullscreenElement;
+  var ctr = vid.nextElementSibling.firstElementChild; sib = ctr.children;
+
+  h = w & 2 ? vid.clientWidth : vid.clientHeight;
+  w = w & 2 ? vid.clientHeight : vid.clientWidth;
+
+  if (h <= 0 || w <= 0) return;  // looks like window is not ready
+
+  if (ctr.checked)  // block unnecessary calls
+  {
+    if (!this.ww) this.ww = 0; if (!this.hh) this.hh = 0;
+    if (Math.abs (h - this.hh) < 3 && Math.abs (w - this.ww) < 3) return;
+  }
+  this.ww = w; this.hh = h;
+
+  h = fs ? 9 : Math.round (h * 10 / screen.height) - 2;
+  if (h < 5) h = 4; ctr.checked = 45 + h; ctr.style.paddingBottom = h + "px";
+ 
+  if (w > 960) { h = w / 960; w = 960; } else h = 1;
+  ctr.step = fs ? -h : h; ctr.style.transform = "scale(" + h + ")";
+  ctr.style.transformOrigin = "bottom center";
+
+  sib [0].style.width = (w - 246) + "px";
+  sib [0].style.minWidth = (w > 260 && w < 380 ? w - 192 : 68) + "px";
+  sib [1].style.display = w < 380 ? "none" : "inline-block";
+
+  var sizes = [0,0,0,0,0,0,0,0,0,0,34,88,36,42,36,36,36,42,30,30,30,0,0,0];
+  var scale = [0,0,0,0,0,0,0,0,0,0, 6, 6, 8, 7, 5, 2, 4, 1, 3, 3, 3,0,0,0];
+  var block = [632,0,0,0,0,0,0,0,0];
+
+  for (i = 0; i < sib.length; i++) if (k = scale [i]) block [k] += sizes [i] + 4;
+  if ((w -= block [0]) < 80) for (j = 1; j < block.length; j++) if ((w += block [j]) >= 80) break;
+  if (j > 5) for (i = 5; i > 3; i--) if (w - block [i] > 80) { w -= block [i]; block [i] = 0; }
+  sib [9].style.width = w + "px";
+
+  for (i = 0; i < sib.length; i++) if (k = scale [i])
+    sib [i].style.display = (!block [k] || j < k) ? "inline-block" : "none";
+}
+////////////////////
+
+var vid_rotate = function (vid, sib, mode)
+{
+  var s = vid.step * 1, v = vid.value.split ("|"), a = v[1] / 100, b = v[2] / 100;
+  if (mode == 1) s ^= 1; if (mode == 2) s += 2; s = s & 7; vid.step = s;
+  v = "scale(" + (s & 1 ? -a : a) + "," + (a * b) + ")";
+
+  vid.style.transform = "rotate(" + ((s >> 1) * 90) + "deg) " + v;
+
+  if (sib) sib [21].style.outline = s & 1 ? "1px solid pink" : "none";
+  if (sib) sib [22].style.outline = s > 1 ? "1px solid pink" : "none";
+
+  if (s & 2)
+  {
+    vid.style.top = "calc(50vh - 50vw)";
+    vid.style.left = "calc(50vw - 50vh)";
+    vid.style.width = "100vh";
+    vid.style.height = "100vw";
+  }
+  else
+  {
+    vid.style.top = vid.style.left = "0";
+    vid.style.width = vid.style.height = "100%";
+  }
+}
+////////////////////
+
+var vid_filter = function (vid, dir, mode)
+{
+  var n, s, con, lvl, sat, filter = vid.style.filter;
+
+  if (!filter) lvl = sat = 1; else
+  {
+    if ((n = filter.indexOf ("brightness")) < 0) lvl = 1; else
+      { s = filter.substr (n + 11); s = s.substr (0, s.indexOf (")")); lvl = s * 1; }
+    if ((n = filter.indexOf ("saturate")) < 0) sat = 1; else
+      { s = filter.substr (n + 9); s = s.substr (0, s.indexOf (")")); sat = s * 1; }
+  }
+
+  sat = sat / (3 - lvl) * 2; if (mode) sat += dir * 0.1; else lvl += dir * 0.05;
+  if (lvl < 0) lvl = 0; if (sat < 0) sat = 0; if (lvl > 2) lvl = 2; if (sat > 2) sat = 2;
+
+  sat = sat * (3 - lvl) / 2; con = (2 - lvl * (3 - lvl)) * (2.5 - sat) + 1;
+  lvl = lvl.toFixed (3); con = con.toFixed (3); sat = sat.toFixed (3);
+
+  vid.style.filter = "brightness(" + lvl + ") contrast(" + con + ") saturate(" + sat + ")";
+}
+////////////////////
+
+var vid_scaler = function (vid, dir, scale, sib)
+{
+  var c, s = vid.step, v = vid.value; s = s ? s * 1 : 0; if (!v) v = "";
+
+  if (!scale)
+  {
+    c = s % 10; scale = (s - c) / 10; if (!scale) scale = 100;
+    s = dir = 0; vid.step = c; v = v + "||100";
+  }
+
+  v = v.split ("|"); c = scale; s = dir && (s & 1) ? 2 : 1;
+  if (dir) c = v[s] * 1 + dir * scale; if (c < 50) c = 50; if (c > 150) c = 150;
+  v[s] = c; vid.value = v.join ("|"); vid_rotate (vid, sib, 0);
+}
+
+var vid_poster = function (vid, name)
+{
+  vid.nextElementSibling.children[1].style.backgroundImage = "url('" + name + "')";
+}
+
+</script>
+
+</html> 
