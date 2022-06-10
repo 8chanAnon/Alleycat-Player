@@ -1,0 +1,1513 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="/">
+
+<title>8kun Launcher</title>
+
+<style type="text/css">
+
+body {
+  text-align: center;
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif;
+  color: brown; background-color: navajowhite;
+}
+
+body.bread {
+  margin: 0; overflow-y: scroll;
+  font-size: 13px; line-height: 16px;
+  font-family: 'verdana', 'helvetica', san-serif;
+  color: #083078; background-color: navajowhite;
+}
+
+hr {
+  border-color: burlywood; border-style: solid;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+input {
+  height: 17px; font-size: 16px;
+  font-family: 'consolas', 'lucida console', monospace;
+  border-width: 2px; border-style: solid;
+  border-color: tan lemonchiffon lightyellow burlywood;
+  padding: 3px 5px 3px 5px; caret-color: navy;
+  color: firebrick; background-color: seashell;
+}
+
+input[type=radio] {
+  vertical-align: bottom; margin: 0 1px 1px 2px;
+  filter: contrast(1.2) brightness(1.2) opacity(85%);
+}
+
+input[type=checkbox] {
+  vertical-align: bottom; margin: 1px 2px 1px 2px;
+  filter: contrast(1.2) brightness(1.2) opacity(85%);
+}
+
+input.small {
+  height: 13px; font-size:14px; text-align: center; padding: 3px 1px 2px 1px;
+}
+
+input.static {
+  font-family: 'times new roman', serif; text-align: center; 
+  padding: 3px 7px 3px 7px; border: 2px solid burlywood;
+  color: red; background-color: cornsilk;
+}
+
+button {
+  width: auto; height: auto;
+  font-size: 15px; line-height: 19px;
+  padding: 1px 6px 0 6px; margin: 0;
+  font-family: 'helvetica', sans-serif;
+  color: darkblue; background-color: powderblue;
+  border-color: gainsboro;
+}
+
+a.ref:link {
+  color: blue;
+}
+
+a.ref:visited {
+  color: green;
+}
+
+p.listbox {
+  display: inline-block; vertical-align: top;
+  text-align: left; margin: -3px 2px 0 2px;
+}
+
+.command p {
+  display: inline-block; vertical-align: top;
+  text-align: center; line-height: 28px; margin: -15px 4px 0 4px;
+}
+
+.command input {
+  width: 300px;
+}
+
+.command input[type=checkbox] {
+  width: auto; margin-bottom: 5px;
+}
+
+.command button {
+  width: 100px;
+}
+
+span.status {
+  display: block; position: sticky; top: 0;
+  padding: 4px 0 4px 0; margin: 0 3px 2px 3px;
+  text-align: center; font-size: 15px; line-height: 20px;
+  outline: 1px solid peru; color: blue; background-color: pink;
+}
+
+span.postbox {
+  display: inline-block; width: calc(100% - 12px);
+  text-align: left; border: 1px solid darkred;
+  padding: 0 2px 5px 2px; margin: 0 3px 1px 3px;
+  white-space: pre-wrap; word-wrap: break-word;
+}
+
+p.header {
+  margin: 0 0 -7px 0; padding: 5px 8px 6px 14px; text-indent: -5px;
+  border: 0 solid goldenrod; border-width: 0 0 1px 0; background-color: cornsilk; 
+}
+
+p.subject {
+  margin: 10px 0 -7px 0; padding: 0 6px 4px 6px; font-weight: bold;
+  color: blue; border-bottom: 1px solid darksalmon;
+}
+
+div.font1 {
+  min-height: 30px; line-height: 1.2em; margin-top: 1px;
+  font-size: 1em; font-family: 'verdana', san-serif;
+}
+
+div.font2 {
+  min-height: 30px; line-height: 1.2em; margin-top: 1px;
+  font-size: 1.05em; font-family: 'helvetica', san-serif;
+}
+
+div.font3 {
+  min-height: 30px; line-height: 1.1em; margin-top: 1px;
+  font-size: 1.175em; font-family: 'times new roman', serif;
+}
+
+.body-line {
+  margin: 0 6px 0 6px; padding: 0;
+}
+
+.empty {
+  padding-bottom: 8px;
+}
+
+.blank {
+  margin: 5px 0 0 0;
+}
+
+.quote {
+  color: teal;
+}
+
+.rquote {
+  color: deeppink;
+}
+
+.ltr {
+  direction: ltr;
+}
+
+.rtl {
+  direction: rtl;
+}
+
+span.heading {
+  color: mediumvioletred; font-weight: bold;
+}
+
+span.red-padding {
+  padding: 0 4px 0 4px;
+}
+
+span.small {
+  color: darkviolet;
+}
+
+a:link {
+  color: firebrick;
+}
+
+a:visited {
+  color: darkcyan;
+}
+
+a.in-visited {
+  color: darkcyan;
+}
+
+p.in-sliced {
+  background-color: lavenderblush;
+}
+
+span.in-sliced {
+  background-color: gainsboro; border-color: dimgray;
+}
+
+img {
+  vertical-align: top; background-color: goldenrod; border: none; outline: none;
+}
+
+div.imgbox {
+  text-align: center; line-height: 0; padding: 0; margin: 0;
+}
+
+div.left {
+  float: left; margin: 9px 10px -5px 5px;
+}
+
+div.right {
+  float: right; margin: 9px 5px -1px 10px;
+}
+
+div.multi1 {
+  margin: 9px 0 -12px 0;
+}
+
+div.multi2 {
+  margin: 9px 0 -7px 0;
+  border: 0 solid goldenrod; border-width: 0 0 2px 0;
+}
+
+span.image {
+  display:inline-block; vertical-align:top; margin: 2px 0 4px 0;
+}
+
+span.banner {
+  display: block; font-weight: bold;
+  line-height: 10px; padding: 4px 0 5px 0;
+  color: white;
+}
+
+span.banner_red {
+  border-top: 1px solid sandybrown; background-color: coral;
+}
+
+span.banner_green {
+  border-top: 1px solid cadetblue; background-color: forestgreen;
+}
+
+span.banner_blue {
+  border-top: 1px solid royalblue; background-color: mediumblue;
+}
+
+.pop1:hover .pop2 {
+  visibility: visible;
+}
+
+.pop2 {
+  visibility: hidden; text-align: center;
+  display: block; position: absolute; z-index: 1;
+  padding: 4px; margin: 8px 10px 0 10px;
+  font-size: 12px; line-height: 16px;
+  color: read; background-color: white;
+  pointer-events: none;
+}
+
+::selection {
+  color: yellow; background-color: orchid;
+}
+
+.show {
+  display: block;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+w_ { color: firebrick; }
+x_ { color: blueviolet; }
+y_ { color: fuchsia; }
+n_ { }
+
+</style></head>
+
+<body onload="javascript:startup()">
+
+<h1 style="margin:20px 0 25px 0"><g_>8kun</g_> <r_>Bread Launcher</r_> <g_>v1d</g_></h1>
+
+<g_>Enter URL:</g_>&nbsp; <input type=text id="url" size=55 style="margin-bottom: 5px"
+  onclick="javascript:input_onclick('url')" onblur="javascript:input_onblur('url')"> &nbsp;
+  <button onclick="javascript:fetchpost()">Go</button> &nbsp;
+  <button onclick="javascript:playvideo()">Play Video</button>
+<p>
+
+<p class="listbox" style="margin-left:-50px">
+<g_>Time Offset:</g_> &nbsp;<input type=text class="small" maxlength=5 style="width:42px" value="0">
+&nbsp; &nbsp;<br><br>
+<g_>HTML <input type=radio name="html-json" value="0" checked> &nbsp;&nbsp;
+JSON <input type=radio name="html-json" value="1"></g_>
+</p>
+
+<p class="listbox">
+<g_>Pick a proxy:</g_>
+</p>
+<p class="listbox">
+<input type=radio name="proxy" value="LOCAL://localhost:8080/"> Local Proxy Server (Kraker)<br>
+<input type=radio name="proxy" value="https://xyss5.herokuapp.com/"> xyss5.herokuapp.com *<br>
+<input type=radio name="proxy" value="https://api.allorigins.win/raw?url="> api.allorigins.win *<br>
+<input type=radio name="proxy" value=""> None
+</p>
+<p>* <r_>Youtube videos may or may not work with a remote proxy.</r_>
+<p><a class="ref" target=_blank href="https://8kun.top/alleycat/res/10.html">Your feedback is appreciated</a>
+(feature requests, suggestions, bug reports)
+&nbsp;|&nbsp; <a href="#proxy">Kraker Control Panel</a>
+<p><hr><p>
+
+<g_>Font:</g_>&nbsp;
+<input type=radio name="font" value="font1" checked> Verdana &nbsp;
+<input type=radio name="font" value="font2"> Helvetica &nbsp;
+<input type=radio name="font" value="font3"> Times New Roman &nbsp; &nbsp;
+
+<g_>Page width:</g_>&nbsp;
+<input type=radio name="width" value="" checked> 100% &nbsp;
+<input type=radio name="width" value="90%"> 90% &nbsp;
+<input type=radio name="width" value="75%"> 75% &nbsp;
+<input type=radio name="width" value="60%"> 60% <br>
+
+<p><hr><h2><b_>Alleycat Player Options</b_></h2>
+
+<p class="listbox">
+<input type=radio name="format" value="18" checked> mp4-360p &nbsp;&nbsp;<br>
+<input type=radio name="format" value="19"> mp4-480p<br>
+<input type=radio name="format" value="22"> mp4-720p<br>
+</p><p class="listbox"></p>
+
+<p class="listbox">
+<input type=radio name="format" value="43"> webm-360p &nbsp; &nbsp;<br>
+<input type=radio name="format" value="44"> webm-480p<br>
+<input type=radio name="format" value="45"> webm-720p<br>
+</p><p class="listbox"></p>
+
+<p class="listbox">
+<input type=checkbox name="dash" value="1" disabled> Use DASH<br>
+<g_>(requires local proxy)<br>(needed for livestream)</g_>
+</p>
+
+<p><g_>Now playing:</g_> &nbsp;<input type=text id="status" class="static" style="width:170px" disabled>
+
+<p><hr><p><div style="text-align:left;color:maroon">
+
+<b>Release notes for v1d (March 11, 2021)</b>
+<p>
+<ul><li>
+A bunch of small fixes that aren't worth enumerating.
+</li><li>
+Added a control panel for the new Socks5 Proxy Server.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1c (December 13, 2020)</b>
+<p>
+<ul><li>
+Fixed the identifiers for "Board Owner" and "8kun Administrator".
+</li><li>
+Fixed browser security violation caused by opening a web page in a daughter tab.
+</li><li>
+Added option to adjust the displayed post time. The browser is supposed to display the time for the local time zone
+but, for some reason, this has never worked for me. The value is expressed in hours. Fractional and negative values are
+permitted. For example, I am using -5 to adjust to Eastern Time.
+</li><li>
+Added option to select either the HTML or the JSON format for downloading from the 8kun server. HTML is the default option
+since JSON has been unreliable (missing or truncated). It doesn't make any difference as far as functionality goes since
+the app converts HTML to JSON anyway. However, some recent fuckery on /qresearch/ has caused the HTML format to break while
+the JSON was working fine. That's why I decided to include the new option.
+</li><li>
+Adjusted the cache retention policy. Expiry is based on memory usage (capped at 6 megabytes) and the time of
+most recent access rather than the time of creation.
+</li><li>
+I have been having issues with mp4 and webm videos. Since I only use Firefox, the problem has not been verified to exist on
+other browsers. The problem is that the video will stop playing partway through due to the 8kun server apparently dropping
+the connection prematurely. This happens ONLY on 8kun so it is not necessarily a browser issue. Downloading is not affected.
+The problem is resolved by routing the video through the Kraker Local Proxy Server (if you have it, of course).
+</li><li>
+PLEASE NOTE: You can help improve this app by sending me feedback. While I will continue developing the app for the
+foreseeable future, I am only in a position to consider features that I personally want. Without feedback, YOUR needs
+cannot be addressed. Send feedback.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1b (October 5, 2020)</b>
+<p>
+<ul><li>
+Fixed some performance issues and a potential crash issue. Working fine with Google Chrome, Brave, Opera and Firefox
+(recommended). Waterfox, a fork of Firefox, still does not work even though I fixed some code that it complained about.
+</li><li>
+In general, web browsers do not like what this app is doing. That is unfortunate since I am doing what the browser makers
+have always wanted. I am using the browser as a development platform but I keep getting hammered by stupid design choices
+(their choices, not mine, since I follow the standards which they often do not).
+</li><li>
+Fixed a problem with extracting image links. This affects webm videos and some boards.
+</li><li>
+Added the ability to globally track reply links that have been visited and replies that have been seen. I'm not
+going to explain how it all works. Just watch for the colour codings and you'll understand as you go along. It works
+pretty good but I would like to have an ability to automatically track long or convoluted reply chains. In my experience,
+this might not be important. Reply chains have a tendency to degenerate into a series of pointless one-liners which are
+probably not worth reading anyway (amirite?).
+</li><li>
+Tweaked the CSS to improve the look and feel. If you don't like my colour choices then fix the damn CSS yourself.
+</li><li>
+Modified the retention strategy for thread caching. The retention period is now 4 hours (up from 2) but only a maximum of
+15 threads will be cached at one time. This strategy may or may not be ideal for you but the point (obviously) is to
+limit the memory usage.
+</li></ul>
+
+<p><hr><p>
+
+The <g_>8kun Bread Launcher</g_> is an app for reading threads on the free speech web site <g_>8kun.top</g_> without the
+speed drawbacks of the site's normal client. Improved handling of images, headers and text makes for a sharper and more
+customizable appearance. The term "bread" is not a synonym for "thread" but I like the sound of "Bread Launcher" so I'm
+using my creative license.
+<p>
+This app, while it is quick, gets most of its speed advantage by allowing you to retrieve an individual post and its replies
+instead of the entire thread (which is a capability not supported by the current 8kun client). Threads also remain
+in cache (memory) for up to 2 hours to reduce the need to access the site. There is no mouse hover functionality so reply
+links must be clicked on and viewed in a new tab.
+<p>
+To access 8kun, you need a URL with or without the domain name. Examples are below. If you wish to see a specific post then
+append "#" and the post number. To view a thread beginning at a certain post then append "?" and the post number.
+<b>Note:</b> do not close the launcher while daughter tabs are still open (they link to the code inside the launcher).
+<p>
+Full URL: <g_>https://8kun.top/alleycat/res/10.html</g_> &nbsp; Partial URL: <g_>/alleycat/res/10.html</g_>
+<p>
+If you are not familiar with the need for a proxy server then please refer to the Alleycat Player installation instructions
+<a class="ref" target=_blank href="https://archive.org/download/alleycat-player/installation-v1.htm">here</a>
+for an explanation. The most reliable way to use this app is to install the Local Proxy Server. The second best way is
+to install a CORS bypass extension.
+<p>
+<b>DDOS Mitigation (bot blocker)</b>
+<p>
+8kun was recently subjected to intense denial-of-service attacks and VanwaNet put up a DDOS Mitigation wall (which I call a
+bot blocker) in order to help alleviate the situation. I have encountered this before with CloudFlare and Sucuri in the
+process of hacking sites for Alleycat Player. A bot blocker consists of obfuscated Javascript code which must be executed by
+the web browser in order to obtain an authorization string or a cookie. This is a puzzle to unravel and it has been
+solved for the VanwaNet blocker.
+<p>
+Fair warning: the Local Proxy Server must be used to bypass the bot blocker. It cannot be done otherwise. The blocker is
+not in place at the time of this writing but, if it returns, you will be unable to use this app if you are relying
+on a remote proxy or CORS extension for access. Make sure that you have copied the file "vanwanet.js" to your proxy
+folder. This file contains the decryption code to unlock the bot blocker.
+<p>
+<b>Video Player</b>
+<p>
+A special feature is available for viewing embedded Youtube videos. If you click on the bar below the thumbnail, the video
+will open with Alleycat Player or, rather, a subset of the Alleycat code. This includes the DASH capability which requires
+the Local Proxy Server which is available with the installation of Alleycat Player. Some videos
+(especially music videos) will not work with a remote proxy. This is due to an IP address restriction applied by Youtube.
+<p>
+<b>Autoplay may be blocked by your web browser.</b> Chrome-based browsers have this issue but not Firefox. This
+problem is solved if you are using the Local Proxy Server. A small stub file (called _video_.htm) will be saved to your
+proxy (Alleycat) folder which will then be loaded into the video player tab to force Chrome to recognize the proper
+domain name (localhost instead of about:blank). As long as you have given autoplay permission to "localhost" then
+it will work fine.
+<p>
+For non-embedded videos, copy the Youtube URL or just the 11-character ID to the URL input line and press "Play Video".
+If you copy the full URL, make sure that the video ID is at the end of the input line. Support for other video sites
+(such as Bitchute) is planned.
+<p>
+Not all formats are available. The non-DASH formats are: mp4-360p, mp4-720p, webm-360p. To save a non-DASH video,
+right-click on the video and choose the "Save Video" option.
+<p>
+<b>Special note about Youtube livestreams</b>
+<p>
+It takes three to four hours for Youtube to move a finished livestream to VOD (video on demand) status. Until that happens,
+only the last minute of an ended livestream will be viewable. This is a known issue with Alleycat Player.
+
+<p><hr></div><p id="proxy">
+
+<div class="command" style="margin-top:36px">
+
+<h1><r_>Kraker</r_> <g_>Local Proxy Server</g_> <r_>Control Panel</r_></h1>
+<br>
+<p>
+<button onclick="javascript:dns_lookup(1)">DNS lookup</button>
+<br><br>
+<button onclick="javascript:dns_servers(2)">Servers list</button>
+<br><br>
+<button onclick="javascript:dns_activate(3)">Activate</button>
+<br><br>
+<button onclick="javascript:dns_reload(4)">Reload</button>
+<br><br>
+<button onclick="javascript:dns_flags(5)">Flags</button>
+<br><br>
+</p>
+<p>
+<input id="cmd1" type=text>
+<br><br>
+<input id="cmd2" type=text>
+<br><br>
+<input id="cmd3" type=text>
+<br><br>
+<input id="cmd4" type=text>
+<br><br><g_>
+<input id="flg1" type=checkbox> Console &nbsp
+<input id="flg2" type=checkbox> TOR Alt Port&nbsp
+<input id="flg3" type=checkbox> TOR for All
+</g_><br><br>
+</p>
+<p style="text-align:left">
+Perform DNS lookup (by URL or IP address)
+<br><br>
+Activate DNS server group and/or show Servers list
+<br><br>
+Activate group(s) and resolve DNS (console output)
+<br><br>
+Reload settings file (default is <g_>_settings.txt</g_>)
+<br><br>
+</p>
+
+</div><p><hr><p><div style="text-align:left;margin-bottom:50vh">
+
+</div></body>
+
+<script id="SlowAES"></script>
+<script id="dash_player"></script>
+
+<script>
+
+var localhost, response, textData, jsonData, busy = 0;
+var cors_bypass, cors_kraker, cookies = new Object ();
+
+var breadURL, bread, slicing;
+var breads = [], opentabs = [], sliced = [], visited = [];
+var post_font, post_width, post_count, post_lastpid, post_timeofs;
+
+var posturl = document.getElementsByTagName ("input")[0];
+var timeofs = document.getElementsByTagName ("input")[1];
+
+var startup = function ()
+{
+  localhost = document.location.origin + "/";
+  if (document.location.hostname != "localhost") localhost = "";
+  if (!localhost) return;
+
+  document.getElementsByName ("proxy")[0].checked = true;
+  var dash = document.getElementsByName ("dash")[0];
+  dash.checked = true; dash.disabled = false;
+
+  var video = "<!DOCTYPE html><html><head><meta charset='utf-8'>\n" +
+    "<meta name='viewport' content='width=device-width, initial-scale=1.0'>\n" +
+    "</head><body><h2></h2><video autoplay allowfullscreen></video></body></html>";
+
+  fetch (localhost + "~_video_.htm", { method: "PUT", body: video });
+}
+////////////////////
+
+var input_onclick = function (id)
+{
+  var doc = document.getElementById (id);
+  if (!doc.checked && doc.selectionStart >= doc.selectionEnd - 1) doc.select();
+  doc.checked = true;
+}
+////////////////////
+
+var input_onblur = function (id)
+{
+  document.getElementById (id).checked = false;
+}
+////////////////////
+
+var dns_lookup = function (num)
+{
+  var name = document.getElementById ("cmd1").value;
+  window.open (localhost + "?dnslookup=" + name, "_blank", "");
+}
+////////////////////
+
+var dns_servers = function (num)
+{
+  var name = document.getElementById ("cmd2").value;
+  window.open (localhost + "?servers=" + name, "_blank", "");
+}
+////////////////////
+
+var dns_activate = function (num)
+{
+  var name = document.getElementById ("cmd3").value;
+  window.open (localhost + "?activate=" + name, "_blank", "");
+}
+////////////////////
+
+var dns_reload = function (num)
+{
+  var name = document.getElementById ("cmd4").value;
+  window.open (localhost + "?reload=" + name, "_blank", "");
+}
+////////////////////
+
+var dns_flags = function (num)
+{
+  var a = document.getElementById ("flg1").checked;
+  var b = document.getElementById ("flg2").checked;
+  var c = document.getElementById ("flg3").checked;
+
+  var n = a + (b << 1) + (c << 2);
+  window.open (localhost + "?flags=" + n, "_blank", "");
+}
+////////////////////
+
+var setup_cors = function ()
+{
+  cors_bypass = get_checked ("proxy", "");
+  if (cors_bypass.substr (0, 6) != "LOCAL:") cors_kraker = ""; else
+    cors_kraker = cors_bypass = "http" + cors_bypass.substr (5);
+}
+////////////////////
+
+var message = function (msg)
+{
+  bread.body.children[0].innerHTML = msg;
+}
+////////////////////
+
+var pullstring = function (s, t, u)
+{
+  var m = t.length, n = s.indexOf (t) + m;
+  m = n < m ? -1 : (u ? s.indexOf (u, n) : s.length);
+  return (m < 0 ? "" : s.substr (n, m - n));
+}
+////////////////////
+
+var get_checked = function (name, value)
+{
+  var i = 0, j = value, k = document.getElementsByName (name);
+  if (k && k.length) for (; i < k.length; i++) if (k [i].checked) j = k [i].value;
+  if (isNaN (i = parseFloat (j))) return (j); else return (i);
+}
+
+var allow_cookie = function (source, cookie)
+{
+  if (!cors_kraker) return ({});
+
+  if (source) if (cookie) cookies [source] = cookie; else cookie = cookies [source];
+
+  if (!cookie) cookie = "null"; return ({ headers: { 'Accept': '**' + cookie } });
+}
+////////////////////
+
+var check_bread_cache = function (time, url)
+{
+  var a = -1, b = c = 0, i, j, k;
+
+  for (i = 0, j = time; i < breads.length; i++)
+  {
+    if (breads[i].url == url) { a = i; breads[i].time = time; }
+    c += breads[i].size; if ((k = breads[i].time) < j) { b = i; j = k; }
+  }
+  if (c > 25000000) { breads.splice (b, 1); if (b < a) a--; } return (a);
+  // note: bread size is the HTML size which is about 4 * JSON size
+}
+////////////////////
+
+const createwindow = async (win, url) =>
+{
+  var doc, bdy, box;
+
+  if (!win) win = window.open ("about:blank", "_blank", ""); win.focus();
+  doc = win.document; doc.open(); doc.write ("<!DOCTYPE html>"); doc.close();
+  doc.head.innerHTML = document.head.innerHTML; bdy = doc.body; bdy.classList.add ("bread");
+
+  bdy.onload  = function () { bdy.onload = null; if (bdy.onfocus) fetchbread (url); }
+  bdy.onfocus = function () { bdy.onfocus = null; if (bdy.onload) fetchbread (url); }
+  bdy.groyper = function (w, x, v) { if (v) playvideo (w, x); else fetchpost (w, x); }
+
+  box = document.createElement ("SPAN"); box.name = "LaUnChEr";
+  box.classList.add ("status"); box.innerHTML = "<big><w_>Launching...</w_></big>";
+  bdy.appendChild (box);
+
+  box = document.createElement ("SCRIPT");
+  box.innerHTML = "var getvideo = function (x) " +
+    "{ var w = window.open ('about:blank', '_blank', ''); document.body.groyper (w, x, true); }";
+  bdy.appendChild (box);
+
+  box = document.createElement ("SCRIPT");
+  box.innerHTML = "var getpost = function (x) " +
+    "{ var w = window.open ('about:blank', '_blank', ''); document.body.groyper (w, x, false); }";
+  bdy.appendChild (box);
+
+  post_font = get_checked ("font", "font1"); post_width = get_checked ("width", "");
+
+  bread = doc; opentabs.push (win);
+}
+////////////////////
+
+var createJSON = function (type)
+{
+  var i, j, n, s, t, v, w, pid, uid, time, name, cap, trip, post;
+  jsonData = {"posts" : []}; var posts = jsonData.posts;
+  var is_ARC = type == "arc" ? true : false;
+
+  if (is_ARC) textData = textData.replace (/old-class=/g, "class=");
+  var doc = new DOMParser(); doc = doc.parseFromString (textData, "text/html");
+
+  // Waterfox does not like this:
+  // var doc = document.implementation.createHTMLDocument();  <-- this is fine
+  // doc.open(); doc.write (textData); doc.close();  <-- this is not??
+
+  var video = ["video-container", "video-container-invidio", "video-container-hooktube"];
+  doc = doc.getElementsByName ("postcontrols")[0].children[1];
+  var box = doc.getElementsByTagName ("div");
+
+  for (n = 0; n < box.length; n++) if (s = box[n].id)
+  {
+    pid = s.substr (s.indexOf ("_") + 1);
+    s = box[n].getElementsByClassName ("intro")[0].innerHTML;
+
+    time = pullstring (s, 'unixtime="', '"');
+    name = pullstring (s, 'class="name"', '<');
+    subj = pullstring (s, 'class="subject"', '<');
+    trip = pullstring (s, 'class="trip"', '<');
+    uid  = pullstring (s, 'class="poster_id"', '<');
+    cap  = pullstring (s, 'class="capcode">', '<');
+    // this is to skip the extra junk from archive
+    name = pullstring (name, '>', '');
+    subj = pullstring (subj, '>', '');
+    trip = pullstring (trip, '>', '');
+    uid  = pullstring (uid, '>', '');
+
+    if (!cap)
+    {
+       cap = pullstring (s, 'class="capcode" title="', '"');
+       if (cap) cap = pullstring (s, 'style="color:red">', '<');
+    }
+    if (!uid) uid = pullstring (s, 'hidden service.">', '<');
+
+    w = posts.length ? box[n] : doc;
+    w = w.getElementsByClassName ("files");
+    v = [""]; w = w && w[0] ? w[0].innerHTML : "";
+    w = w.split (is_ARC ? ">File <" : ">File: <a ");
+
+    for (i = 1; i < w.length; i++)
+    {
+      if (is_ARC) s = ""; else
+      {
+        s = pullstring (w[i], '', '='); if (s != "href" && s != "title") continue;
+        t = pullstring (w[i], '"postfilename"', '<');
+        s = pullstring (t, 'title="', '"'); if (!s) s =  pullstring (t, '>', "");
+        t = pullstring (w[i], '"', '"');
+      }
+      v.push (s); s = pullstring (w[i], 'src="', '>');
+      if (is_ARC) t = "~" + pullstring (s, '', '"');
+
+      t = t.split ("/"); j = t.length - 1; t = (j ? "/" : "") + t [j];
+      if (s.includes (".jpg")) t = t.substr (0, t.indexOf (".")) + ".jpg";
+
+      v.push (t); t = pullstring (s, 'style="', '"');
+      v.push (pullstring (t, "width:", "px")); v.push (pullstring (t, "height:", "px"));
+    }
+
+    for (i = 5, t = []; i < v.length; i += 4)
+      t.push ({ filename: v[i], tim: v[i+1], tn_w: v[i+2], tn_h: v[i+3] });
+
+    w = posts.length ? box[n] : doc; w = w.children;
+
+    for (i = 0; i < w.length; i++)
+    {
+      if (!(j = w[i].getAttribute ("class"))) continue;
+      if (j != video[0] && j != video[1] && j != video[2]) continue;
+      if (!(j = w[i].getAttribute ("data-video")))  // this is missing from archive
+      {
+        j = w[i].getElementsByTagName ("a")[1];
+        j = j.href; j = j.substr (j.indexOf ("=") + 1);
+      }
+      v = [j, "", "", "255", "143"]; break;
+    }
+
+    if (v.length == 1) v = ["", "", "", "", ""];
+    s = box[n].getElementsByClassName ("body")[0].innerHTML;
+
+    if (is_ARC)
+    {
+      s = s.replace (/ style="[^"]*"/g, "");
+      s = s.replace (/\<(\/*)div([ |\>])/g, "<$1p$2");
+    }
+
+    post = { no: pid, name: name, sub: subj, capcode: cap, trip: trip, id: uid, time: time,
+             com: s, files: "", embed: "", fsize: "", ext: "", embed_thumb: v[0], filename: v[1],
+             tim: v[2], tn_w: v[3], tn_h: v[4], extra_files: t };
+
+    posts.push (post);
+  }
+}
+////////////////////
+
+var getimage = function (v, multi)
+{
+  var media_server = "https://media.8kun.top/";
+  var s, t, u, title, banner = "", w = v.tn_w, h = v.tn_h;
+  var name = v.filename ? "/" + v.filename : "", ext = v.ext ? v.ext : "";
+  if (!ext) ext = name.substr (name.lastIndexOf (".")); else name += ext;
+  name = name.replace (/'| |"/g, "_");
+
+  if (!v.tim)
+  {
+    s = v.v_url; t = v.v_img; title = "YouTube"; banner = "red";
+  }
+  else if (v.tim [0] == "~")
+  {
+    s = t = "http://archive.is" + v.tim.substr (1);
+  }
+  else
+  {
+    if ((u = (v.fpath === 0 ? "/" : "") + v.tim) [0] == "/")
+    {
+      s = media_server + pullstring (breadURL, "/", "/");
+      t = s + "/thumb" + u; s = s + "/src" + u; name = "";
+    }
+    else
+    {
+      s = media_server + "file_store/"; t = s + "thumb/" + u; s += u;
+    }
+
+    ext = ext.toLowerCase(); s += ext;
+    u = u.includes (".") ? u.substr (u.indexOf (".")) : "";
+
+    if (u) s = s.substr (0, s.indexOf (u)) + ext; else
+      if (ext == ".gif" || ext == ".png" || ext == ".jpeg") t += ext; else t += ".jpg";
+
+    if (ext == ".mp3")
+    {
+      title = "MP3"; banner = "blue"; w = 120; h = 140;
+      t = media_server + "static/file.png";
+    }
+    if (ext == ".mp4")
+    {
+      title = "MP4"; banner = "green"; s = cors_kraker + s;
+    }
+    if (ext == ".webm")
+    {
+      title = "WEBM"; banner = "green"; s = cors_kraker + s;
+    }
+    if (ext == ".pdf")
+    {
+      title = "PDF"; banner = "green"; w = 120; h = 140;
+      t = media_server + "static/file.png";
+    }
+    if (ext == ".gif")
+    {
+      title = "GIF"; banner = "blue";
+    }
+  }
+
+  var img = "<span class='image'><a target=_blank href='" + s + name + "'>" +
+    "<img src='" + t + "' width=" + w + " height=" + h + "></a>";
+
+  if (banner)
+  {
+    s = '<a target=_self href="javascript:getvideo(' + "'" + s + "')" + '">';
+    t = "<span class='banner banner_" + banner + "'>" + title + "</span>";
+    img = img + (banner != "red" ? t : s + t + "</a>");
+  }
+
+  return (img + "</span>");
+}
+////////////////////
+
+var newcrumb = function (post, target)
+{
+  var i, j, n, p, s, t, v, box, img = "";
+  var pid = post.no, data = post.com ? post.com : "", str = "highlightReply('";
+  var hidepost = target && pid != target && data.indexOf (str + target + "'") < 0;
+  var url = breadURL + "#" + pid;
+
+  while ((s = pullstring (data, str, '>')))
+  {
+    t = pullstring (s, 'href="', '"'); p = pullstring (t, "#", "");
+
+    if (hidepost) data = data.replace (str, ""); else
+    {
+      v = visited.includes (t) ? 'class="in-visited" ' : "";
+      t = 'target=_self href="javascript:getpost(' + "'" + t + "'" + ')"';
+      data = data.replace ('onclick="' + str + s, v + t);
+    }
+
+    box = bread.getElementById ("msg" + p); if (!box) continue;
+    box = box.children[0].getElementsByTagName ("span")[0];
+
+    t = ">#" + pid + "</"; v = " <n_" + t + "n_>";
+    if (!box.innerHTML.includes (t)) box.innerHTML += v;
+  }
+
+  if (hidepost) return; post_count++; post_lastpid = pid;
+
+  if (target)
+  {
+    if (n = !sliced.includes (url)) sliced.push (url);
+    if (n || target == pid) slicing.push (url);
+  }
+
+  var name = post.name ? post.name.trim() : "";
+  var time = post.time * 1 + post_timeofs;
+  var trip = post.trip, uid = post.id;
+
+  trip = trip ? " <x_>" + trip + "</x_>" : "";
+  uid = uid ? "&nbsp; <b_>" + uid + "</b_>" : "";
+
+  name = (name && name != "Anonymous") ? "&nbsp; <y_>" + name + "</y_>" : "";
+  if (post.capcode) name = "&nbsp; <x_>" + post.capcode + "</x_>" + name;
+
+  s = ["Sun", "Mon", "Tues", "Wed", "Thu", "Fri", "Sat"];
+  time = new Date (time * 1000); s = s [time.getDay()];
+
+  time = "<b_>" + time.toLocaleDateString() + " (" + s + ")</b_> <w_>" + time.toLocaleTimeString() + "</w_>";
+
+  s = visited.includes (url) ? 'class="in-visited" ' : "";
+  s = '<a ' + s + 'target=_self href="javascript:getpost(' + "'" + url + "'" + ')">';
+
+  var head = "<p class='header'># " + s + pid + "</a>&nbsp; ";
+  var multi = post.tim && post.extra_files && post.extra_files.length;
+
+  if (t = post.embed_thumb)
+  {
+    if (t[0] == "/") t = t.split ("/")[4];
+    s = "https://www.youtube.com/embed/" + t;
+    t = "https://i.ytimg.com/vi/" + t + "/mqdefault.jpg";
+    img = getimage ({ v_url: s, v_img: t, tn_w: 255, tn_h: 143 }, multi);
+  }
+
+  // It is possible for a post to contain files and images as well as an embedded video.
+  // The extra components are ignored by the default client. That behaviour is duplicated.
+
+  if (post.tim)
+  {
+    img = getimage (post, multi); v = post.extra_files;
+    if (multi) for (n = 0; n < v.length; n++) img = img + getimage (v[n], true);
+  }
+
+  p = '<p class="body-line empty "></p>';
+  if (!data.indexOf (p)) data = data.substr (p.length);
+
+  s = multi ? (data ? "multi2" : "multi1") : "left";
+  if (img) img = "<div class='imgbox " + s + "'>" + img + "</div>";
+
+  s = "&nbsp;<span></span></p>" + (post.sub ? "<p class='subject'>" + post.sub + "</p>" : "");
+  t = "<div" + (data ? " class='" + post_font + "'" : "") + ">";
+
+  box = document.createElement ("SPAN"); box.classList.add ("postbox");
+  box.innerHTML = head + time + name + trip + uid + s + img + t + p + data + "</div>";
+  box.setAttribute ("id", "msg" + pid); if (post_width) box.style.width = post_width;
+
+  bread.body.appendChild (box); if (!img) return;
+  s = box.getElementsByTagName ("div"); t = s[0].getElementsByTagName ("img");
+
+  if (multi)
+  {
+    for (i = 0, j = 1, p = 0, n = t.length, v = []; i <= n; i++, j++)
+      if (i == n || (p += (s = t[i].width)) > box.clientWidth - j * 8)
+      { 
+        if (i == n) s = 0; else if (j < 2) j++; else i--;
+        p = j > 2 ? (box.clientWidth - p + s) / j / 2 : 4;
+        for (; j > 1; j--) v.push (p); p = j = 0;
+      }
+
+    while (n > 0)
+    {
+      s = t[--n].parentNode.parentNode;
+      s.style.marginLeft = v[n] + "px"; s.style.marginRight = v[n] + "px";
+    }
+  }
+  else
+  {
+    v = t[0].parentNode.parentNode.parentNode; t = s[1];
+
+    if ((n = v.clientHeight + 4 - t.clientHeight) < 0)
+      { v.classList.remove ("left"); v.classList.add ("right"); }
+        else t.style.paddingTop = (n / 4) + "px";
+  }
+}
+////////////////////
+
+var bakebread = function (target)
+{
+  var box, url = "javascript:getpost('" + breadURL, str = url + "?" + post_lastpid;
+
+  if (target && post_count <= 0)
+  {
+    box = document.createElement ("DIV");
+    box.innerHTML = "<p><big><g_>Post # <r_>" + target + "<g_> was not found in this bread.<p><hr><p>" +
+      "<b_>Perhaps the post was deleted or the cache (if used) is out of date.</big><p><hr><p>" +
+      "<button onclick=" + url + "!" + target + "')>Retry with Fresh Bread</button>";
+    bread.body.appendChild (box); return;
+  }
+
+  var button1 = "<button onclick=" + str + "')>New crumbs</button>";
+  var button2 = "<button onclick=" + url + "')>Fresh bread</button>";
+
+  box = bread.body.children[3]; str = box ? (box.clientWidth - 14) + "px" : "99%";
+
+  box = document.createElement ("DIV");
+  box.innerHTML = "<p><hr><br>" + (target ? "" : button1 + "&nbsp; &nbsp;" + button2);
+  box.style = "display:inline-block;width:" + str + ";height:50vh";
+  bread.body.appendChild (box);
+
+  var i, j, k, p, s, t, u, v, w; str = url + "#" + target + "')";
+
+  for (i = 0; i < opentabs.length; i++) try
+  {
+    w = opentabs[i]; if (!w || w.closed) throw (""); w = w.document;
+    p = w.title; if (w == bread) p = ""; w = w.body.children;
+    if (!w || !w[0] || w[0].name != "LaUnChEr") throw ("?");
+
+    for (j = 0; j < w.length; j++) if (w[j].id)
+    {
+      if (p && target)
+      {
+        t = w[j].getElementsByTagName ("a");
+        for (k = 0; k < t.length; k++) if (s = t[k].href)
+          if (s == str) t[k].classList.add ("in-visited");
+      }
+
+      t = w[j].children[0].getElementsByTagName ("span")[0];
+      s = t.innerHTML.replace (/n_/g, "");
+
+      while (v = pullstring (s, "<>", "</>"))
+      {
+        u = sliced.includes (breadURL + v) ? "g_>" : "n_>";
+        if (!p && slicing.includes (breadURL + v)) u = "r_>";
+        s = s.replace ("<>" + v + "</>", "<" + u + v + "</" + u);
+      }
+
+      t.innerHTML = s; s = breadURL + "#" + w[j].id.substr (3);
+      if (p == "Slice" || !sliced.includes (s)) continue;
+      if (!p && slicing.includes (s)) continue;
+
+      w[j].classList.add ("in-sliced");
+      w[j].firstElementChild.classList.add ("in-sliced");
+    }
+
+  } catch (e) { if (e) console.log ("[Baker] " + e); opentabs.splice (i--, 1); }
+}
+////////////////////
+
+var fetchpost = function (win, url)
+{
+  if (busy < 0 || (!url && !(url = posturl.value))) return;
+  if (busy > 0 && busy + 2000 > Date.now()) return;
+
+  busy = Date.now(); createwindow (win, url);
+}
+////////////////////
+
+const fetchbread = async (url) =>
+{
+  if (!bread) return; if (busy <= 0) { message ("Process violation detected. Please retry."); return; }
+
+  breadURL = "https://8kun.top/"; if (url [0] == "/") url = breadURL + url.substr (1);
+
+  var type = url.indexOf (breadURL) ? "" : get_checked ("html-json", 0) ? "json" : "html?";
+  if (!type) if (url.includes ("//archive.")) type = "arc"; else { message ("Bad URL"); return; }
+
+  var m, n, data, lastid = target = "", time = busy / 1000; busy = -1;
+
+  if ((m = url.indexOf ("?")) > 0) { lastid = url.substr (m + 1); url = url.substr (0, m); }
+  if ((m = url.indexOf ("#")) > 0) { target = url.substr (m + 1); url = url.substr (0, m); }
+  if ((n = url.indexOf ("!")) > 0) { target = url.substr (n + 1); url = url.substr (0, n); }
+
+  if (type == "arc") breadURL = ""; else
+  {
+    n = url.indexOf (".html"); if (n > 0) url = url.substr (0, n);
+    data = url.split ("/"); data.splice (0,3); breadURL = "/" + data.join ("/") + ".html";
+  }
+
+  setup_cors(); bread.title = target ? "Slice" : (lastid ? "CHUNK" : "BREAD");
+
+  if ((n = check_bread_cache (time, url)) >= 0)
+    if (lastid || m < 0) breads.splice (n, 1); else { time = 0; jsonData = breads[n].json; }
+
+try
+{
+  var crypto = document.getElementById ("SlowAES");
+  if (!crypto.src && localhost) crypto.src = localhost + "~vanwanet.js";
+
+  if (time) if (type == "arc")
+  {
+    response = await fetch (cors_bypass + url);
+    if (!response.ok) throw ("Status " + response.status + " (" + response.statusText + ")");
+    textData = await response.text(); createJSON (type);
+  }
+  else
+  {
+    response = await fetch (cors_bypass + url + "." + type, allow_cookie ("vanwanet", ""));
+    if (!response.ok) throw ("Status " + response.status + " (" + response.statusText + ")");
+    textData = await response.text();
+
+    if (textData.substr (0, 1000).includes ("VanwaNet DDoS Mitigation"))
+    {
+      var error = "DDoS Mitigation - puzzle not solved";
+      if (!crypto.src) throw ("DDoS Mitigation - need Local Proxy Server");
+      n = textData.indexOf ("<script>function"); if (n < 0) throw (error);
+
+      data = textData.substr (n + 8); data = data.substr (0, data.indexOf ('+";'));
+      data = data.replace ("document.cookie", "data");
+      if (!data) throw (error); eval (data);
+
+      message ("<big><w_>DDoS Mitigation in effect</w_></big>");
+
+      response = await fetch (cors_bypass + url + "." + type, allow_cookie ("vanwanet", data));
+      if (response.status != 200) throw ("File not found");
+      textData = await response.text();
+    }
+
+    if (type == "json") jsonData = JSON.parse (textData); else createJSON (type);
+  }
+
+  if (!(data = jsonData.posts)) throw ("Error in JSON");
+
+  n = textData.length * (type == "json" ? 4 : 1);
+  if (time) breads.push ({ time: time, url: url, json: jsonData, size: n });
+  post_count = post_lastpid = 0; post_timeofs = timeofs.value * 3600;
+
+  message ("<span>" + data[0].sub + "</span>");
+  slicing = []; if (lastid && target) lastid = "";
+  if (target) visited.push (breadURL + "#" + target);
+
+  if (lastid) for (n = data.length - 1; n >= 0 ; n--) if (data[n].no <= lastid)
+  {
+    for (; n < data.length; n++) newcrumb (data[n], ""); break;
+  }
+
+  if (!lastid) for (n = 0; n < data.length; n++)
+  {
+    if (!target) newcrumb (data[n], ""); else if (target == data[n].no) break;
+  }
+
+  if (!lastid && target && n < data.length)
+  {
+    for (; n < data.length; n++) newcrumb (data[n], target);
+  }
+
+  var s = pullstring (breadURL, "/", "/"), t = pullstring (breadURL, "/res/", ".");
+
+  var board = "<g_><b>" + s + "</b></g_>&nbsp;#" + t;
+  var count = " <w_>(" + post_count + "&nbsp;of&nbsp" + data.length + ")</w_>&nbsp;";
+  var cache = time ? "" : "&nbsp;<g_>(cache)</g_>";
+
+  s = bread.body.children[0]; t = s.children[0]; n = t.offsetWidth;
+  t.innerHTML = count + board + cache; n = (s.clientWidth - t.offsetWidth) / n * 0.8;
+  s = data[0].sub; if (!s) s = "No Title"; if (n < 1) s = s.substr (0, s.length * n) + "...";
+
+  message ("<i>" + s + "</i>" + count + board + cache); bakebread (target);
+
+} catch (err) { console.log (err); message (err); }
+
+  busy = 0; bread = null;
+}
+////////////////////
+
+const playvideo = async (win, url) =>
+{
+  if (busy < 0 || (!url && !(url = posturl.value))) return; busy = -1;
+
+  var i, j, doc, vid, msg, fmt;
+
+  var bstyle = "display:flex;height:100vh;justify-content:center;align-items:center;" +
+    "margin:0;padding:0;background-color:black;font-size:20px;line-height:40px";
+
+  var mstyle = "display:block;position:absolute;top:30%;padding-bottom:2px;" +
+    "left:calc(50vw - 150px);right:calc(50vw - 150px);border-radius:20px;" +
+    "text-align:center;font-style:italic;color:maroon;background-color:lightcoral";
+
+  var vstyle = "border:none;outline:none;width:auto;height:auto";
+
+  var insert = "<html><body><h2></h2><video autoplay allowfullscreen></video></body></html>";
+
+  if (!win) win = window.open ("about:blank", "_blank", ""); win.focus();
+
+  if (localhost) win.location = localhost + "~_video_.htm"; else
+  {
+    doc = win.document; doc.open(); doc.write ("<!DOCTYPE html>" + insert); doc.close();
+  }
+
+  for (i = 0; i < 10; i++)
+  {
+    if ((doc = win.document).doctype != null) break; await new Promise (x => setTimeout (x, 100));
+  }
+
+  msg = doc.getElementsByTagName ("h2")[0]; vid = doc.getElementsByTagName ("video")[0];
+  doc.body.style = bstyle; msg.style = mstyle; vid.style = vstyle;
+
+  msg.innerHTML = "Alleycat Player"; doc.title = "YouTube"; fmt = get_checked ("format", 18);
+
+  if (get_checked ("dash", 0) && localhost)
+  {
+    var box = document.createElement ("SCRIPT");
+    box.src = localhost + "~dash_player.js";
+    fmt = -fmt; doc.body.appendChild (box);
+  }
+
+  url = url.substr (url.length - 11); request_youtube (url, 0, fmt, msg, vid, win);
+}
+////////////////////
+
+var startvideo = function (url, msg, vid, win, fmt, dash)
+{
+  var m = "", p = document.getElementsByName ("format");
+
+  for (var i = j = 0; i < p.length; i++) if (fmt == p[i].value)
+  {
+    m = p[i].nextSibling.textContent.trim() + (dash ? " | DASH: on " : " | DASH: off ");
+  }
+
+  p = document.getElementById ("status"); p.value = "";
+  vid.parentNode.onbeforeunload = function() { p.value = vid.value = ""; }
+  vid.value = m; vid.ontimeupdate = function() { p.value = vid.value; }
+  vid.onloadedmetadata = function() { vid.controls = true; msg.style.display = "none"; }
+
+  if (!dash)
+  {
+    vid.onerror = function() { msg.innerHTML = "Error"; }
+    vid.src = url; return;
+  }
+
+  var dash = win.dashjs.MediaPlayer().create(); dash.initialize (vid, url, true);
+  vid.parentNode.onunload = function() { dash.reset(); console.log ("DASH player unloaded."); }
+  dash.on (win.dashjs.MediaPlayer.events ["ERROR"], function() { msg.innerHTML = "Error"; });
+}
+////////////////////
+
+const request_youtube = async (id, frame, fmt, msg, vid, win) =>
+{
+  var i, j, n, s, sub, dat, key, sig;
+  var f = [0,0,0,0,0,0,0,0,0,0], d = [0,0,0,0,0,0,0,0,0,0];
+
+  var tag = "youtube"; setup_cors();
+  var url = cors_bypass + "https://www.youtube.com/get_video_info?video_id=" + id + "&el=";
+
+try
+{
+  response = await fetch (url + "leanback");
+  textData = await response.text();
+
+  s = "%22itag%22"; sub = textData.split (s);
+
+  if (sub.length < 2)
+  {
+    response = await fetch (url + "previewpage" + "&eurl=http%3A%2F%2Flocalhost");
+    textData = await response.text();
+
+    sub = textData.split (s); if (sub.length < 2) throw ("!!!");
+  }
+
+  for (i = 1; i < sub.length; i++)
+  {
+    url = sub [i]; if (url.indexOf ("%3A") != 0) continue;
+    s = url.substr (3, url.indexOf ("%2C") - 3);
+    if ((j = argformat (s)) >= 0) f[j] = i;
+    if ((j = isdashfmt (s)) >= 0)
+      if (url.indexOf ("index") > 0 || url.indexOf ("_live_") > 0) d[j] = i;
+  }
+
+  if (fmt < 0)
+  {
+    if (!d[8]) d[0] = d[1] = d[2] = 0;
+    if (!d[9]) d[4] = d[5] = d[6] = 0;
+    fmt = -fmt; n = getformat (d, fmt);
+    if (cors_kraker) if (n) { f = d; tag = ""; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((n = argformat (fmt)) < 0 || !(n = f[n])) throw ("!!!");
+
+  s = yt_split (sub[n]); dat = s.split ("|"); url = dat[0]; sig = dat[1];
+
+  if (sig.length > 99)  // some videos require a signature; usually 105 or 109 bytes long
+  {
+    response = await fetch (cors_bypass + "https://www.youtube.com/embed/" + id);
+    textData = await response.text();
+
+    url = textData.substr (textData.indexOf ("base.js") - 100, 107);
+    if ((n = url.indexOf ("/s/player/")) < 0) throw ("!!!"); url = url.substr (n);
+
+    if (!(key = cookies [url]))
+    {
+      response = await fetch (cors_kraker + "https://www.youtube.com" + url);
+      textData = await response.text();
+
+      key = yt_algo (textData); cookies [url] = key;
+    }
+    eval (key); url = dat[0] + "&sig=" + sig;
+  }
+
+  if (!tag)
+  {
+    if ((i = argformat (fmt)) < 4) j = 8; else j = 9;
+    s = yt_split (sub [f[j]]) + "|" + dat[2];
+    var dat = s.split ("|"); j = j & 1;
+
+    sig = dat[1];
+    if (sig) { eval (key); sig = "&sig=" + sig; }
+    sig = dat[0] + sig;
+
+//    download_doc = head + "YouTube DASH download links (" + id + ") -- " +
+//      "<a href='" + sig + "'>Audio</a> &nbsp;" +
+//      "<a href='" + url + "'>Video</a>" + tail;
+
+    s = url.substr (url.indexOf ("&dur=") + 5); s = s.substr (0, s.indexOf ("&")) * 1;
+    var v = dat[2] + "," + dat[3]; var w = "wanna_boot_dash";
+
+    if (!s)
+    {
+      v = "x-head-seqnum"; w = "x-head-time-sec";
+      s = "~range=bytes=0-499|" + v + "|" + w + "|*";
+
+      response = await fetch (cors_kraker + s + url, { method: 'GET' } );
+      v = response.headers.get (v); if (!v) throw ("!!!");
+      w = response.headers.get (w); if (!w) throw ("!!!");
+
+      var seg_num = v * 1; var seg_ofs = w * 1;
+      var seg_dur = Math.round (10 * seg_ofs / seg_num) / 10;
+      n = Math.ceil (90 / seg_dur); // initial 90-second progress bar; can be up to 3 hours
+
+      seg_num -= n; seg_ofs -= Math.round (n * 10 * seg_dur) / 10;
+      if (seg_num < 1 || seg_ofs < 1) seg_num = seg_ofs = 0;
+
+      v = seg_num + "," + seg_ofs + "," + seg_dur + ",";
+      w = "wanna_boot_dash_live"; s = "";
+    }
+
+    tag = fmt + "(" + id + ").mpd";
+
+    s = s + "|" + (j ? "audio/webm" : "audio/mp4") + "|" + (j ? "opus" : "mp4a.40.2");
+    s = s + "|" + (j ? "video/webm" : "video/mp4") + "|" + (j ? "vp9" : "avc1.4d401e");
+    s = s + "|" + v + "|" + tag + "|" + sig + "|" + url + "|";
+
+    await fetch (cors_kraker + w, { method: 'POST', body: s } );
+    url = cors_kraker + "_" + w + "_" + tag;
+    tag = "yt-dash"; //stream_all (frame, 2);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (!busy) { msg.innerHTML = "Error"; return; }
+  busy = 0; startvideo (url, msg, vid, win, fmt, tag == "yt-dash");
+}
+////////////////////
+
+var yt_split = function (t)
+{
+  var n, p, q, s;
+
+  n = t.indexOf ("%7D%5D"); s = t.substr (0, (n < 0 ? t.length : n));
+  s = s.replace (/%5Cu0026/g, "&"); s = s.replace (/%25/g, "%");
+  s = s.replace (/%25/g, "%"); s = decodeURIComponent (s);
+
+  n = s.indexOf ("&s="); if (n < 0) n = s.indexOf ('"s=');
+
+  if (n < 0) p = ""; else
+  {
+    p = s.substr (n + 3, 300);
+    n = p.indexOf ("&"); if (n > 0) p = p.substr (0, n);
+    n = p.indexOf ('"'); if (n > 0) p = p.substr (0, n);
+  }
+
+  q = s.replace (/\\/g, "");
+  n = q.indexOf ("]");  if (n > 0) q = q.substr (0, n);
+  q = q.split ('"start":"');
+
+  if (q.length < 3) q = ""; else
+  {
+    q[1] = q[1].substr (0, q[1].indexOf ('"}'));
+    q[2] = q[2].substr (0, q[2].indexOf ('"}'));
+    q[1] = q[1].replace ('","end":"', "-");
+    q[2] = q[2].replace ('","end":"', "-");
+    q = q[1] + "," + q[2];
+  }
+
+  s = s.substr (s.indexOf ("http")); s = s.substr (0, s.indexOf ('"'));
+  n = s.indexOf ("&sp="); if (n > 0) s = s.substr (0, n);
+  n = s.indexOf ("&s=");  if (n > 0) s = s.substr (0, n);
+
+  return (s + "|" + p + "|" + q);
+}
+////////////////////
+
+var yt_algo = function (data)
+{
+  var i, j, n, s, v;
+
+  for (i = 0; i < 3; i++)
+  {
+    j = data.indexOf ('a=a.split("")'); if (j < 0) return "";
+    s = data.substr (j + 14, 300); if ((n = s.indexOf ("a.join")) > 0) break;
+    if (i > 1) return ""; data = data.substr (j + 1);
+  }
+  s = s.substr (0, n - 7);
+  v = "var " + s.substr (0, 2) + "={";
+  if ((n = data.indexOf (v)) < 0) return "";
+
+  v = data.substr (n, 300); v = v.substr (0, v.indexOf ("};") + 2);
+  return (v + "var a=sig.split('');" + s + "sig=a.join('');");
+}
+////////////////////
+
+var chkformat = function (q)
+{
+  if (q > 100 && q <= 432) return 0;
+  if (q > 432 && q <= 580) return 1;
+  if (q > 580 && q <= 800) return 2;
+
+  return -1;
+}
+////////////////////
+
+var pixformat = function (q)
+{
+  if (q == 0 || q == 4) return 360;
+  if (q == 1 || q == 5) return 480;
+  if (q == 2 || q == 6) return 720;
+
+  return -1;
+}
+////////////////////
+
+var isdashfmt = function (fmt)
+{
+  if (fmt == 134) return 0;
+  if (fmt == 135) return 1;
+  if (fmt == 136) return 2;
+  if (fmt == 140) return 8;
+  if (fmt == 243) return 4;
+  if (fmt == 244) return 5;
+  if (fmt == 247) return 6;
+  if (fmt == 251) return 9;
+
+  return -1;
+}
+
+var argformat = function (fmt)
+{
+  if (fmt == 18) return 0;
+  if (fmt == 19) return 1;
+  if (fmt == 22) return 2;
+  if (fmt == 37) return 3;
+  if (fmt == 43) return 4;
+  if (fmt == 44) return 5;
+  if (fmt == 45) return 6;
+  if (fmt == 46) return 7;
+
+  return -1;
+}
+
+var getformat = function (f, fmt)
+{
+  if (f[0] <= 0 && f[1] <= 0 && f[2] <= 0 && f[3] <= 0)
+  {
+    if (fmt == 18) fmt = 43;
+    if (fmt == 19) fmt = 44;
+    if (fmt == 22) fmt = 45;
+    if (fmt == 37) fmt = 46;
+  }
+
+  if (f[4] <= 0 && f[5] <= 0 && f[6] <= 0 && f[7] <= 0)
+  {
+    if (fmt == 43) fmt = 18;
+    if (fmt == 44) fmt = 19;
+    if (fmt == 45) fmt = 22;
+    if (fmt == 46) fmt = 37;
+  }
+
+  var m = 0, n = fmt;
+
+  if (n == 37) if (f[3]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 18;
+  if (n == 18) if (f[0]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 18) if (f[0]) m = n; else n = 19;
+  if (n == 19) if (f[1]) m = n; else n = 22;
+  if (n == 22) if (f[2]) m = n; else n = 37;
+  if (n == 37) if (f[3]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 46) if (f[7]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 43;
+  if (n == 43) if (f[4]) m = n;
+
+  n = fmt; if (m) return m;
+
+  if (n == 43) if (f[4]) m = n; else n = 44;
+  if (n == 44) if (f[5]) m = n; else n = 45;
+  if (n == 45) if (f[6]) m = n; else n = 46;
+  if (n == 46) if (f[7]) m = n;
+
+  return m;
+}
+////////////////////
+
+var fixformat = function (f, frame)
+{
+}
+////////////////////
+
+var no_format = function (frame)
+{
+}
+////////////////////
+
+</script>
+
+</html>
