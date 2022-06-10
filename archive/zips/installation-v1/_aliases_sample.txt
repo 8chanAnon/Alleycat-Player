@@ -1,0 +1,24 @@
+-------------------------------------------------
+Rename this file to "_aliases.txt".
+This file may be modified for your own purposes.
+The initial entries are for m3u8 downloads.
+-------------------------------------------------
+
++vid1-aud?,	+video1-aud.ts;
++vid1-vid?,	+video1-vid.ts;
++vid2-aud?,	+video2-aud.ts;
++vid2-vid?,	+video2-vid.ts;
++vid3-aud?,	+video3-aud.ts;
++vid3-vid?,	+video3-vid.ts;
++vid4-aud?,	+video4-aud.ts;
++vid4-vid?,	+video4-vid.ts;
++vid5-aud?,	+video5-aud.ts;
++vid5-vid?,	+video5-vid.ts;
++vid6-aud?,	+video6-aud.ts;
++vid6-vid?,	+video6-vid.ts;
++vid7-aud?,	+video7-aud.ts;
++vid7-vid?,	+video7-vid.ts;
++vid8-aud?,	+video8-aud.ts;
++vid8-vid?,	+video8-vid.ts;
++vid9-aud?,	+video9-aud.ts;
++vid9-vid?,	+video9-vid.ts;
