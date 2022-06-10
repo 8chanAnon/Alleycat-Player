@@ -1,0 +1,308 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="https://8chananon.github.io/Alleycat-Player/archive/player/" target="_blank">
+<link rel="icon" href="favicon.ico">
+
+<title>Release Notes</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 15px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body>
+
+<h1 style="text-align:center"><r_>Alleycat Player</r_> <g_>Release Notes</g_> (v4a to v4h)</h1>
+
+<p><hr><p>
+<b>Release notes for v4a (June 29, 2020)</b> -- <a href="alleycat-player-v4a.htm">source</a>
+<p>
+Welcome to the newly refurbished Alleycat Player. Actually, not much has changed. If you have used this application before
+then you won't see a major difference. What I've done is provide clearer instructions for the proper installation and usage
+of this app. I think a lot of people were confused because the whole thing did have the appearance of a kludge. The
+Local Proxy Server is a critical part of Alleycat Player.
+<ul><li>
+A bunch of Internet TV channels went down since the last version of Alleycat Player. They have been restored for the most
+part but some Canadian channels are missing or not working well. I am looking for better sources.
+</li><li>
+New sites: Twitch TV, TikTok, Deutsche Welle.
+</li><li>
+Updated: InfoWars, LiveLeak, 123Movies, UniqueStream.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4b (August 7, 2020)</b> -- <a href="alleycat-player-v4b.htm">source</a>
+<p>
+<ul><li>
+New sites: CPAC (Canada), WatchCartoons, OpenLoadMovies
+</li><li>
+Updated: iHeartRadio, C-SPAN, CTV, BBC, VidNode, ClipWatching, MixDrop
+</li><li>
+Updated the scraper for ustv24h.live (US Internet TV).
+</li><li>
+Both CTV and BBC now offer the HLS/m3u8 format. Previously, only the DASH/mpd format was available. I guess this is a pretty
+good indication that DASH is on the way out. Good for that. BBC must have spent millions promoting DASH but the
+development process has been badly managed and the specifications have gotten mangled to the point that nobody is really
+sure how that shit is supposed to work. Interoperability has been a major stumbling block. R.I.P.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4c (September 19, 2020)</b> -- <a href="alleycat-player-v4c.htm">source</a>
+<p>
+<ul><li>
+Updated: Twitter, Twitch TV, OpenLoadMovies, MixDrop
+</li><li>
+Twitter updated its public API, making more information accessible than before (which previously required a login). As a
+result, the mp4 video format is now available instead of m3u8.
+</li><li>
+The trio of sources for US Internet TV (ustv247.tv, ustvgo.tv, watchnewslive.tv) changed their obfuscation algorithm. This
+one is devious. It uses AES encryption and it took me all of a day to crack it. I imagine that those Kodi addons will be
+blocked by this for a while or for good.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4d (December 13, 2020)</b> -- <a href="alleycat-player-v4d.htm">source</a>
+<p>
+<ul><li>
+New sites added: BrandNewTube, Rumble, Epoch Times, Lunchflix, GoMovies, Aparat, StreamTape, Vidia, RadioNet.
+</li><li>
+Updated: LiveLeak, Facebook, Periscope, TikTok, BBC, MS/NBC, PBS, VidNode, UpStream, VidLox.
+</li><li>
+Removed: 123Movies, GoUnlimited, StreamVid, XStream.
+</li><li>
+I neglected to clean up the Invidious sources in the last version. The sites now listed seem to mostly work but you really
+cannot rely on them. They are backup sources in case a video does not work through Youtube (due to some sort of
+access restriction). Also, Invidious is accessible without a proxy server. The site displayed in blue in the dropdown list
+is the only Invidious instance which supports livestream.
+</li><li>
+InfoWars links will no longer be passed through the Local Proxy Server. This was actually never necessary (no CORS issue) but
+it is my policy to route all search links (but not video links) through the proxy server for logging (that is, showing the
+URL on the console). InfoWars has some sort of CloudFlare bot blocker in front of it which I have not been able to penetrate.
+This blocker will block ALL access to the InfoWars family of web sites except for recognized web browsers. Kraker (based on
+node.js) and tools such as curl (on Windows) cannot access the InfoWars sites.
+</li><li>
+A new zoom feature has been added. There are two zoom modes. Normal zoom will scale the size of the video in both directions
+(horizontal and vertical). This is useful for zooming cinematic widescreen. There is a control for this on the video control
+bar and also on the page below the video. The "aspect zoom" will change the size of the video in the vertical direction.
+This is for changing the aspect ratio. This mode can be accessed on the video control bar with the "F" (flip) option.
+</li><li>
+PLEASE NOTE: I am doing my best to ensure that all of the video sources work correctly on Alleycat Player but I cannot
+guarantee perfection due to the number of sites supported. I do not use every service available so I might not notice that
+something has stopped working. Notify me on Alleycat BBS when you see breakage. Suggestions welcome. Thank you.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4e (February 21, 2021)</b> -- <a href="alleycat-player-v4e.htm">source</a>
+<p>
+<ul><li>
+Added: Minds, Earth TV, DoodStream
+</li><li>
+Removed: PagalMovies, Vidia, Vidlox
+</li><li>
+Updated: YouTube, Twitch TV, SoundCloud, CBC, CNBC, CNN, C-SPAN (livestream), VidNode, StreamTape
+</li><li>
+The Invidious instances have changed. None of them support livestream. The only reason for keeping them is that they are
+sometimes useful for getting around geographic restrictions.
+</li><li>
+There has been some churn with the US Internet TV channels because the trio of sources (ustv247.tv, ustvgo.tv,
+watchnewslive.tv) which I have relied on for a long time have moved to VPN-only access (NordVPN has a financial arrangement
+with the site operator). At least, that is what I think has happened. It could be that the sites are simply broken. The
+main source is now <g_>123tvnow.com</g_> with <g_>www.watchnews.pro</g_> providing C-SPAN, HLN, BBC World News and backup
+for some of the other news channels. OAN is now available with a direct link via KlowdTV (I don't know for how long).
+Overall, not much has been lost and some has been gained. Note that Univision (in Spanish) is currently down.
+</li><li>
+The "DLoad" button has been enhanced for the sake of Chrome-based browsers which lack the right-click menu option
+for saving a highlighted URL. I use Firefox so I honestly never noticed this issue with Chrome. However, Chrome does have
+the save option if you right-click on the video itself (it just doesn't work with the URL shown below the video). You can
+now right-click on the "DLoad" button to save the video. Also, if you press the "Copy" button, the text in the URL input
+line will be copied to the "DLoad" button as well as to the clipboard.
+</li><li>
+The above does NOT apply to HLS/m3u8 videos because this type of video is segmented. Read the Alleycat Player instruction
+manual. Note that livestream videos cannot be saved (you will just get a few segments).
+</li><li>
+The popup window resize problem on Chrome-based browsers has been fixed. Tested browsers are: Google Chrome, Brave,
+Opera, Otter and Dissenter. Non-Chrome browsers: Firefox and Waterfox. If you are running Alleycat Player via the
+Local Proxy Server (the preferred setup), video popup windows or tabs will first be loaded from an HTML stub created
+automatically in the Alleycat folder. There is actually no document in the stub because this is a trick. The point is to
+force Chrome browsers to allow autoplay. You will need to enable the "Sound" option in the site permissions for
+localhost:8080. Chrome is screwed up. Stop using Chrome.
+</li><li>
+<b>Warning</b> - I have the Ghostery adblocker installed on Google Chrome and I caught it messing around with the internals
+of the video control bar (thus breaking the visual appearance and perhaps the functionality). Whatever adblocker you use,
+you should whitelist Alleycat Player and/or localhost:8080 (Local Proxy Server). There is no unsafe code running
+in Alleycat (your adblocker should be able to verify this).
+</li><li>
+<b>Special Note</b> - Focused elements in Chrome are drawn with a heavy black border. This looks absolutely terrible on the
+video control bar, especially the seek presets. For instructions on how to remove the black border, please
+<a target=_blank href="https://www.askvg.com/fix-google-chrome-showing-thick-black-border-highlight-on-text-box-and-other-focused-items/">
+GO HERE</a>.
+</li></ul>
+<p>
+<b>If you are interested, here are my observations to show you why the popup windows were a vexing problem:</b>
+<ul><li>
+Firefox will open a popup with a client extent that is rounded off to a multiple of 100 (both width and height). This was
+not the case six months ago. Opera takes the requested client extent as the total window extent (also Vivaldi though I
+don't test that browser anymore). It is impossible to open a window with the correct client extent because the size
+of the non-client area is unknowable. Brave and Google Chrome will open a popup with the correct client height but the
+client width will be one pixel less than the requested width.
+</li><li>
+The trick to fixing the wrong popup client extent is to 1) capture an appropriate window event, 2) retrieve the client
+extent information, 3) calculate the difference from the requested extent and 4) call the window "resizeBy" function.
+Technically, the browser does not report the size of the client area in a popup window at all. The only way to get the
+client extent is to examine an element inside the HTML document which presumably spans the full client area of the window.
+For a video popup, the size of the video element may be used (it's a little trickier for a non-video popup).
+</li><li>
+Until a few months ago, the above worked fine with a "focus" event handler. Chrome (meaning all Chrome-based browsers)
+broke this by making the client extent information unavailable (extent is reported as 0x0). Why? I don't know. This still
+works fine in Firefox. What other event could be used? Short answer: none. Chrome does not generate a "load" event while
+Firefox does not generate a "resize" event. That doesn't matter anyway. There is no client extent information available
+in Chrome. As far as I can tell, there are no other generated events. So kinda screwed, right?
+</li><li>
+The issue is totally with Chrome. Firefox is extremely well-behaved with windows and tabs. There is no time delay and
+the document is fully rendered before any events are generated. Chrome is a bitch. It takes as long as a full second to
+open a window or tab and the window events are generated before the document is rendered. Essentially, this makes the
+window events in Chrome pretty useless without some black magic. Is this by design? Chrome is also very obstinate about
+allowing autoplay but that is another story.
+</li><li>
+The only solution is to wait for the window document to be ready before doing anything else (the document may be
+blank or it may be loaded from a source). This is the messy part because it means using a 100-millisecond timer to
+repeatedly check the document until it is reported as ready. There is no other way to get around the "unreliable narrator"
+in Chrome. Then what? Well, then it is time to build or modify the document as needed and then create the "resize" event
+handler so that the client extent can be checked and the window resized.
+</li><li>
+Firefox does not generate the "resize" event while Chrome will generate the event before the document is ready. It doesn't
+matter either way. The event handler just needs to be called (from the code block that created it). In the case of Firefox
+and most other browsers, that will be the end of the process. Opera, however, is stubborn and will resize the window
+incorrectly on the first attempt. The act of resizing the window will generate a "resize" event which will be captured by
+the event handler. Opera will then get it right. Problem solved!
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4f (February 28, 2021)</b> -- <a href="alleycat-player-v4f.htm">source</a>
+<p>
+<ul><li>
+Added: Telegram (won't work with videos that require logging in)
+</li><li>
+Updated: Rumble (livestream)
+</li><li>
+<g_>123tvnow.com</g_> is no longer accessible. The site is using Google Recaptcha to secure the video links. Most of the
+US Internet TV channels have been restored, some have been removed and some have been added. Many channels are only
+available at 720p. This isn't good for slow computers or slow Internet. Worse still, I have come across a lot of feeds
+that are 1080p but I don't include those because they are unworkable (for me anyway).
+</li><li>
+Reminder (in case you don't read instructions): a double asterisk next to a channel name indicates that you need the
+Local Proxy Server in order to view it. A single asterisk means that the channel will work with a CORS unblocker.
+</li><li>
+Another remote proxy server has become unavailable. That leaves just two. They're getting harder to find.
+</li></ul>
+<p>
+<b>These notes are reposted in case you missed them:</b>
+<p>
+<ul><li>
+A new zoom feature has been added. There are two zoom modes. Normal zoom will scale the size of the video in both directions
+(horizontal and vertical). This is useful for zooming cinematic widescreen. There is a control for this on the video control
+bar and also on the page below the video. The "aspect zoom" will change the size of the video in the vertical direction.
+This is for changing the aspect ratio. This mode can be accessed on the video control bar with the "F" (flip) option.
+</li><li>
+PLEASE NOTE: I am doing my best to ensure that all of the video sources work correctly on Alleycat Player but I cannot
+guarantee perfection due to the number of sites supported. I do not use every service available so I might not notice that
+something has stopped working. Notify me on Alleycat BBS when you see breakage. Suggestions welcome. Thank you.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4g (May 23, 2021)</b> -- <a href="alleycat-player-v4g.htm">source</a>
+<p>
+<ul><li>
+Added: Ask4Movie
+</li><li>
+Removed: GoMovies, Lunchflix
+</li><li>
+LiveLeak changed to ItemFix, Aparat changed to Wolfstream, ClipWatching changed to HighStream
+</li><li>
+Updated: Youtube, Rumble, PragerU, SoundCloud, Fox, BBC, Al Jazeera, VidNode, Uniquestream, DoodStream, UpStream
+</li><li>
+For VidNode, the m3u8 format is now favoured for playback and the mp4 format is available via the "DLoad" button.
+</li><li>
+Internet Radio: The Fringe FM and Tune Disney Radio are currently down.
+</li><li>
+Currently down due to a technical problem with Distro TV:
+Entrepreneur, Field & Stream, MMA Junkie, Lone Star, Popular Science
+</li><li>
+Broken US Internet TV channels are fixed. The infamous trio (<g_>ustv247.tv, ustvgo.tv, watchnewslive.tv</g_>) is
+back after being geo-restricted to the US. I don't trust this because they also stopped trying to obfuscate the video link.
+Might be a temporary situation. Also, <g_>123tvnow.com</g_> is now <g_>123tv.live</g_> and the Google stuff is now gone.
+Why? Maybe Google kicked them out, Google was too expensive or maybe it caused too many problems.
+</li><li>
+Most of the problematic US channels have a backup source. Select "webm" in the format selection box to access the
+secondary source if the primary source goes down. These channels are indicated with a single plus (+) or a double plus
+if the two sources are not from the same TV station.
+</li><li>
+<b>Special Note</b> if you are using Firefox with the NoScript extension. Due to the most recent Firefox update
+(version 88.0.1), the page inserts employed by NoScript may cause the video viewers to stop working. The culprit is a
+"dead object" error involving the brightness control. The failure is rare and I have no idea what triggers it. Just reload
+the page when this happens. I am hoping that this will be fixed by the next Firefox update.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v4h (June 23, 2021)</b> -- <a href="alleycat-player-v4h.htm">source</a>
+<p>
+<ul><li>
+Added: Gab TV, TheArchive, XVideos
+</li><li>
+Updated: Telegram, BBC, Press TV, VidNode
+</li><li>
+The ".com" domain for Press TV got shut down by the U.S. government. The ".ir" domain still works and the
+relevant links have been updated.
+</li><li>
+Major update for Youtube. The "get_video_info" method of getting the video information is gradually being deprecated by
+Google. A new API is now in use which carries with it some restrictions. Age-gated videos may or may not be playable and
+the method used to attempt to bypass the age gating may or may not work in the future. Especially important is that the
+Kraker Local Proxy Server is now needed to access YT videos. This restriction does not apply to the Invidious instances
+which do not require a proxy. For some videos, the old "get_video_info" method still works to bypass age-gating so, for
+the time being, that will be invoked if the new API fails. You can use embedded mode to run YT videos by checking "Sandbox"
+on the control panel (embedding may be disallowed for some videos).
+</li></ul>
+<p>
+<b>Compatibility notes:</b>
+<ul><li>
+Alleycat Player works with the following web browsers: Firefox, Waterfox, Google Chrome, Brave, Opera, Torch
+and Dissenter. Other browsers should work if they conform correctly to the HTML standards.
+</li><li>
+Pale Moon does not render the video viewers correctly. This is mainly due to some extra padding in the buttons
+(6 pixels horizontally and 2 pixels vertically). The text on the buttons is misaligned and several pixels on the
+right edge of the viewer are drawn under the scroll bar. This cannot be fixed.
+</li><li>
+Both Waterfox and Pale Moon draw an ugly horizontal bar inside the range controls of the video control panel. I don't know
+how this can be removed.
+</li><li>
+Firefox version 89 uses a heavy blue focus outline around buttons and input elements. I have corrected for this by
+specifying "outline:none" in the CSS settings for these controls.
+</li><li>
+Epic Privacy Browser and Otter Browser do not work correctly. I have an old version of Microsoft Edge and it has the same
+issue as Epic (videos blacked out). Otter chokes on the Javascript for some reason.
+</li></ul>
+
+<p><hr><p>
+
+</div><div style="width: 90vw; height: 50vh"></div>
+
+</body></html>

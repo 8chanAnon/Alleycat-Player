@@ -1,0 +1,350 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="https://8chananon.github.io/Alleycat-Player/archive/player/" target="_blank">
+<link rel="icon" href="favicon.ico">
+
+<title>Release Notes</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 15px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body>
+
+<h1 style="text-align:center"><r_>Alleycat Player</r_> <g_>Release Notes</g_> (v1a to v2f)</h1>
+
+<p><hr><p>
+<b>Why the name change from "Youtube Player"?</b>
+<p>
+The reason for the name change is that "Youtube Player" is, of course, a violation of YouTube's trademark. Also, the tool
+has moved far beyond simply being a player for Youtube videos. A name change only makes sense. The name comes from an old
+project I started in 1981 called "Alleycat BBS". This is of nostalgic value to me.
+<p>
+The Alleycat BBS (Bulletin Board System) has disappeared into the fog of history. Nothing can be found about it in any
+archive. It was small with just 200 to 300 users. The computer which hosted it was also small. It was an Ohio Scientific
+Superboard with 8K of memory (later upgraded), a one-Mhz 6502 CPU and a 300-baud modem with a home-made phone pickup device.
+The code was written with a home-brew OS and a very basic machine code assembler. The service ran for three years and
+enjoyed a solid reputation. The name "Alleycat" was fondly regarded and, no doubt, persists in the minds of its former
+users. It seems only fitting to bring the name back to life.
+
+<p><hr><p>
+<b>Release notes for v1a (December 7, 2019)</b> -- <a href="alleycat-player-v1a.htm">source</a>
+<p>
+Install the Local Proxy Server app which is available
+<a href="https://archive.org/details/alleycat-player" target=_blank>here</a>. The current version name is "kraker-1b".
+<ul><li>
+The Youtube scraper has been updated. The code now supports client-generated signatures. Significant issues with the
+reliability of the Invidious instances has made this update necessary. It is true that this work should have been already
+done but I opted to support Invidious instead. Turns out to be not such a smart move (slapping myself). In the absence of
+region-locking or DRM or other YouTube shenanigans, the revised scraper has a success rate of nearly 100%. Genyoutube,
+Y2meta and Invidious are available as last resort. Live streaming is not (yet) supported. Invidious will continue to be
+used for that but only "invidio.us" and "invidious.snopyta.org" currently support live streams.
+</li><li>
+If you have already installed the Local Proxy Server (Kraker) then all you need for version 1b is the file "proxy.js".
+This update is needed for DailyMotion. Other sites should work correctly with the original version.
+</li><li>
+Added sites: StreamLord
+</li><li>
+Removed sites: PornHub
+</li><li>
+Updated: Genyoutube, DailyMotion (now m3u8), SoundCloud, PressTV, Bloomberg, ClipWatching, OnlyStream, AudioRealm.
+</li><li>
+Two radio stations stopped working and have been removed.
+</li><li>
+Updated TV links: Zougla TV, Newfoundland TV
+</li><li>
+Removed TV links: ZU Radio, Rede Minas (Brazil), TF1 (France)
+</li><li>
+"Out of Focus TV" was down for a while and is again available.
+</li><li>
+These are currently off-line but expected to return: DanceStar TV, StarGaze Musik, Sunburn TV, Runway TV, Xcorps TV,
+West Ohio Sports Network, Scream Fest, Orbit TV (Dominican Republic), Canal Capital (Colombia), Angel TV (India)
+</li><li>
+Around the end of November, the "savitar.tv" sources went through a series of updates and reversals. The only thing that
+has changed in the end is that "savitar.tv" is now "ustv.to". While the feeds are still only 360p, the bitrate seems to
+be better.
+</li><li>
+VidNode has been updated to include mp4 download links via the DLoad button. The site works best with the Local Proxy
+Server since the m3u8 format will not work otherwise. Without the proxy, Alleycat will play mp4 but a CORS unblocker is
+required. Note that mp4 is sometimes unavailable or may stream poorly.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v1b (December 12, 2019)</b> -- <a href="alleycat-player-v1b.htm">source</a>
+<ul><li>
+Some adjustments to the brightness control.
+</li><li>
+More shenanigans from the sites used for "ustv.to" links (formerly "savitar.tv"). Now working fine again and there is no
+bot blocker to bypass. The video link can be retrieved with a CORS unblocker but not with a remote proxy since the URL
+is encoded with the IP address.
+</li><li>
+Currently down: BBC 1, BBC 2, BBC News. I don't have alternate links so the outage is hopefully temporary.
+</li><li>
+Teleos Media (www.teleosmedia.com) seems to have gone out of business. These channels are gone:
+DanceStar TV, StarGaze Musik, Sunburn TV, Xcorps TV, Scream Fest. Indie Wave is still functional but it is removed anyway.
+</li><li>
+Also removed are: Runway TV, West Ohio Sports Network, American Heroes, E! Channel, Canal Capital (Colombia),
+Nagorik TV (Bangladesh)
+</li><li>
+Channels added: AVA Music, Radio Carina, Steelbird Music, VH-1, EDGE Sport, Fashion One, New Orleans TV,
+Dabl Lifestyle, Nat Geo People, Southeastern Channel
+</li><li>
+Restored TV link: Rede Minas (Brazil)
+</li><li>
+Vimeo updated for m3u8 live streaming. CORS unblocker or Local Proxy Server needed to play the m3u8.
+</li><li>
+Forgot to remove PornHub in v1a and it is now gone.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v2a (January 12, 2020)</b> -- <a href="alleycat-player-v2a.htm">source</a>
+<p>
+Big update for YouTube. Additional video formats are now available with the DASH player and the Kraker Local Proxy Server
+(version 1c is required). Now, Kraker is indispensable in this process since there are a number of issues involving not
+just the usual CORS limitations but also the behaviour of the Google video server. In order to access the video file, DASH
+needs to employ byte ranges. That would normally be fine BUT when the web browser sends an OPTIONS request to test whether
+byte ranges are permissible, Google answers NO. Bad Google. Byte ranges work fine but you just don't want to allow it.
+Alrighty then...Kraker will auto-complete the OPTIONS request and green light it.
+<p>
+The role of the Kraker server goes further than that. It also is responsible for creating the mpd file for the DASH player.
+It retrieves a blank template from the local disk, merges that with data from Alleycat and then makes the file accessible
+as a remote resource. The point here is that the video is playable with any video player that supports DASH/mpd playback
+(like SMPlayer or VLC). The video data is held only in the Kraker memory so it goes away if the proxy is shut down. Also,
+there is a limit of 16 videos available at one time. Note that VLC displays an incorrect progress bar for live streams while
+SMPlayer only plays the first few seconds. VOD works fine on both. This has to do with the fact that the DASH specs are a
+mess and nobody really knows how it is supposed to work. It cost me three days of trial and error to get the native DASH
+player to work correctly.
+<p>
+For most videos, all of these formats are available: 360/480/720p in both mp4 and webm. The thing here is that the audio
+and the video are separate files (which is why the DASH player is needed). For mp4, these are the YouTube tag numbers:
+#140 (audio), #134 (360p), #135 (480p), #136 (720p). For webm: #251 (audio), #243 (360p), #244 (480p); #247 (720p).
+Higher resolutions may be available for some videos but Alleycat does not access them (at least, not at this point in time).
+If the DASH formats are not available (rare), Alleycat will revert to the normal formats. Also, the audio and video are
+both available for download via the DLoad button.
+<p>
+At this point, there is hardly any need for the additional YouTube sources, which are decidedly unreliable at best. Still,
+they are sometimes useful for bypassing geo-blocks though that doesn't always work. Oh well.
+<ul><li>
+New brightness controls with a finer adjustment gradient. Also, ability to clear and restore the settings using the
+Reset button.
+</li><li>
+New source for free movies and TV shows: UniqueStream. Note that the site is in a state of flux since I already have had to
+update the code before this release. I expect additional changes to occur so be prepared for this site to become
+inaccessible at some point (will fix in the next Alleycat update).
+</li><li>
+VidNode updated because the domain name changed to "vidcloud9.com". Still called VidNode though and the site is still
+accessible as "vidnode.net".
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v2b (February 3, 2020)</b> -- <a href="alleycat-player-v2b.htm">source</a>
+<p>
+Found two issues with YouTube. First, the signature creation algorithm was failing on some versions of "base.js". This may
+just be YouTube developers messing around (it has happened before). The second issue is the DASH player failing on some
+videos. This was fixed by changing the DASH player version from "3.0.1" to "2.9.3". I had to do the same thing previously
+for the HLS player (reverting from the latest version to version "0.12.0") because the player was failing on some videos
+sourced from Akamai. This game of whack-a-mole never ends.
+<p>
+I have noticed the occassional livestream YouTube video which does not work because the expected video information is
+absent. Instead, the YouTube file contains the URLs for both an mpd and an m3u8 file. This issue is fixable but I
+won't be addressing it until I see indications that it is more common than it currently appears. If you encounter such a
+video, it may be viewable via an Invidious instance.
+<p>
+A new video resolution indicator has been added to the viewers. This info comes from the video playback element (the
+<i>video</i> tag). For HLS/DASH playback, the indicator will update when the player switches the quality level.
+An important fact here is that the resolution info in the video element is never updated. For that reason, updates must
+be pulled directly from the HLS/DASH video player. In the case of HLS, the resolution info comes from the actual video
+stream (though I have noticed that it is sometimes wrong). In the case of DASH, the info comes from the manifest (the mpd
+file), not from the video stream. For this reason, it may not necessarily reflect the true resolution.
+<p>
+<ul><li>
+Updated ABC, VidNode, UniqueStream
+</li><li>
+StreamLord still does not have a working search feature. It has been replaced with WillTV.
+</li><li>
+The sources for many US channels (ustv247.tv, ustvgo.tv, watchnewslive.tv) now have a bot blocker in place. This was true
+already for the main page links but did not apply to the secondary links which Alleycat is using for the video URL. The
+code has been updated to bypass the bot blocker but that requires the Local Proxy Server to work.
+</li><li>
+The new remote proxy added in v2a (35.210.173.135) is marked with a double asterisk because it can be used to break
+the region locking on PBS. If this proxy turns out to be stable, I will be looking into it further.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v2c (February 18, 2020)</b> -- <a href="alleycat-player-v2c.htm">source</a>
+<p>
+This is a major interface upgrade. In the past, I was (grudgingly) satisfied with the user interface despite the obvious
+shortcomings. This is and was always a technical endeavour (hacking websites) and not an exercise in web page
+design. However, I have reached a point where I am pretty pleased with the standing of this project technically
+so it makes sense to pay closer attention to the user interface.
+<p>
+Two things warranted my attention: compatibility with both standard and wide-screen monitors and the generally inadequate
+look of the default select boxes, especially in Firefox with its long-standing issue with the double-spacing in dropdown
+lists. These issues have been fixed for good. The select boxes have been totally replaced using some tricky CSS and some
+Javascript. The video viewports, which were not zoomable before, will now zoom correctly along with the other interface
+elements. My original mistake was taking seriously some "expert" design advice. I am not so naive anymore.
+<p>
+For those who might be looking to this project for potential lessons in HTML/CSS and Javascript, I recommend that you
+study the minimal version of this application (alleycat-player.htm). The current complexity of the code is daunting for
+beginners. I apologize for the state of the HTML/CSS code but that's not my fault. I'm not the only developer who
+struggles mightily with this stuff. The specs have grown in complexity over the years and often work against the original
+intent of the World Wide Web as being primarily text-oriented. In other words, Alleycat Player is pushing the limits. This
+stuff would actually be better done as a desktop application and not a browser-based one. That said, I can't say that the
+end result is in any way disappointing (knock on wood).
+<ul><li>
+CBC News is geo-locked so I added a secondary link which is not. However, the Local Proxy Server is required.
+</li><li>
+There has been some churn in the TV channel selection due to the usual problem of links suddenly biting the dust. I hate
+it but that is life in the fast lane. The sources for many of the US channels are still behind a bot blocker and it looks
+to be a permanent condition. You are out of luck for those channels without the Local Proxy Server. Most of the
+secondary channels are, unfortunately, also inaccessible without the proxy.
+</li><li>
+The Internet Radio has been expanded to support up to 100 stations. However, if you are expecting me to populate this with
+new links then you are seriously barking up the wrong tree. I only did this in order to finalize the design. The anonymous
+user of this anonymous application created by an anonymous developer can very well learn how to add his/her own radio
+stations (hur hur).
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v2d (March 3, 2020)</b> -- <a href="alleycat-player-v2d.htm">source</a>
+<p>
+At this point, I need to talk about what I call the "Referer lock". Yes, the word "referer" is misspelled. It is an
+historical artifact. Simply put, the Referer is the domain (the URL) from which a page or a component was loaded. Elements
+of a page loaded from different servers are in different domains. This is only important in the case of <i>iframe</i> or 
+<i>script</i> tags because these are active elements while images and text are passive. There are visibility rules which
+the browser enforces between elements or components in different domains. For example, a video embedded in one of the
+Alleycat viewers is invisible to Alleycat while the embedded video is blocked from opening windows (popup ads)
+outside of its "sandbox". 
+<p>
+There are security protocols which govern communication between web browsers and web servers but it really consists of
+little more than a "gentleman's agreement" on the part of the browser that it will implement certain restrictions at the
+request of the server. Special HTTP headers are used to control this. While the visibility rules enforced by the browser
+within itself are difficult to overcome without exploiting security weaknesses, it is trivial to break security outside of
+the browser. This is accomplished with a proxy server. A proxy server sits between the browser and the destination server
+for the purpose of disguising one from the other and it can manipulate the messages passing back and forth. There are
+certain advantages to using a remote proxy over a local proxy and vice versa but those details are not important here.
+<p>
+Getting back to the main point, the HTTP Referer header is not accessible to any script running inside of the browser
+(though access is possible with an extension or add-on). Thus, Alleycat Player cannot pretend to be from "twitter.com" or
+any other domain in order to bypass security checks on the server. The Referer lock is actually a pretty powerful check on
+unauthorized access to server content. Though it is a trivial thing to change an HTTP header, it can only be done with a
+specialized tool. A video which is Referer-locked won't play on SMPlayer though I think there is a way to do this on VLC.
+Forget about Windows Media Player or any other player which does not specifically support a user-specified Referer. In some
+cases, the server will accept its own domain as Referer but video players do not take advantage of this. Without the user
+being able to control the Referer header, such videos are unplayable.
+<p>
+Up to this time, the only videos that I have found to be Referer-locked are some m3u8 live streams and the videos from
+VidNode (also m3u8). No mp4 videos have been found like this until XHamster went for it. I don't know if this was
+deliberate. Perhaps somebody flicked a switch at the server without intending to. Or maybe the management decided that
+too many people were downloading (you can easily find the mp4 links in the HTML source). In any case, if this sort of
+thing is gonna keep happening, I figure that it's time to give my users a better understanding of what this proxy thing
+is all about. This is a war that I'm waging with content providers. Hee hee.
+<p>
+<ul><li>
+Updated: Fox News occassionally delivers m3u8 instead of mp4.
+</li><li>
+Updated: Twitter very rarely gives mp4 instead of m3u8. Strange.
+</li><li>
+Updated: GoUnlimited, UniqueStream (reverted to v2a code), XHamster (now requires Local Proxy Server).
+</li><li>
+Added MixDrop and StreamVid. Removed ProStream. Interesting thing about MixDrop is that I tried to hack it before but didn't
+find a way around the link obfuscation. MixDrop has changed its page format so now Alleycat can get the links. There is
+still an obfuscation in place but I've seen the exact same method before so I know how to hack it.
+</li><li>
+Forgot to mention that iHeartRadio was added in v2c. Only podcasts are supported for now. The big names like Rush Limbaugh,
+Sean Hannity and Dan Bongino are all there.
+</li><li>
+I have added active links (shown in red) for all of the Talk Radio stations. These links go to a web site where you
+can find the station broadcast schedule (though some are less informative than others). Talk Radio is not terribly
+interesting if you don't know who in hell is talking.
+</li><li>
+Some Internet TV channels are down. Not fixing them at this time because they've all been down before. They are:
+MiX Music, You Too America, CFTO, City TV, TV Ontario, TV Mar, A Spor HD.
+</li><li>
+There is an issue with VidNode as I write this. Recently, the site was delivering invalid links for the m3u8
+videos but now the links are not found anymore. That's fine as long as there is at least one mp4 link available on the
+download page (hit DLoad to get the links). Additionally, there is usually a link to an XStream video as well on the
+VidNode main page so Alleycat will link to this if present. Note that the XStream links are often broken (video removed for
+DMCA violation). Anyway, that's how it's going to work until VidNode fixes their problem. If the site goes down, there are
+others waiting to be hacked.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v2e (March 7, 2020)</b> -- <a href="alleycat-player-v2e.htm">source</a>
+<p>
+A bunch of the US channels went down. That's 51 channels though 34 of those have a secondary feed. The sites which
+supply the "ustv.to" links have undergone yet another rebuild. The links are obfuscated now whereas they were in the clear
+before. That's fixed. Also, the sites have moved over to CloudFlare from Sucuri for the DDOS protection (bot blocker).
+That's fixed too. At this point, only "ustvgo.tv" appears to be using the bot blocker but that can change at any time.
+If a blocker is not in place, the sites are accessible with a remote proxy. Don't expect that to last. You should be using
+the Local Proxy Server.
+<p>
+VidNode has fixed the problem with the m3u8 feeds. Some of the mp4 links are not working but I haven't done more than
+a few spot checks.
+<p>
+Some of the Canadian channels have been replaced and they all require the local proxy. I don't have a replacement for
+TV Ontario but TVO Kids still works.
+
+<p><hr><p>
+<b>Release notes for v2f (March 11, 2020)</b> -- <a href="alleycat-player-v2f.htm">source</a>
+<p>
+The fixes made in v2e are holding up but now Youtube has an issue. More whack-a-mole. Never before have I had to deal with
+so much breakage in such rapid succession. Something changed with Youtube regarding signed videos. The signature creation
+algorithm broke, meaning that some videos stopped working. They won't play in embedded mode either and this has
+broken GenYoutube. For some reason, the same videos will play embedded on Hooktube. Da fuck? Invidious is not affected and
+I will explain what is happening. There are up to 5 remote-access steps involved in establishing a connection to a
+signed video. For example:
+<p>
+Step 1: <r_>https://www.youtube.com/get_video_info?video_id=kJAsn_vJyY4&el=leanback</r_><br>
+Step 2: <r_>https://www.youtube.com/get_video_info?video_id=kJAsn_vJyY4&el=previewpage</r_><br>
+Step 3: <r_>https://www.youtube.com/embed/kJAsn_vJyY4</r_><br>
+Step 4: <r_>https://www.youtube.com/watch?v=kJAsn_vJyY4</r_><br>
+Step 5: <r_>https://www.youtube.com/yts/jsbin/player_ias-vflQm4drh/en_US/base.js</r_>
+<p>
+Step 2 is only needed if step 1 fails. If a video is signed then step 3 is needed to determine the URL from which the
+signature algorithm may be obtained. This is where it breaks. Currently, Youtube is delivering a URL that looks like this:
+<p>
+<r_>https://www.youtube.com/s/player/373b36d1/player_ias.vflset/en_US/base.js</r_>
+<p>
+The next step is to load the file pointed to by the URL and search through it to collect the bits of the signature creation
+algorithm which is then executed in a Javascript <i>eval</i> statement. The above URL delivers a signature algorithm
+alright but it does not work. The Google server rejects the video URL composed with this algorithm. Step 4 is the fix for
+this issue. The correct signature algorithm is extracted in step 5.
+<p>
+Now, there is a problem with loading the URL shown in step 4. The size is over 400K while the URL in step 3 is less than
+20K. That is why step 4 was not part of the original process. Invidious uses step 4, not step 3, and that is why it has not
+been broken by this Youtube change. In order to avoid unnecessary Internet access, Alleycat saves the results from steps
+4 and 5 so you are not likely to see these more than once. Youtube cycles the signature creation algorithm once a day though
+I have seen it occassionally happen several times in a short period.
+<p>
+Additionally, GenYoutube has now been dropped from the list of Youtube sources and not just because of this recent change.
+The method for obtaining playable video links from GenYoutube has changed. It can be hacked but I'm not gonna bother.
+The site has never been a reliable source anyway. Previously, "y2meta.net" changed over to "cnclips.net" and I had that
+working but the site is now pretty broken so it has been dropped. We are now left with just two Invidious instances as
+backup sources for Youtube. Oh well.
+
+<p><hr><p>
+
+</div><div style="width: 90vw; height: 50vh"></div>
+
+</body></html>

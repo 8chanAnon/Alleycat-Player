@@ -1,0 +1,4434 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Youtube Player</title>
+
+<style type="text/css">
+
+.widevid {
+  position: relative;
+  width: 72vw;
+  padding-bottom: 40.5vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: indigo;
+}
+
+.widevid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+.televid {
+  position: relative;
+  width: 60vw;
+  padding-bottom: 45vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: indigo;
+}
+
+.televid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+.msgbox {
+  position: absolute;
+  top: 33%;
+  left: 40%;
+  right: 40%;
+  text-align: center;
+  border-radius: 10px;
+  font-style: italic;
+  background-color: slateblue;
+  color: lavender;
+}
+
+iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border: none;
+  background-color: transparent;
+}
+
+select {
+  font-size: 13px;
+  background-color: cornsilk;
+  color: brown;
+}
+
+select.tubes {
+  background-color: papayawhip;
+  color: red;
+}
+
+select.stack {
+  width: 100%;
+  max-width: 97%;
+  margin: 0 0 0 3px;
+  background-color: papayawhip;
+  color: firebrick;
+}
+
+input.idspec {
+  width: 100%;
+  max-width: 97%;
+  padding: 1px 3px 1px 3px;
+  background-color: cornsilk;
+  color: sienna;
+}
+
+input.urlspec {
+  width: 75vw;
+  padding: 1px 3px 1px 3px;
+  background-color: cornsilk;
+  color: steelblue;
+}
+
+table {
+  border: 3px solid green;
+}
+
+td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0 6px 0 6px;
+  color: saddlebrown;
+  font-size: 14px;
+}
+
+td.vidbox {
+  padding: 0;
+  text-align: initial;
+  vertical-align: middle;
+}
+
+td.textbox {
+  text-align: center;
+  padding: 0px 12px 0 10px;
+  width: 22vw;
+}
+
+button {
+  width: auto;
+  height: 100%;
+  font-size: 12px;
+  background-color: powderblue;
+}
+
+button.is_off {
+  border-style: outset;
+  background-color: pink;
+}
+
+button.is_on {
+  border-style: inset;
+  background-color: lightgreen;
+}
+
+button.wrapper {
+  width: 60px;
+  font-size: 13px;
+  padding: 0 3px 0 3px;
+  border: 1px solid gold;
+  background-color: blanchedalmond;
+  color: red;
+}
+
+button.copy {
+  font-size: 18px;
+  color: darkblue;
+  background-color: pink;
+}
+
+ul {
+  padding: 1em;
+  padding-top: 0;
+  list-style: square;
+}
+
+b_ {color: blue;}
+r_ {color: crimson;}
+g_ {color: seagreen;}
+w_ {color: saddlebrown;}
+
+</style></head><body style="color: maroon; background-color: moccasin">
+
+<h1><g_>Youtube Player v7</g_></h1>
+
+<g_>Pick a Proxy:</g_>&nbsp;
+<select id="proxy" size=1>
+  <option value="https://test.cors.workers.dev/?" selected>test.cors.workers.dev
+  <option value="https://cors-anywhere.herokuapp.com/">cors-anywhere.herokuapp.com
+  <option value="https://bypasscors.herokuapp.com/api/?url=">bypasscors.herokuapp.com
+  <option value="https://yacdn.org/proxy/">yacdn.org
+  <option value="">None
+</select>
+<b>&nbsp;&nbsp;&nbsp;Go to <a href="#sites">Site list</a> or <a href="#movies">Movie sites</a></b>
+<p>
+The reason for a proxy is the security restrictions imposed by the web browser on Javascript. This is implemented via
+a set of rules known as CORS (Cross-Origin Resource Sharing). It depends on certain flags set by the web server on a
+file-by-file basis to indicate whether Javascript that was loaded from another server (or a local drive) is
+allowed access to a file or not. A proxy server may be employed between the web browser
+and the web server in order to undo the CORS restrictions so that Youtube Player will not be blocked. This mostly works
+but proxies are sometimes unreliable. A better solution is to install this handy extension, which performs the same job
+without the need to go through a proxy server.
+<p>
+<g_>Allow CORS</g_> --
+<a href="https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/"
+  target=_blank>Firefox</a> or
+<a href="https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf"
+  target=_blank>Chrome-based</a>
+<p>
+For other web browsers, you are on your own. This extension is just an on/off switch. Is there an issue with just
+leaving this active always? It can block cookies. Videos on Youtube or Twitter will not play
+(actually, I find this handy). As for security, you can choose to be paranoid if you want but I don't see any real cause
+for concern. If you use this, choose "None" in the above drop-down list. Note that some sites do NOT work with a proxy.
+<p><hr><p>
+Youtube Player supports playback of HLS/m3u8 and DASH/mpd videos. These extensions are no longer required:
+<p>
+<g_>Native MPEG-Dash + HLS Playback</g_> --
+<a href="https://addons.mozilla.org/en-US/firefox/addon/native-mpeg-dash-hls-playback/"
+  target=_blank>Firefox</a> or
+<a href="https://chrome.google.com/webstore/detail/native-mpeg-dash-%20-hls-pl/cjfbmleiaobegagekpmlhmaadepdeedn"
+  target=_blank>Chrome-based</a>
+<p>
+For m3u8 playback only: <g_>Native HLS</g_> --
+<a href="https://addons.mozilla.org/en-US/firefox/addon/native_hls_playback/"
+  target=_blank>Firefox</a> or
+<a href="https://chrome.google.com/webstore/detail/native-hls-playback/emnphkkblegpebimobpbekeedfgemhof"
+  target=_blank>Chrome-based</a> &nbsp;
+<p><hr><p>
+HLS and DASH are supported via these two modules:
+<p>
+cdn.jsdelivr.net/npm/hls.js@latest<br>
+reference.dashif.org/dash.js/v2.5.0/dist/dash.all.min.js
+<p><hr><p>
+<b>Tips on using Youtube Player</b> -- these instructions are not meant to be complete. Youtube Player is
+primarily designed as a hacking tool. Please experiment to determine the limits and capabilities of the tool.
+<p>
+The original purpose of this tool was to support backdoor access to videos on YouTube for the purpose of downloading or for
+transferring the URL of a video file to an external viewer for playback. The tool has expanded considerably since
+the first version and it now supports backdoor access to videos on almost 50 different sites.
+<p>
+There are two ways to play videos embedded in web sites. The first method is to get the ID number of the video if
+such is available. Enter the ID number in the line below the "Play ID" button and press. The second method is to
+use the DIG option. In this case, you would copy and paste the URL of a web page in the line beside the "DIG" button
+and press. For some sites, Youtube Player will search the indicated page for the ID number of a video and then apply
+the ID lookup function. Some sites do not employ video ID numbers so the DIG option is the only way to get the video.
+Many web sites can be problematic due to small or major differences in page design so this may not always work. Also,
+sites may sometimes change the page format so that Youtube Player can no longer find the video. For this reason, YP is
+continuously being tested and updated accordingly.
+<p>
+A complete URL may be entered as the ID number with the caveat that the ID must be the last part of the URL. The basic rule
+is that no character (other than a single slash) is permitted after the ID. A character count is used to separate the ID
+from the rest of the URL. For YouTube, an ID is always exactly 11 characters. For some sites, there is a small range
+like from 6 to 8 characters. In the event that a known good ID number is rejected, you can force the ID to be
+accepted by preceding it with an asterisk (*). This is seldom necessary but might be needed for very old videos.
+<p>
+In many cases, you have the option of choosing the resolution of the video. The format/resolution selection box has an odd
+appearance due to Youtube Player's original purpose of extracting YouTube videos. YouTube, unlike every other video
+storage site, uses its own special coding system for resolutions and formats (because it has so many). For example,
+#22 refers to mp4-720p and #43 refers to webm-360p. Note that the webm format is only available on YouTube.
+The checkbox called "Format" applies to m3u8 playback (not mp4 or mpd). If checked, the video track for the desired
+resolution will be extracted from the master m3u8. Note that this cannot be done if the master file contains an audio
+track separate from the video.
+<p>
+There are two different methods for extracting a YouTube video URL. The simpler method is to get the URL
+from a site called Invidious. The format of an Invidious URL is:
+<p>
+https://invidio.us/latest_version?id=xxxxxxxxxxx&itag=18
+<p>
+This is not the true URL of the video, which is a very long string of characters. The Invidious URL returns
+the true URL with a server redirection. The second method of extracting the video URL is from either GenYoutube or from
+YouTube itself. The latter is problematic so the former is currently used (this may be easily changed in the YP code).
+The "Format" checkbox is used to switch between Invidious and GenYoutube. Note that webm is not available with
+the GenYoutube method.
+<p>
+The button called DLoad is for m3u8 sites. Both the "No Play" and the "Format" options must be checked. The m3u8 format
+(similar to m3u used for mp3) consists of multiple segments, each about 10 seconds long. In order to convert to another
+format like mp4, each of these segments must be downloaded. The DLoad button will open a new window with the list
+of segments. This has limited functionality. You can change the list format to text by changing the value of the variable
+called "plain_text" inside the Youtube Player code. At some point, I'll figure out what more I can do with this.
+<p>
+<b>Sandboxing</b>
+<p>
+This is a web browser feature which is employed by Youtube Player to prevent Javascript embeds from opening windows or
+popups for advertising. Sites like OpenLoad and Streamango are unsafe when used without a good popup blocker. However,
+if you play the URL inside Youtube Player, these popups are very effectively blocked. Any URL may be inserted into YP,
+not just videos. The native viewers in YP are sandboxed by default. However, if you employ a window option
+to open the URL, you need to indicate to YP that you want the window to be sandboxed. Just check the Sandbox option.
+If you don't want a sandbox but you want to run a non-video URL then check the Raw option. In the default Wrapper mode,
+there are three selectable options: Wrapper for playing mp4/ogv/webm videos (or whatever video format your web browser
+supports), M3U8 for HLS/m3u8 files and DASH for DASH/mpd files.
+<p>
+<b>Web browser compatibility notes</b>
+<p>
+Microsoft Edge has native support for m3u8 and mpd. This does not conflict with Youtube Player. Videos have a strong
+tendency to pixelate badly. Google Chrome and Brave also have issues with pixelation but to a much lesser extent.
+Firefox has no such issue. Opera, Maxthon and Vivaldi were briefly tested. They work but pop-up windows do not size
+correctly.
+<p>
+If the "Allow Multiple" option is not checked, windows are supposed to get re-used or closed as needed. However, I
+have found two cases where the web browser incorrectly blocks the window close function in Youtube Player. Edge
+does not allow a window opened in Raw mode to be closed. Firefox (on Win10 but not on WinXP) blocks in Raw mode
+if the window is controlled by an extension (such as for m3u8/mpd playback).
+<p>
+Always keep in mind that browsers contain various "security" features that may interfere with Youtube Player. Consider
+that YP is able to extract video links from numerous different sites. Your browser has no idea what is trustworthy and what
+is not (even though the content is just a video). You may need to battle with the site blockers in the browser itself
+and in whatever add-ons or extensions you may have. Don't blame YP. Your browser is just trying to "protect" you.
+Normally, a notice of some sort should appear to warn you about blockage. Sometimes not. If a video does not play,
+check the settings in your web browser or pop-up blocker. 'Nuff said. It isn't too bad overall.
+<p>
+
+<p><hr><p>
+As usual, refer to my comments in the previous versions of the Youtube Player.
+<p>
+<b>Changes since the last version:</b>
+<p>
+A new section has been added for free movies and TV shows. Check it out.
+<p>
+Bad news: the "cors.io" proxy server has been shut down. This is bad because I was using it to break the
+region locking on PBS. There must be some way to break region locking in general but I haven't found it yet.
+<p>
+New sites added: LiveLeak and NDTV (India).
+<p>
+Note: Brighteon is going through a system upgrade which involves a total revamping of the file formats.
+Youtube Player will be updated as needed when the upgrades are done.
+<p>
+Note: CBS updated because of page format change.
+<p>
+Note: Fox DIG extended to cover "radio.foxnews.com".
+<p>
+Note: DailyMotion is now mp4. Reason for having m3u8 before: the mp4 URL fails with SMPlayer due to an errant
+character (#) in the redirection URL.
+<p>
+Note: InfoWars is now m3u8. The problem with extracting an mp4 is that there is only one resolution, which is usually
+720p but may sometimes be 1080p. The higher resolution is problematic for slower computers or Internet connections.
+The m3u8 format allows resolution throttling down to 360p. If you need the mp4 URL for download, it is available with
+the DLoad button.
+<p>
+Note that the Facebook DIG also works with Instagram.
+<p>
+Sites accessible with a Brighteon DIG:<br>
+&nbsp;- http://counterthink.com<br>
+&nbsp;- https://www.naturalnews.com<br>
+&nbsp;- https://www.stuff.co.nz<br>
+&nbsp;- https://www.nzherald.co.nz<br>
+&nbsp;- https://www.miamiherald.com<br>
+&nbsp;- https://time.com<br>
+&nbsp;- https://www.itv.com/goodmorningbritain<br>
+&nbsp;- https://www.thesun.co.uk
+<p>
+Sites accessible with a Podcasts DIG:<br>
+&nbsp;- https://podcasts.apple.com<br>
+&nbsp;- https://www.stitcher.com<br>
+&nbsp;- https://radiopublic.com<br>
+&nbsp;- https://overcast.fm<br>
+&nbsp;- https://www.podbean.com
+<p>
+Sites accessible with a JWPlayer DIG:<br>
+&nbsp;nothing here just yet because I lost track of the two sites where this worked. :(
+<p><hr><p>
+There are three symbols used to indicate the options available for a particular site. [#]&nbsp;means no DIG option because the
+video ID is always exposed. [?]&nbsp;means that video ID numbers are not available (you have to DIG). [+]&nbsp;means that both
+ID numbers and the DIG option are supported.
+<p>
+Here is a rundown of each site, the available video formats and the site URL (link will open a new tab or window):
+<p>
+<h3 id="sites"><r_>Site List</r_>
+  <small> -- Go to <a href="#info">Info viewer</a> or <a href="#news">News viewer</a> or <a href="#movies">Movies</a></small></h3>
+
+<table>
+
+<td>YouTube		</td><td>mp4/webm	</td><td>*</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://invidio.us">invidio.us</a></td>
+<td><a target=_blank href="https://www.genyoutube.net">www.genyoutube.net</a></td></tr>
+
+<tr><td>BitChute	</td><td>mp4		</td><td>480p</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://www.bitchute.com">www.bitchute.com</a></td></tr>
+
+<tr><td>Vimeo		</td><td>mp4		</td><td>*</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://vimeo.com">vimeo.com</a></td></tr>
+
+<tr><td>InfoWars	</td><td>m3u8		</td><td>*</td><td>[+] No Proxy</td>
+<td><a target=_blank href="https://www.infowars.com">www.infowars.com</a></td></tr>
+
+<tr><td>153News		</td><td>mp4		</td><td>*</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://153news.net">153news.net</a></td></tr>
+
+<tr><td>LiveLeak		</td><td>mp4	</td><td>*</td><td>[#] No Proxy</td>
+<td><a target=_blank href="https://www.liveleak.com">www.liveleak.com</a></td></tr>
+
+<tr><td>Brighteon	</td><td>m3u8/mp4	</td><td>?/*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.brighteon.com">www.brighteon.com</a></td>
+<td><a target=_blank href="http://counterthink.com">counterthink.com</a></td></tr>
+
+<tr><td>DailyMotion	</td><td>m3u8		</td><td>*</td><td>[#] CORS</td>
+<td><a target=_blank href="https://www.dailymotion.com">www.dailymotion.com</a></td></tr>
+
+<tr><td>PragerU		</td><td>mp4		</td><td>*</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.prageru.com">www.prageru.com</a></td></tr>
+
+<tr><td>TEDTalks	</td><td>mp4		</td><td>*</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.ted.com">www.ted.com</a></td></tr>
+
+<tr><td>Nat. Film Board	</td><td>m3u8		</td><td>*</td><td>[+] No Proxy</td>
+<td><a target=_blank href="https://www.nfb.ca">www.nfb.ca</a></td></tr>
+
+<tr><td>Facebook	</td><td>mp4		</td><td>varies</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.facebook.com">www.facebook.com</a></td>
+<td><a target=_blank href="https://www.instagram.com">www.instagram.com</a></td></tr>
+
+<tr><td>SoundCloud	</td><td>mp3		</td><td></td><td>[+] Proxy</td>
+<td><a target=_blank href="https://soundcloud.com">soundcloud.com</a></td></tr>
+
+<tr><td>Fox		</td><td>mp4		</td><td>432p</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.foxnews.com">www.foxnews.com</a></td>
+<td><a target=_blank href="https://www.foxbusiness.com">www.foxbusiness.com</a></td></tr>
+
+<tr><td>ABC		</td><td>mp4		</td><td>360p</td><td>[+] Proxy</td>
+<td><a target=_blank href="https://abcnews.go.com">abcnews.go.com</a></td></tr>
+
+<tr><td>CBS		</td><td>m3u8		</td><td>*</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.cbsnews.com">www.cbsnews.com</a></td></tr>
+
+<tr><td>CNBC		</td><td>mp4		</td><td>*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.cnbc.com">www.cnbc.com</a></td></tr>
+
+<tr><td>CNN		</td><td>mp4		</td><td>*</td><td>[?] No Proxy</td>
+<td><a target=_blank href="https://www.cnn.com">www.cnn.com</a></td>
+<td><a target=_blank href="https://edition.cnn.com">edition.cnn.com</a></td></tr>
+
+<tr><td>C-SPAN		</td><td>m3u8		</td><td>*</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.c-span.org">www.c-span.org</a></td></tr>
+
+<tr><td>MRCTV		</td><td>mp4		</td><td>*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.mrctv.org">www.mrctv.org</a></td>
+<td><a target=_blank href="http://www.newsbusters.org">www.newsbusters.org</a></td></tr>
+
+<tr><td>MS/NBC		</td><td>mp4		</td><td>*</td><td>[+] Proxy</td>
+<td><a target=_blank href="https://www.msnbc.com">www.msnbc.com</a></td>
+<td><a target=_blank href="https://www.nbcnews.com">www.nbcnews.com</a></td></tr>
+
+<tr><td>PBS		</td><td>m3u8		</td><td>*</td><td>[+] Proxy</td>
+<td><a target=_blank href="https://www.pbs.org">www.pbs.org</a></td></tr>
+
+<tr><td>CBC		</td><td>mp4		</td><td>*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.cbc.ca">www.cbc.ca</a></td></tr>
+
+<tr><td>CTV		</td><td>mpd		</td><td>?</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.ctvnews.ca">www.ctvnews.ca</a></td></tr>
+
+<tr><td>Global		</td><td>mp4		</td><td>540p</td><td>[+] Proxy</td>
+<td><a target=_blank href="https://globalnews.ca">globalnews.ca</a></td></tr>
+
+<tr><td>TVO		</td><td>mp4		</td><td>360p</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.tvo.org">www.tvo.org</a></td></tr>
+
+<tr><td>BBC		</td><td>mpd		</td><td>?</td><td>[+] Proxy</td>
+<td><a target=_blank href="https://www.bbc.com">www.bbc.com</a></td></tr>
+
+<tr><td>Al Jazeera	</td><td>mp4		</td><td>*</td><td>[+] Proxy (DIG)</td>
+<td><a target=_blank href="https://www.aljazeera.com">www.aljazeera.com</a></td></tr>
+
+<tr><td>NDTV		</td><td>mp4		</td><td>320/720p</td><td>[?] Proxy</td>
+<td><a target=_blank href="https://www.ndtv.com">www.ndtv.com</a></td></tr>
+
+</table>
+<p>
+
+? = auto select (video player chooses)<br>
+* = user selectable (via format box)<br>
+CORS = only accessible with a CORS unblocker<br>
+Note: for DailyMotion, you can use the Sandbox option to embed the video
+
+<div style="width: 90vw; height: 20vw"></div>
+
+<!--
+////////////////////////////////
+///// INFO + ENTERTAINMENT /////
+////////////////////////////////
+//-->
+
+<h3 id="info"><r_>Info + Entertainment</r_>
+  <small>-- Go to <a href="#news">News viewer</a> or <a href="#sites">Site list</a></small></h3>
+<p>
+<table><tr><td class=textbox>
+
+<button onclick="javascript:open_downloader()"><b_>DLoad</b_></button>
+<button onclick="javascript:loadid(5,0)">Play ID</button>
+<button onclick="javascript:loadid(5,2)">Clear</button>
+<p>
+<input type=text id="id5" maxlength=256 class=idspec onfocus="javascript:hidelist(5)"
+  onclick="javascript:input_onclick('id5')" onblur="javascript:input_onblur('id5')">
+<p>
+<select id="stk5" size=1 class=stack><option value=''>Select a video stack</select>
+<p>
+<select id="src5" size=1 class=tubes>
+  <option value= 0 >Invidious / YouTube&nbsp;&nbsp;
+  <option value= 1 ># mp4 - BitChute
+  <option value= 2 ># mp4 - Vimeo
+  <option value= 3 >+ m3u - InfoWars
+  <option value= 11># mp4 - 153News
+  <option value= 13># mp4 - LiveLeak
+  <option value= 4 >+ m3u - Brighteon
+  <option value= 5 ># m3u - DailyMotion
+  <option value= 8 >? mp4 - PragerU
+  <option value= 6 >? mp4 - TEDTalks
+  <option value= 7 >+ m3u - NatFilmBrd
+  <option value= 22>? mp4 - Facebook
+  <option value= 25>+ m3u - JWPlayer
+  <option value= 24>+ mp3 - SoundCloud
+  <option value= 23>? mp3 - Podcasts
+  <option value= 10>? -------- URL Test
+</select>
+<p>
+<input type=checkbox id="mov5f" checked> Format (Inv/YT)&nbsp;
+<input type=checkbox id="mov5p" checked> Use Proxy
+<p>
+<select id="fmt5" size=6>
+  <option value=18>mp4 - [18] 360p *
+  <option value=19>mp4 - [19] 480p *
+  <option value=22>mp4 - [22] 720p *
+  <option value=43>webm  [43] 360p *
+  <option value=44>webm  [44] 480p *
+  <option value=45>webm  [45] 720p *
+</select>
+<p>
+<select id="win5" size=1>
+  <option value="320:180">[16:9] 320 x 180
+  <option value="480:270">[16:9] 480 x 270
+  <option value="640:360">[16:9] 640 x 360
+  <option value="960:540">[16:9] 960 x 540
+  <option value="1280:720">[16:9] 1280 x 720
+  <option value="240:180">[4:3] 240 x 180
+  <option value="360:270">[4:3] 360 x 270
+  <option value="480:360">[4:3] 480 x 360
+  <option value="720:540">[4:3] 720 x 540
+  <option value="960:720">[4:3] 960 x 720
+</select>
+<p>
+<button id="btn5a" class="is_off" onclick="javascript:buttonpress(5,0)">New Window</button>
+<button id="btn5b" class="is_off" onclick="javascript:buttonpress(5,1)">Popup Window</button>
+<p>
+<input type=checkbox id="mov5m"> Allow Multiple&nbsp;
+<input type=checkbox id="mov5n"> No Play
+<p></p>
+<input type=radio id="mov5a" name="chk5"> Raw
+<input type=radio id="mov5b" name="chk5" checked><button onclick="javascript:toggle_hls(5,0)"
+  class="wrapper" id="hls5">Wrapper</button><input type=radio id="mov5c" name="chk5"> Sandbox
+
+</td><td class=vidbox>
+
+<!-- VIDEO -->
+<div class=widevid><h2 id="vid5" class=msgbox>No Video</h2>
+
+<iframe id="mov5" name="mov5" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen controls></iframe>
+
+</div></td></tr></table>
+
+<p style="text-align:center">
+<button onclick="javascript:loadid(5,1)">Play URL</button>
+<button onclick="javascript:urlcopy(5)">Copy</button>
+<button onclick="javascript:digid(5)"><b_>DIG</b_></button>&nbsp;
+
+<input type=text id="line5" maxlength=1024 class=urlspec
+  onclick="javascript:input_onclick('line5')" onblur="javascript:input_onblur('line5')">
+
+<p style="text-align:center">
+<button class=copy id="stk5-1" onclick="javascript:copylist(5,1)">Stack 1</button>
+<button class=copy id="stk5-2" onclick="javascript:copylist(5,2)">Stack 2</button>
+<button class=copy id="stk5-3" onclick="javascript:copylist(5,3)">Stack 3</button>
+&nbsp;
+<button class=copy id="stk5-4" onclick="javascript:copylist(5,4)">BitChute</button>
+<button class=copy id="stk5-5" onclick="javascript:copylist(5,5)">Vimeo</button>
+<button class=copy id="stk5-6" onclick="javascript:copylist(5,6)">InfoWars</button>
+<button class=copy id="stk5-7" onclick="javascript:copylist(5,7)">Misc</button>
+</p>
+<div style="width: 90vw; height: 15vw"></div>
+
+<!--
+/////////////////////////////
+///// NEWS & PROPAGANDA /////
+/////////////////////////////
+//-->
+
+<h3 id="news"><r_>News & Propaganda</r_>
+  <small>-- Go to <a href="#info">Info viewer</a> or <a href="#sites">Site list</a></small></h3>
+<p>
+<table><tr><td class=textbox>
+
+<button onclick="javascript:open_downloader()"><b_>DLoad</b_></button>
+<button onclick="javascript:loadnews(6,0)">Play ID</button>
+<button onclick="javascript:loadnews(6,2)">Clear</button>
+<p>
+<input type=text id="id6" maxlength=256 class=idspec onfocus="javascript:hidelist(6)"
+  onclick="javascript:input_onclick('id6')" onblur="javascript:input_onblur('id6')">
+<p>
+<select id="stk6" size=1 class=stack><option value=''>Select a video stack</select>
+<p>
+<select id="src6" size=1 class=tubes>
+  <option value= 0 >Invidious / YouTube&nbsp;&nbsp;
+  <option value= 1 >+ mp4 - Fox
+  <option value= 2 >+ mp4 - ABC
+  <option value= 3 >? m3u - CBS
+  <option value= 4 >+ mp4 - CNBC
+  <option value= 5 >? mp4 - CNN
+  <option value= 6 >? m3u - C-SPAN
+  <option value= 9 >+ mp4 - MRCTV
+  <option value= 7 >+ mp4 - MS/NBC
+  <option value= 8 >+ m3u - PBS
+  <option value= 11>+ mp4 - CBC
+  <option value= 12>+ mpd - CTV
+  <option value= 13>+ mp4 - Global
+  <option value= 14>+ mp4 - TVO
+  <option value= 21>+ mpd - BBC
+  <option value= 22>+ mp4 - Al Jazeera
+  <option value= 23>? mp4 - NDTV
+</select>
+<p>
+<input type=checkbox id="mov6f" checked> Format (Inv/YT)&nbsp;
+<input type=checkbox id="mov6p" checked> Use Proxy
+<p>
+<select id="fmt6" size=6>
+  <option value=18>mp4 - [18] 360p *
+  <option value=19>mp4 - [19] 480p *
+  <option value=22>mp4 - [22] 720p *
+  <option value=43>webm  [43] 360p *
+  <option value=44>webm  [44] 480p *
+  <option value=45>webm  [45] 720p *
+</select>
+<p>
+<select id="win6" size=1>
+  <option value="320:180">[16:9] 320 x 180
+  <option value="480:270">[16:9] 480 x 270
+  <option value="640:360">[16:9] 640 x 360
+  <option value="960:540">[16:9] 960 x 540
+  <option value="1280:720">[16:9] 1280 x 720
+  <option value="240:180">[4:3] 240 x 180
+  <option value="360:270">[4:3] 360 x 270
+  <option value="480:360">[4:3] 480 x 360
+  <option value="720:540">[4:3] 720 x 540
+  <option value="960:720">[4:3] 960 x 720
+</select>
+<p>
+<button id="btn6a" class="is_off" onclick="javascript:buttonpress(6,0)">New Window</button>
+<button id="btn6b" class="is_off" onclick="javascript:buttonpress(6,1)">Popup Window</button>
+<p>
+<input type=checkbox id="mov6m"> Allow Multiple&nbsp;
+<input type=checkbox id="mov6n"> No Play
+<p></p>
+<input type=radio id="mov6a" name="chk6"> Raw
+<input type=radio id="mov6b" name="chk6" checked><button onclick="javascript:toggle_hls(6,0)"
+  class="wrapper" id="hls6">Wrapper</button><input type=radio id="mov6c" name="chk6"> Sandbox
+
+</td><td class=vidbox>
+
+<!-- VIDEO -->
+<div class=widevid><h2 id="vid6" class=msgbox>No Video</h2>
+
+<iframe id="mov6" name="mov6" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen controls></iframe>
+
+</div></td></tr></table>
+
+<p style="text-align:center">
+<button onclick="javascript:loadnews(6,1)">Play URL</button>
+<button onclick="javascript:urlcopy(6)">Copy</button>
+<button onclick="javascript:dignews(6)"><b_>DIG</b_></button>&nbsp;
+
+<input type=text id="line6" maxlength=1024 class=urlspec
+  onclick="javascript:input_onclick('line6')" onblur="javascript:input_onblur('line6')">
+
+<p style="text-align:center">
+<button class=copy id="stk6-1" onclick="javascript:copylist(6,-1)">Stack 1</button>
+<button class=copy id="stk6-2" onclick="javascript:copylist(6,-2)">Stack 2</button>
+<button class=copy id="stk6-3" onclick="javascript:copylist(6,-3)">Stack 3</button>
+&nbsp;
+<button class=copy id="stk6-4" onclick="javascript:copylist(6,-4)">Fox</button>
+<button class=copy id="stk6-5" onclick="javascript:copylist(6,-5)">PBS</button>
+<button class=copy id="stk6-6" onclick="javascript:copylist(6,-6)">BBC</button>
+</p>
+<div style="width: 90vw; height: 30vw"></div>
+
+<!--
+////////////////////////////
+///// FREE MOVIES & TV /////
+////////////////////////////
+//-->
+
+<h3 id="movies"><r_>Movie Sites</r_>
+  <small> -- Go to <a href="#free">Movie viewer</a> or <a href="#sites">Info/News</a></small></h3>
+
+<table>
+
+<tr><td>Veoh		</td><td>mp4		</td><td>?</td><td>[#] Proxy</td>
+<td><a target=_blank href="https://www.veoh.com">www.veoh.com</a></td></tr>
+
+<tr><td>VidCloud	</td><td>mp4/m3u8	</td><td>?</td><td>[+] Proxy!</td>
+<td><a target=_blank href="https://vidcloud.icu">vidcloud.icu</a> !</td>
+<td>not = vidcloud.co</td></tr>
+
+<tr><td>TubiTV		</td><td>m3u8		</td><td>*</td><td>[+] CORS</td>
+<td><a target=_blank href="https://tubitv.com">tubitv.com</a></td></tr>
+
+<tr><td>VeryStream	</td><td>mp4		</td><td>?</td><td>[+] CORS!</td>
+<td><a target=_blank href="https://verystream.com">verystream.com</a> !</td>
+<td><a target=_blank href="https://www.putlocker.fyi">www.putlocker.fyi</a> !</td></tr>
+
+<tr><td>GoUnlimited	</td><td>mp4		</td><td>?</td><td>[+] Proxy!</td>
+<td><a target=_blank href="https://gounlimited.to">gounlimited.to</a> !</td>
+<td><a target=_blank href="https://www.lunchflix.com">www.lunchflix.com</a></td></tr>
+
+<tr><td>PornHub		</td><td>mp4		</td><td>*</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://www.pornhub.com">www.pornhub.com</a></td></tr>
+
+<tr><td>VidToDo		</td><td>mp4		</td><td>*</td><td>[#] CORS!</td>
+<td><a target=_blank href="https://vidtodo.com">vidtodo.com</a> !</td>
+<td><a target=_blank href="https://vidtodu.com">vidtodu.com</a> !</td></tr>
+
+<tr><td>ClipWatching	</td><td>mp4		</td><td>360p</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://clipwatching.com">clipwatching.com</a> !</td></tr>
+
+<tr><td>Flix555		</td><td>mp4		</td><td>480p</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://flix555.com">flix555.com</a> !</td></tr>
+
+<tr><td>OnlyStream	</td><td>m3u8/mp4	</td><td>?</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://onlystream.tv">onlystream.tv</a> !</td></tr>
+
+<tr><td>VidLox		</td><td>mp4		</td><td>?</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://vidlox.me">vidlox.me</a> !</td>
+<td><a target=_blank href="https://vidlox.tv">vidlox.tv</a> !</td></tr>
+
+<tr><td>Vidoza		</td><td>mp4		</td><td>?</td><td>[#] CORS!</td>
+<td><a target=_blank href="https://vidoza.net">vidoza.net</a> !</td></tr>
+
+<tr><td>VideoShare	</td><td>mp4		</td><td>?</td><td>[#] Proxy!</td>
+<td><a target=_blank href="https://vshare.eu">vshare.eu</a> !</td></tr>
+
+<!--
+<tr><td>MilfFox		</td><td>mp4		</td><td></td><td>[+] Not working</td>
+<td><a target=_blank href="https://www.milffox.com">www.milffox.com</a></td></tr>
+
+<tr><td>StreamLord	</td><td>mp4		</td><td></td><td>[?] Not working</td>
+<td><a target=_blank href="http://www.streamlord.com">www.streamlord.com</a></td></tr>
+//-->
+</table>
+<p>
+! on a site url = use caution on these sites due to popup ads<br>
+! on Proxy or CORS = use the Sandbox option to embed the video.<br>
+<p>
+Some search sites to get video links from:
+<p>
+<a target=_blank href="https://ololo.to/">ololo.to</a><br>
+<a target=_blank href="https://www1.swatchseries.to">www1.swatchseries.to</a><br>
+<a target=_blank href="https://www.downloads-anymovies.com">www.downloads-anymovies.com</a><br>
+<a target=_blank href="http://www2.project-free-tv.ag">www2.project-free-tv.ag</a>&nbsp; (alive but often sleeping)
+<p>
+<b>Welcome to the new Movies section. This will likely change significantly in the future.</b>
+<p>
+The site "putlocker.fyi" is a search site which only serves videos from "verystream.com"<br>
+Select "VeryStream" and use the DIG option to grab videos.
+<p>
+The site "lunchflix.com" is a search site which mainly serves videos from "gounlimited.to"<br>
+Some videos are served from Google. Select "GoUnlimited" and use DIG.
+<p>
+None of the sites below PornHub offer a search facility.
+<p>
+If you want to play videos from other sites, make sure that you use the embed URL.
+<p>
+For example:
+<table>
+<tr><td>Page: https://openload.co/f/{vid-id}</td><td>Embed: https://openload.co/embed/{vid-id}</td></tr>
+<tr><td>Page: https://streamango.com/f/{vid-id}</td><td>Embed: https://streamango.com/embed/{vid-id}</td></tr>
+<tr><td>Page: https://xstreamcdn.com/f/{vid-id}</td><td>Embed: https://xstreamcdn.com/v/{vid-id}</td></tr>
+</table>
+<p>
+<b>More to come</b>
+
+<div style="width: 90vw; height: 30vw"></div>
+
+<h3 id="free"><r_>FREE Movies & TV</r_>
+  <small>-- Go to <a href="#movies">Movie Sites</a></small></h3>
+<p>
+<table><tr><td class=textbox>
+
+<button onclick="javascript:open_downloader()"><b_>DLoad</b_></button>
+<button onclick="javascript:loadmovie(7,0)">Play ID</button>
+<button onclick="javascript:loadmovie(7,2)">Clear</button>
+<p>
+<input type=text id="id7" maxlength=256 class=idspec onfocus="javascript:hidelist(7)"
+  onclick="javascript:input_onclick('id7')" onblur="javascript:input_onblur('id7')">
+<p>
+<select id="stk7" size=1 class=stack disabled></select>
+<p>
+<select id="src7" size=1 class=tubes>
+  <option value= 0 >Invidious / YouTube&nbsp;&nbsp;&nbsp;&nbsp;
+  <option value=  1># mp4 - Veoh
+  <option value=  2>+ mp4 - VidCloud
+  <option value=  3>+ m3u - TubiTV
+  <option value=  4>+ mp4 - VeryStream
+  <option value=  5>+ mp4 - GoUnlimited
+  <option value= 11># mp4 - PornHub
+  <option value= 17># mp4 - VidToDo
+  <option value= 16># mp4 - ClipWatching
+  <option value= 12># mp4 - Flix555
+  <option value= 19># m3u - OnlyStream
+  <option value= 13># mp4 - VidLox
+  <option value= 18># mp4 - Vidoza
+  <option value= 15># mp4 - VideoShare
+</select>
+<p>
+<input type=checkbox id="mov7f" checked> Format (Inv/YT)&nbsp;
+<input type=checkbox id="mov7p" checked> Use Proxy
+<p>
+<select id="fmt7" size=6>
+  <option value=18>mp4 - [18] 360p *
+  <option value=19>mp4 - [19] 480p *
+  <option value=22>mp4 - [22] 720p *
+  <option value=43>webm  [43] 360p *
+  <option value=44>webm  [44] 480p *
+  <option value=45>webm  [45] 720p *
+</select>
+<p>
+<select id="win7" size=1>
+  <option value="320:180">[16:9] 320 x 180
+  <option value="480:270">[16:9] 480 x 270
+  <option value="640:360">[16:9] 640 x 360
+  <option value="960:540">[16:9] 960 x 540
+  <option value="1280:720">[16:9] 1280 x 720
+  <option value="240:180">[4:3] 240 x 180
+  <option value="360:270">[4:3] 360 x 270
+  <option value="480:360">[4:3] 480 x 360
+  <option value="720:540">[4:3] 720 x 540
+  <option value="960:720">[4:3] 960 x 720
+</select>
+<p>
+<button id="btn7a" class="is_off" onclick="javascript:buttonpress(7,0)">New Window</button>
+<button id="btn7b" class="is_off" onclick="javascript:buttonpress(7,1)">Popup Window</button>
+<p>
+<input type=checkbox id="mov7m"> Allow Multiple&nbsp;
+<input type=checkbox id="mov7n"> No Play
+<p></p>
+<input type=radio id="mov7a" name="chk7"> Raw
+<input type=radio id="mov7b" name="chk7" checked><button onclick="javascript:toggle_hls(7,0)"
+  class="wrapper" id="hls7">Wrapper</button><input type=radio id="mov7c" name="chk7"> Sandbox
+
+</td><td class=vidbox>
+
+<!-- VIDEO -->
+<div class=widevid><h2 id="vid7" class=msgbox>No Video</h2>
+
+<iframe id="mov7" name="mov7" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen controls data-hls='' data-dash=''></iframe>
+
+</div></td></tr></table>
+
+<p style="text-align:center">
+<button onclick="javascript:loadmovie(7,1)">Play URL</button>
+<button onclick="javascript:urlcopy(7)">Copy</button>
+<button onclick="javascript:digmovie(7)"><b_>DIG</b_></button>&nbsp;
+
+<input type=text id="line7" maxlength=1024 class=urlspec
+  onclick="javascript:input_onclick('line7')" onblur="javascript:input_onblur('line7')">
+<!--
+<p style="text-align:center">
+<button class=copy id="stk7-1" onclick="javascript:copylist(7,-1)">Stack 1</button>
+<button class=copy id="stk7-2" onclick="javascript:copylist(7,-2)">Stack 2</button>
+<button class=copy id="stk7-3" onclick="javascript:copylist(7,-3)">Stack 3</button>
+//-->
+</p>
+<div style="width: 90vw; height: 30vw"></div>
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="http://reference.dashif.org/dash.js/v2.5.0/dist/dash.all.min.js"></script>
+<script>
+
+/////////////////////////
+///// User Settings /////
+/////////////////////////
+
+var list_1 = [
+    ":NOZKLtIIUZE" , "Hitler Rant"
+  , ":m_MaJDK3VNE" , "Herding Cats"
+  , ":hTa1t_9HfFQ" , "Mike Hammer"
+  , ":uaPKEbVypRQ" , "Typing Lesson"
+  , ":0fDOdzY18XE" , "V - The Miniseries"
+  , ":kJAsn_vJyY4" , "Starship Enterprise"
+];
+
+var list_2 = [
+    ":We-HMZDSWFU" , "Me and You and a Dog Named Boo"
+  , ":8Pa9x9fZBtY" , "Sultans of Swing"
+  , ":8sPWIrF0oSY" , "Jack Benny meets Perry Mason"
+  , ":CGq8Ee2gOe4" , "DooM at QuakeCon"
+  , ":6Ath-3JGk8M" , "Flashdance"
+];
+
+var list_3 = [
+    ":4JIOtUTMGuM" , "Perry Mason in colour"
+  , ":onJspmvJr0E" , "Flashdance Love Theme"
+  , ":FnV0LqHd3h8" , "Make America Great Again"
+  , ":5iV_hB08Uns" , "Boston Dynamics Robot"
+];
+
+var list_4 = [
+    "b:TOtFnGVssVJO" , "Farm goats"
+  , "b:A7jZJfaEJK2p" , "Malice in the Palace"
+];
+
+var list_5 = [
+    "v:129463420" , "Miniatur Wunderland"
+  , "v:166403522" , "Some Kind of Quest"
+  , "v:31883614"  , "Star Trek: Aurora"
+];
+
+var list_6 = [
+    "i:5ca2a1c94b025c001747b176" , "War Room with Owen Shroyer"
+  , "i:5ca3adb6be0c561e93cca99d" , "The David Knight Show"
+  , "i:5ca26237c88e7100170702b1" , "Kaitlin Bennett"
+];
+
+var list_7 = [
+    "e:5813257309001" , "Star Trek: Kitumba"
+];
+
+var list_8 = [
+];
+
+var list_9 = [
+];
+
+var news_1 = [
+];
+
+var news_2 = [
+];
+
+var news_3 = [
+];
+
+var news_4 = [
+    "fox:6041387345001" , "Steve Hilton"
+  , "fox:6035600008001" , "Judge Jeanine Pirro"
+];
+
+var news_5= [
+    "pbs:3007398789" , "Nova: Bird Brain (2018) [region lock]"
+  , "pbs:2365338020" , "Austin City Limits: 40 Years (2014)"
+  , "pbs:1946795242" , "Frontline: WikiSecrets (2011)"
+];
+
+var news_6 = [
+    "bbc:p035dt58" , "Dragonfly"
+  , "bbc:p076m7sh" , "Desert Art"
+  , "bbc:p07bj7pv" , "Follow the Food"
+];
+
+var news_7 = [
+];
+
+var news_8 = [
+];
+
+var news_9 = [
+];
+
+/////////////////////////////
+///// End User Settings /////
+/////////////////////////////
+
+var head = "<!DOCTYPE html><html><head><meta charset='utf-8'>" +
+           "<title>Downloader</title></head><body><h2>Downloader</h2>";
+
+var tail = "</body></html>", download_doc = head + tail;
+
+var last_h = last_w = last_raw = last_time = busy = 0, error = "", cors_bypass = "";
+
+var vidwin = null, hls_obj = new Array (10), dash_obj = new Array (10);
+
+var copylist = function (frame, num)
+{
+  var list, box, i, j;
+
+  if (num > 0)
+  {
+    if (num == 1) list = list_1; else
+    if (num == 2) list = list_2; else
+    if (num == 3) list = list_3; else
+    if (num == 4) list = list_4; else
+    if (num == 5) list = list_5; else
+    if (num == 6) list = list_6; else
+    if (num == 7) list = list_7; else
+    if (num == 8) list = list_8; else
+    if (num == 9) list = list_9; else return;
+  } else {
+    num = -num;
+    if (num == 1) list = news_1; else
+    if (num == 2) list = news_2; else
+    if (num == 3) list = news_3; else
+    if (num == 4) list = news_4; else
+    if (num == 5) list = news_5; else
+    if (num == 6) list = news_6; else
+    if (num == 7) list = news_7; else
+    if (num == 8) list = news_8; else
+    if (num == 9) list = news_9; else return;
+  }
+
+  box = document.getElementById ("stk" + frame);
+
+  for (i = box.length - 1; i > 0; i--) box.remove (i);
+
+  for (i = 0, j = 1; i < list.length; i += 2, j++)
+  {
+    box.options[j] = new Option ("[" + (j < 10 ? "0" : "") + j + "] " + list[i+1], list[i]);
+  }
+
+  list = document.getElementById ("stk" + frame + "-" + num).innerText;
+  box.options[0].innerText = "Select a video (" + list + ")";
+  box.selectedIndex = 0;
+}
+////////////////////
+
+var hidelist = function (frame)
+{
+  document.getElementById ("stk" + frame).selectedIndex = 0;
+}
+////////////////////
+
+var toggle_hls = function (frame, state)
+{
+  if (state < 0) return;
+
+  var doc = document.getElementById ("hls" + frame);
+  var hls = doc.checked; if (hls == undefined) hls = 0;
+
+  var txt = "Wrapper"; if (++hls > 2) hls = 0; if (state > 0) hls = state - 1;
+  if (hls == 1) txt = "M3U8"; else if (hls == 2) txt = "DASH";
+
+  doc.checked = hls; doc.innerHTML = txt;
+
+  if (!state) document.getElementById ("mov" + frame + "b").checked = true;
+}
+
+var buttonpress = function (frame, num)
+{
+  var id1, id2, doc1, doc2, chk, txt;
+
+  id1 = "btn" + frame + "a"; id2 = "btn" + frame + "b";
+
+  doc1 = document.getElementById (num ? id2 : id1);
+  doc2 = document.getElementById (num ? id1 : id2);
+
+  chk = doc1.checked; doc1.checked = !chk;
+  doc1.className = (chk ? "is_off" : "is_on");
+  doc2.checked = false; doc2.className = "is_off";
+}
+////////////////////
+
+var urlcopy = function (frame)
+{
+  var doc = document.getElementById ("line" + frame);
+  doc.select(); document.execCommand ("copy");
+}
+////////////////////
+
+var input_onclick = function (id)
+{
+  var doc = document.getElementById (id);
+  if (!doc.checked && doc.selectionStart == doc.selectionEnd) doc.select();
+  doc.checked = true;
+}
+////////////////////
+
+var input_onblur = function (id)
+{
+  document.getElementById (id).checked = false;
+}
+////////////////////
+
+var is_busy = function (frame)
+{
+  if (busy) return 1;
+  document.getElementById ("vid" + frame).innerHTML = "Busy";
+  busy = 1; error = ""; return 0;
+}
+////////////////////
+
+var no_fail = function (frame)
+{
+  if (busy) toggle_hls (frame, busy); else
+  {
+    document.getElementById ("vid" + frame).innerHTML = "Error";
+    if (error != "") document.getElementById ("id" + frame).value = "err: " + error;
+  }
+  var Busy = busy; busy = 0; return (Busy);
+}
+////////////////////
+
+var stream_all = function (frame, type)
+{
+  if (!busy) return 1; busy = type + 1;
+  if (type == 1) return (!document.getElementById ("mov" + frame + "f").checked);
+  return 1;
+}
+
+var clear_video = function (frame)
+{
+  if (hls_obj [frame]) hls_obj [frame].destroy(); hls_obj [frame] = null;
+  if (dash_obj [frame]) dash_obj [frame].reset(); dash_obj [frame] = null;
+
+  document.getElementById ("mov" + frame).src = "about:blank";
+}
+////////////////////
+
+////////////////////////////////
+///// INFO + ENTERTAINMENT /////
+////////////////////////////////
+
+var loadid = function (frame, mode)
+{
+  var url, fmt, doc, sub, src;
+
+  clear_video (frame); if (mode == 2) return;
+
+  if (mode == 1)
+  {
+    url = document.getElementById ("line" + frame).value;
+    url = url.replace (/\\/g, "");
+    if (url != "") loadwindow (url, frame, "");
+    return;
+  }
+
+  if (mode != 0) return;
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  url = document.getElementById ("stk" + frame).value;
+  if (!url) url = document.getElementById ("id" + frame).value;
+
+  src = document.getElementById ("src" + frame).value;
+  sub = url.split (": ");
+
+  if (sub.length > 1) url = sub [sub.length - 1]; else
+  {
+    sub = url.split (":"); doc = sub [0];
+    if (sub.length > 1 && doc.length < 4)
+    {
+      src = 0; url = sub [sub.length - 1];
+
+      if (doc == "b") src = 1;
+      if (doc == "v") src = 2;
+      if (doc == "i") src = 3;
+      if (doc == "e") src = 4;
+      if (doc == "d") src = 5;
+      if (doc == "n") src = 7;
+
+      doc = document.getElementById ("src" + frame);
+      if (doc.value != src) for (mode = 0; mode < doc.length; mode++)
+        if (doc.options [mode].value == src) { doc.selectedIndex = mode; break; }
+    }
+  }      
+  if (url == "") return;
+
+  if (src == 1  && (url = getid (url,-12))) req_bitchute (url, frame, fmt); else
+  if (src == 2  && (url = getid (url, -9))) req_vimeo (url, frame, fmt); else
+  if (src == 3  && (url = getid (url, 24))) req_infowars (url, frame, fmt); else
+  if (src == 11 && (url = getid (url, 12))) req_153news (url, frame, fmt); else
+  if (src == 13 && (url = getid (url,-16))) req_liveleak (url, frame, fmt); else
+  if (src == 4  && (url = getid (url, 13))) req_brighteon (url, frame, fmt); else
+  if (src == 5  && (url = getid (url, -7))) req_dailymotion (url, frame, fmt); else
+  if (src == 7  && (url = getid (url, 10))) req_natfilmbrd (url, frame, fmt); else
+  if (src == 25 && (url = getid (url,  8))) req_jwplayer (url, frame, fmt); else
+  if (src == 24 && (url = getid (url, -9))) req_soundcloud (url, frame, fmt); else
+  if (src == 21 && (url = getid (url, 19))) req_twitter (url, frame, fmt); else
+
+  if (src == 0  && (url = getid (url, 11))) request (url, frame, fmt);
+
+  else document.getElementById ("id" + frame).value = (url ? "Not supported" : "Invalid ID");
+}
+////////////////////
+
+var getid = function (url, len)
+{
+  if (url.substr (0,1) == "*") return (url.substr (1));
+
+  var tst = url.substr (-1);
+  if (tst == "/") url = url.substr (0, url.length - 1);
+
+  tst = url.substr (url.length - 5, 5); tst = tst.search ("\\.");
+  if (tst >= 0) url = url.substr (0, url.length + tst - 5);
+
+  if (len < 0)
+  {
+    len = -len;
+    if (url.length < len - 2) return "";
+    if (url.length == len - 2) return url;
+    if (url.length == len - 1) return url;
+    if (url.length == len) return url;
+
+    url = url.substr (url.length - len, len);
+    if ((len = url.search ("/")) > 1) url = "";
+    if (len < 0 && (len = url.search ("=")) > 1) url = "";
+    if (len < 0 && (len = url.search ("-")) > 1) url = "";
+
+    if (len >= 0) url = url.substr (len + 1);
+    return url;
+  }
+
+  if (url.length < len) return "";
+  if (url.length == len) return url;
+
+  url = url.substr (url.length - len, len);
+  if (url.search ("/") >= 0) url = "";
+  if (url.search ("=") >= 0) url = "";
+  return url;
+}
+////////////////////
+
+var request = function (id, frame, fmt)
+{
+  if (document.getElementById ("mov" + frame + "f").checked)
+    request_invidious (id, frame, fmt); else request_genyoutube (id, frame, fmt);
+}
+
+const request_invidious = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  var tag = "invidious"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://invidio.us/embed/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  f[0] = textData.search ('&itag=18"') + 1;
+  f[1] = textData.search ('&itag=19"') + 1;
+  f[2] = textData.search ('&itag=22"') + 1;
+  f[3] = textData.search ('&itag=37"') + 1;
+  f[4] = textData.search ('&itag=43"') + 1;
+  f[5] = textData.search ('&itag=44"') + 1;
+  f[6] = textData.search ('&itag=45"') + 1;
+  f[7] = textData.search ('&itag=46"') + 1;
+
+  fmt = getformat (f, fmt); fixformat (f, frame); if (!fmt) throw ("!!!");
+  url = "https://invidio.us/latest_version?id=" + id + "&itag=" + fmt;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const request_youtube = async (id, frame, fmt) =>
+{
+  var i, j, s, f = new Array (8);
+
+  var tag = "youtube"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://www.youtube.com/get_video_info?el=embedded&video_id=" + id;
+//  if (id.length > 12) { tag = "google"; url = "https://drive.google.com/get_video_info?docid=" + id; }
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var sub = textData.split ("url%3D");
+  if (sub.length < 2) throw ("!!!");
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  for (i = 1; i < sub.length; i++)
+  {
+    url = sub [i];
+    url = url.substr (url.search ("itag%253D") + 9);
+    url = url.substr (0, url.search ("%"));
+    if ((j = argformat (url)) >= 0) f[j] = i;
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((n = argformat (fmt)) < 0 || !(n = f[n])) throw ("!!!");
+
+  url = sub [n]; 
+  n = url.search ("&"); if (n > 0) url = url.substr (0, n);
+  n = url.search ("%26"); if (n > 0) url = url.substr (0, n);
+  url = url.replace (/%25/g, "%");
+  url = decodeURIComponent (url);
+  n = url.search (","); if (n > 0) url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const request_genyoutube = async (id, frame, fmt) =>
+{
+  var i, j, f = new Array (8);
+
+  var tag = "genyoutube"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://video.genyoutube.net/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  textData = textData.substr (textData.search ("<video "));
+  var sub = textData.split ('<source src="');
+  if (sub.length < 2) throw ("!!!");
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  for (i = 1; i < sub.length; i++)
+  {
+    url = sub [i];
+    url = url.substr (url.search ("&itag=") + 6);
+    url = url.substr (0, url.search ("&"));
+    if ((j = argformat (url)) >= 0) f[j] = i;
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0 || !(j = f[j])) throw ("!!!");
+
+  url = sub [j];
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_bitchute = async (id, frame, fmt) =>
+{
+  var tag = "bitchute"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://www.bitchute.com/video/" + id + "/";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.search ('"'));
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_vimeo = async (id, frame, fmt) =>
+{
+  var i, j, k, f = new Array (8), r = new Array (4);
+
+  var tag = "vimeo"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://player.vimeo.com/video/" + id + "/config";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  if (jsonData.request == undefined)   // privacy lock, go long way around
+  {
+    response = await fetch (cors_bypass + "https://vimeo.com/" + id);
+    jsonData = await response.text();
+
+    var s = '"config_url":"';
+    var n = jsonData.search (s); if (n < 0) throw ("!!!");
+
+    url = jsonData.substr (n + s.length, 500);
+    url = url.substr (0, url.search ('"'));
+    url = url.replace (/\\/g, "");
+
+    response = await fetch (cors_bypass + url);
+    jsonData = await response.json();
+  }
+
+  url = jsonData.request.files.progressive;
+  
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 0; i < url.length; i++)
+  {
+    k = url[i].quality; k = k.substr (0, k.search ("p"));
+
+    if ((j = chkformat (k)) >= 0) if (r[j] < k) { f[j] = i + 1; r[j] = k; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0 || (j = f[j] - 1) < 0) throw ("!!!");
+
+  fmt = url[j].height; if ((url = url[j].url) == undefined) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_infowars = async (id, frame, fmt) =>
+{
+  var tag = "infowars"; if (is_busy (frame)) return;
+  var url = "https://vod-api.infowars.com/embed/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'downloadUrl="';
+  var n = textData.search (s);
+
+  if (n < 0) url = ""; else
+  {
+    url = textData.substr (n + s.length, 100);
+    url = url.substr (0, url.search ('"'));
+  }
+
+  download_doc = head + "InfoWars download link: ";
+
+  if (url.search ("http") == 0)
+    download_doc = download_doc + "<a href='" + url + "'>" + url + "</a>" + tail; else
+    download_doc = download_doc + "Not available" + tail;
+
+  s = '<source src="';
+  n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 200);
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+  if (url.search ("m3u8") < 0 || stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_153news = async (id, frame, fmt) =>
+{
+  var tag = "153news"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://153news.net/watch_video.php?v=" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var n = textData.search ("<video"); if (n < 0) throw ("!!!");
+
+  url = crack_source (textData.substr (n, 1000), frame, fmt);
+  if (url == "") throw ("!!!"); n = url.search ("<>");
+  fmt = url.substr (n + 2); url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_liveleak = async (id, frame, fmt) =>
+{
+  var tag = "liveleak"; if (is_busy (frame)) return;
+  var url = "https://www.liveleak.com/e/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var n = textData.search ("<video"); if (n < 0) throw ("!!!");
+
+  url = crack_source (textData.substr (n, 1000), frame, fmt);
+  if (url == "") throw ("!!!"); n = url.search ("<>");
+  fmt = url.substr (n + 2); url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_brighteon = async (id, frame, fmt) =>
+{
+  load_brightcove ("5762013463001", id, "brighteon", frame, fmt);
+}
+////////////////////
+
+const req_dailymotion = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  var tag = "dailymotion"; if (is_busy (frame)) return;
+  var url = "https://www.dailymotion.com/embed/video/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  url = "https://www.dailymotion.com/player/metadata/video/" + id;
+
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  var sub = jsonData.qualities;
+
+  f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  f[0] = (sub ["380"] != undefined);
+  f[1] = (sub ["480"] != undefined);
+  f[2] = (sub ["720"] != undefined);
+
+  fmt = getformat (f, fmt); fixformat (f, frame); if (!fmt) throw ("!!!");
+  
+  if (fmt == 19) fmt = 480; else
+  if (fmt == 22) fmt = 720; else fmt = 380;
+
+  if ((url = sub [fmt][1]) != undefined) url = url.url; else
+  {
+    stream_all (frame, 1); url = sub [fmt][0].url;
+  }
+
+/*
+  url = jsonData.qualities["auto"][0].url; if (url == undefined) throw ("!!!");
+
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    jsonData = await response.text();
+
+    url = crack_m3u8 (url, jsonData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+  var n = url.search ("#"); if (n > 0) url = url.substr (0, n);
+*/
+  
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_natfilmbrd = async (id, frame, fmt) =>
+{
+  var tag = "natfilmbrd"; if (is_busy (frame)) return;
+  var url = "https://cdnapisec.kaltura.com/p/2081491/sp/208149100/playManifest/entryId/" + id +
+    "/flavorIds/1_z997vpzn/format/applehttp/protocol/https/a.m3u8";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    var n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_jwplayer = async (id, frame, fmt) =>
+{
+  var tag = "jwplayer"; if (is_busy (frame)) return;
+  var url = "https://cdn.jwplayer.com/manifests/" + id + ".m3u8";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    var n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_soundcloud = async (id, frame, fmt) =>
+{
+  var tag = "soundcloud"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "/progressive";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  var sub = textData.substr (n - 200, 200 + s.length);
+  sub = sub.substr (sub.search ('"url":"') + 7);
+
+  n = textData.search ("/widget-"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n - 30, 100);
+  url = url.substr (url.search ('"') + 1);
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+  response = await fetch (url);
+  textData = await response.text();
+
+  n = textData.search ("client_id"); if (n < 0) throw ("!!!");
+  url = textData.substr (n, 200);
+  url = url.substr (url.search ('":"') + 3);
+  url = url.substr (0, url.search ('"'));
+  url = cors_bypass + sub + "?client_id=" + url;
+
+  response = await fetch (url);
+  textData = await response.json();
+
+  url = textData.url; if (url == undefined) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+///////////////////
+///// DIG DUG /////
+///////////////////
+
+var digid = function (frame)
+{
+  var doc, src, fmt;
+
+  clear_video (frame);
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  src = document.getElementById ("src" + frame).value;
+  doc = document.getElementById ("line" + frame).value;
+
+  if (src == 10) dig_test (doc, frame, fmt); else
+  if (src == 3 ) dig_infowars (doc, frame, fmt); else
+  if (src == 4 ) dig_brighteon (doc, frame, fmt); else
+  if (src == 8 ) dig_prageru (doc, frame, fmt); else
+  if (src == 6 ) dig_tedtalks (doc, frame, fmt); else
+  if (src == 7 ) dig_natfilmbrd (doc, frame, fmt); else
+  if (src == 25) dig_jwplayer (doc, frame, fmt); else
+  if (src == 22) dig_facebook (doc, frame, fmt); else
+  if (src == 24) dig_soundcloud (doc, frame, fmt); else
+  if (src == 23) dig_podcast (doc, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = "Not supported";
+}
+////////////////////
+
+const dig_test = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "test"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+//  var response = await fetch (url, { credentials: 'include' } );
+  var response = await fetch (url);
+  var textData = await response.text();
+  console.log (textData);
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) loadwindow ("", frame, tag + ": okay");
+}
+////////////////////
+
+const dig_infowars = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "infowars"; var url = doc;
+  if (url.search ("infowars") < 0) url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-video-id="';
+  var n = textData.search (s);
+  
+  if (n > 0) url = textData.substr (n + s.length, 200); else
+  {
+    n = textData.search ('<iframe src="'); if (n < 0) throw ("!!!");
+    url = textData.substr (n, 200);
+
+    n = url.search ("/embed/"); if (n < 0) throw ("!!!");
+    url = url.substr (n + 7);
+  }
+
+  url = url.substr (0, url.search ('"'));
+  if ((n = url.search ("\\?")) > 0) url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_infowars (url, frame, fmt);
+}
+////////////////////
+
+const dig_brighteon = async (doc, frame, fmt) =>
+{
+  if (doc.search ("counterthink") < 0 && doc.search ("naturalnews") < 0)
+  {
+    find_brightcove (doc, "", frame, fmt); return;
+  }
+  if (is_busy (frame)) return;
+  var tag = "brighteon"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "brighteon.com/embed/";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.search ('"'));
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_brighteon (url, frame, fmt);
+}
+////////////////////
+
+const dig_prageru = async (doc, frame, fmt) =>
+{
+  var i, j, k, f = new Array (8), r = new Array (4);
+
+  if (is_busy (frame)) return;
+  var tag = "prageru"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"og:image" content="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.search ("poster") - 1);
+
+  response = await fetch (url);
+  textData = await response.json();
+
+  url = textData.playlist[0].sources; if (url == undefined) throw ("!!!");
+ 
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 0; i < url.length; i++)
+  {
+    if (url[i].type != "video/mp4") continue;
+
+    k = url[i].height;
+
+    if ((j = chkformat (k)) >= 0) if (r[j] < k) { f[j] = i + 1; r[j] = k; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0 || (j = f[j] - 1) < 0) throw ("!!!");
+
+  fmt = url[j].height; if ((url = url[j].file) == undefined) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+}
+////////////////////
+
+const dig_tedtalks = async (doc, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  if (is_busy (frame)) return;
+  var tag = "tedtalks"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"nativeDownloads"';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  f[2] = f[3] = f[4] = f[5] = f[6] = f[7];
+
+  url = textData.substr (n, 1000);
+
+  f[0] = url.search ('"medium":"http') > 0;
+  f[1] = url.search ('"high":"http') > 0;
+
+  fmt = getformat (f, fmt); fixformat (f, frame); n = argformat (fmt);
+
+  if (n == 0) { s = '"medium"'; fmt = 288; } else
+  if (n == 1) { s = '"high"'; fmt = 480; } else throw ("!!!");
+
+  url = url.substr (url.search (s) + s.length + 2);
+  url = url.substr (0, url.search ('"'));
+
+  n = url.search ("\\?"); if (n > 0) url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+}
+////////////////////
+
+const dig_natfilmbrd = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "natfilmbrd"; var url = doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+  var n = url.search ("\\?");
+  if (n > 0) url = url.substr (0, n);
+  if (doc.substr (-1) != "/") url = url + "/";
+  url = url + "embed/player";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"entry_id": "';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 20);
+  url = url.substr (0, url.search ('"'));
+
+  if (url.length != 10) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_natfilmbrd (url, frame, fmt);
+}
+////////////////////
+
+const dig_jwplayer = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "jwplayer"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"video_id":"';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 20);
+  url = url.substr (0, url.search ('"'));
+  if (url.length != 8) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_jwplayer (url, frame, fmt);
+}
+////////////////////
+
+const dig_facebook = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "facebook"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"og:video" content="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n + s.length, 500);
+  url = url.substr (0, url.search ('"'));
+  url = url.replace (/amp;/g, "");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": id-none");
+}
+////////////////////
+
+const dig_soundcloud = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "soundcloud"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "/tracks/";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 12);
+  if ((n = url.search ('"')) < 0) n = url.search ("/");
+  if (n < 0) throw ("!!!"); url = url.substr (0, n);
+
+  if (url.length < 6 || url.length > 9) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_soundcloud (url, frame, fmt);
+}
+////////////////////
+
+const dig_podcast = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "podcast"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"assetUrl":"'; var n = textData.search (s);             // Apple Podcast
+  if (n < 0) { s = '"enclosureUrl":"'; n = textData.search (s); }  // Radio Public
+  if (n < 0) { s = 'episodeURL: "'; n = textData.search (s); }     // Stitcher
+  if (n < 0) { s = '<source src="'; n = textData.search (s); }     // Overcast
+  if (n < 0) { s = 'data-uri="'; n = textData.search (s); }        // Podbean
+  if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 500);
+  n = url.search ('"'); if (n > 0) url = url.substr (0, n);
+  n = url.search ("\\?"); if (n > 0) url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": id-none");
+}
+////////////////////
+
+var chkformat = function (q)
+{
+  if (q > 100 && q <= 420) return 0; else
+  if (q > 420 && q <= 580) return 1; else
+  if (q > 580 && q <= 800) return 2; else
+
+  return (-1);
+}
+////////////////////
+
+var argformat = function (fmt)
+{
+  if (fmt == 18) return 0;
+  if (fmt == 19) return 1;
+  if (fmt == 22) return 2;
+  if (fmt == 37) return 3;
+  if (fmt == 43) return 4;
+  if (fmt == 44) return 5;
+  if (fmt == 45) return 6;
+  if (fmt == 46) return 7;
+
+  return -1;
+}
+
+var getformat = function (f, fmt)
+{
+  var m = 0, n = fmt;
+
+  if (n == 46) if (f[7]) m = n; else { if (!m) m = 37; n = 45; }
+  if (n == 45) if (f[6]) m = n; else { if (!m) m = 22; n = 44; }
+  if (n == 44) if (f[5]) m = n; else { if (!m) m = 19; n = 43; }
+  if (n == 43) if (f[4]) m = n; else { if (!m) m = 18; n = m;  }
+
+  if (n == 37) { if (f[3]) m = n; else n = 22; }
+  if (n == 22) { if (f[2]) m = n; else n = 19; }
+  if (n == 19) { if (f[1]) m = n; else n = 18; }
+  if (n == 18) { if (f[0]) m = n; else m = 0;}
+
+  n = fmt; if (m) return m;
+
+  if (n == 43) if (f[4]) m = n; else { if (!m) m = 18; n = 44; }
+  if (n == 44) if (f[5]) m = n; else { if (!m) m = 19; n = 45; }
+  if (n == 45) if (f[6]) m = n; else { if (!m) m = 22; n = 46; }
+  if (n == 46) if (f[7]) m = n; else { if (!m) m = 37; n = m;  }
+
+  if (n == 18) { if (f[0]) m = n; else n = 19; }
+  if (n == 19) { if (f[1]) m = n; else n = 22; }
+  if (n == 22) { if (f[2]) m = n; else n = 37; }
+  if (n == 37) { if (f[3]) m = n; else m = 0;  }
+
+  return m;
+}
+////////////////////
+
+var fixlist = function (item, doc, state)
+{
+  var txt = doc.options[item].text.slice (0,-1);
+  if (state < 0) txt = txt + '*'; else if (state > 0) txt = txt + '+'; else txt = txt + '-';
+  doc.options[item].text = txt;
+}
+////////////////////
+
+var fixformat = function (f, frame)
+{
+  var doc = document.getElementById ("fmt" + frame);
+
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]); fixlist (2, doc, f[2]);
+  fixlist (3, doc, f[4]); fixlist (4, doc, f[5]); fixlist (5, doc, f[6]);
+
+/*
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]); fixlist (3, doc, f[3]);
+  fixlist (4, doc, f[4]); fixlist (5, doc, f[5]);
+  fixlist (6, doc, f[6]); fixlist (7, doc, f[7]);
+*/
+}
+////////////////////
+
+var no_format = function (frame)
+{
+  var doc = document.getElementById ("fmt" + frame);
+
+  fixlist (0, doc, -1); fixlist (1, doc, -1);
+  fixlist (2, doc, -1); fixlist (3, doc, -1);
+  fixlist (4, doc, -1); fixlist (5, doc, -1);
+}
+////////////////////
+
+/////////////////////////////
+///// NEWS & PROPAGANDA /////
+/////////////////////////////
+
+var loadnews = function (frame, mode)
+{
+  var url, fmt, doc, sub, src;
+
+  clear_video (frame); if (mode == 2) return;
+
+  if (mode == 1)
+  {
+    url = document.getElementById ("line" + frame).value;
+    url = url.replace (/\\/g, "");
+    if (url != "") loadwindow (url, frame, "");
+    return;
+  }
+
+  if (mode != 0) return;
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  url = document.getElementById ("stk" + frame).value;
+  if (!url) url = document.getElementById ("id" + frame).value;
+
+  src = document.getElementById ("src" + frame).value;
+  sub = url.split (": ");
+
+  if (sub.length > 1) url = sub [sub.length - 1]; else
+  {
+    sub = url.split (":"); doc = sub [0];
+    if (sub.length > 1 && doc.length < 4)
+    {
+      src = 0; url = sub [sub.length - 1];
+
+      if (doc == "fox") src = 1;
+      if (doc == "abc") src = 2;
+      if (doc == "cnb") src = 4;
+      if (doc == "msn") src = 7;
+      if (doc == "pbs") src = 8;
+      if (doc == "cbc") src = 11;
+      if (doc == "ctv") src = 12;
+      if (doc == "glo") src = 13;
+      if (doc == "tvo") src = 14;
+      if (doc == "bbc") src = 21;
+      if (doc == "alj") src = 22;
+
+      doc = document.getElementById ("src" + frame);
+      if (doc.value != src) for (mode = 1; mode < doc.length; mode++)
+        if (doc.options [mode].value == src) { doc.selectedIndex = mode; break; }
+    }
+  }      
+  if (url == "") return;
+
+  if (src == 1  && (url = getid (url, 13))) req_fox (url, frame, fmt); else
+  if (src == 2  && (url = getid (url,  8))) req_abc (url, frame, fmt); else
+  if (src == 4  && (url = getid (url, 10))) req_cnbc (url, frame, fmt); else
+  if (src == 9  && (url = getid (url, -6))) req_mrctv (url, frame, fmt); else
+  if (src == 7  && (url = getid (url,-13))) req_msnbc (url, frame, fmt); else
+  if (src == 8  && (url = getid (url, 10))) req_pbs (url, frame, fmt); else
+  if (src == 11 && (url = getid (url,-13))) req_cbc (url, frame, fmt); else
+  if (src == 12 && (url = getid (url,  7))) req_ctv (url, frame, fmt); else
+  if (src == 13 && (url = getid (url,  7))) req_global (url, frame, fmt); else
+  if (src == 14 && (url = getid (url, 13))) req_tvo (url, frame, fmt); else
+  if (src == 21 && (url = getid (url,  8))) req_bbc (url, frame, fmt); else
+  if (src == 22 && (url = getid (url, 13))) req_aljazeera (url, frame, fmt); else
+
+  if (src == 0 && (url = getid (url, 11))) request (url, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = (url ? "Not supported" : "Invalid ID");
+}
+////////////////////
+
+const req_fox = async (id, frame, fmt) =>
+{
+  var tag = "fox"; if (is_busy (frame)) return;
+  var url = "https://video.foxnews.com/v/feed/video/" + id + ".js";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  if (jsonData.error != undefined)
+  {
+    response = await fetch ("https://video.foxbusiness.com/v/feed/video/" + id + ".js");
+    jsonData = await response.json();
+  }
+
+  if (jsonData.error != undefined) throw ("!!!");
+  url = jsonData.channel.item["media-content"]["@attributes"].url;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_abc = async (id, frame, fmt) =>
+{
+  var tag = "abc"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://abcnews.go.com/video/itemfeed?id=" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  url = jsonData.channel.item["media-group"]["media-content"][2]["@attributes"].url; 
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_cnbc = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  var tag = "cnbc"; if (is_busy (frame)) return;
+  var url = "https://link.theplatform.com/s/gZWlPC/media/guid/2408950221/" + id + "/meta.smil?format=smil";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  url = crack_smil (textData, frame, fmt); if (url == "") throw ("!!!");
+
+  var n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_mrctv = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  var tag = "mrctv"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+  f[0] = f[1] = f[2] = 1; f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  fmt = getformat (f, fmt); fixformat (f, frame); var n = argformat (fmt);
+
+  if (n == 1) fmt = 480; else
+  if (n == 2) fmt = 720; else fmt = 240;
+
+  var url = "https://cdn.mrctv.org/videos/" + id + "/" + id + "-" + fmt + "p.mp4";
+
+  if (id.length > 5)
+  {
+    fmt = 0; no_format (frame);
+    url = "https://cdn.mrctv.org/sites/default/files/videos/converted/" + id + ".mp4";
+  }
+
+  no_fail (frame); loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_msnbc = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  var tag = "msnbc"; if (is_busy (frame)) return;
+//var url = cors_bypass + "https://www.msnbc.com/msnbc/embedded-video/mmvo" + id;
+  var url = cors_bypass + "https://www.nbcnews.com/news/embedded-video/mmvo" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '},"videoType":'; var n = textData.search (s);
+  if (n < 0) { s = '"videoType":'; n = textData.search (s); }
+  if (n < 0) throw ("!!!");
+
+  url = textData.substr (n, 2000);
+  var sub = url.split ('"publicUrl":"'); if (sub.length < 2) throw ("!!!");
+  url = sub [sub.length - 1]; url = url.substr ('"');
+
+  n = url.search ("\\?"); if (n > 0) url = url.substr (0, n);
+  if (url == "") throw ("!!!");
+
+  url = url.replace (/\\u002F/g, "/");
+  url = url + "?mbr=true&format=smil";
+	
+  response = await fetch (url);
+  textData = await response.text();
+
+  url = crack_smil (textData, frame, fmt); if (url == "") throw ("!!!");
+
+  n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_pbs = async (id, frame, fmt) =>
+{
+  var tag = "pbs"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://player.pbs.org/portalplayer/" + id + "/";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"encodings": \\["';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length - 1, 200);
+  url = url.substr (0, url.search ('"'));
+
+  url = cors_bypass + url + "?format=jsonp&callback=__jp1";
+
+  response = await fetch (url);
+  textData = await response.text();
+
+  s = '"url": "'; n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length);
+  url = url.substr (0, url.search ('"'));
+
+  if (url.search ("m3u8") < 0 || stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_cbc = async (id, frame, fmt) =>
+{
+  var tag = "cbc"; if (is_busy (frame)) return;
+  var url = "https://link.theplatform.com/s/ExhSPC/media/guid/2655402169/" + id + "/meta.smil?format=smil";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  url = crack_smil (textData, frame, fmt); if (url == "") throw ("!!!");
+
+  var n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_ctv = async (id, frame, fmt) =>
+{
+  var tag = "ctv"; if (is_busy (frame)) return;
+  var url = "https://capi.9c9media.com/destinations/ctvnews_web/platforms/desktop/contents/" + id;
+  var sub = "?%24include=%5BContentPackages%5D";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url + sub);
+  var jsonData = await response.json();
+
+  sub = jsonData.ContentPackages[0].Id;
+  url = url + "/contentpackages/" + sub + "/manifest.mpd";
+
+  stream_all (frame, 2);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": "  + id);
+}
+////////////////////
+
+const req_global = async (id, frame, fmt) =>
+{
+  var tag = "global"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://globalnews.ca/video/embed/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'sources":\\[\\{"file":"';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length - 2, 200);
+  url = url.substr (0, url.search ('"'));
+  url = url.replace (/\\/g, "");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": "  + id);
+}
+////////////////////
+
+const req_tvo = async (id, frame, fmt) =>
+{
+  load_brightcove ("18140038001", id, "tvo", frame, fmt);
+}
+////////////////////
+
+const req_bbc = async (id, frame, fmt) =>
+{
+  var tag = "bbc"; if (is_busy (frame)) return;
+  url = cors_bypass + "https://open.live.bbc.co.uk/mediaselector/6/select/version/2.0/mediaset/pc/vpid/"
+      + id + "/format/xml/atk/";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var sub = textData.split ('href="'); if (sub.length < 2) throw ("!!!");
+
+  for (var i = 1; i < sub.length; i++)
+  {
+    url = sub [i]; if (url.search ("https") < 0) continue;
+    if (url.search ("mpd") > 0 && url.search ("gda") < 0) break;
+  }
+  
+  url = url.substr (0, url.search ('"'));
+  url = url.replace (/amp;/g, "");
+
+  stream_all (frame, 2);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": "  + id);
+}
+////////////////////
+
+const req_aljazeera = async (id, frame, fmt) =>
+{
+  load_brightcove ("665003303001", id, "aljazeera", frame, fmt);
+}
+////////////////////
+
+///////////////////
+///// DIG DUG /////
+///////////////////
+
+var dignews = function (frame)
+{
+  var doc, src, fmt;
+
+  clear_video (frame);
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  src = document.getElementById ("src" + frame).value;
+  doc = document.getElementById ("line" + frame).value;
+
+  if (src == 1 ) dig_fox (doc, frame, fmt); else
+  if (src == 2 ) dig_abc (doc, frame, fmt); else
+  if (src == 3 ) dig_cbs (doc, frame, fmt); else
+  if (src == 4 ) dig_cnbc (doc, frame, fmt); else
+  if (src == 5 ) dig_cnn (doc, frame, fmt); else
+  if (src == 6 ) dig_cspan (doc, frame, fmt); else
+  if (src == 9 ) dig_mrctv (doc, frame, fmt); else
+  if (src == 7 ) dig_msnbc (doc, frame, fmt); else
+  if (src == 8 ) dig_pbs (doc, frame, fmt); else
+  if (src == 11) dig_cbc (doc, frame, fmt); else
+  if (src == 12) dig_ctv (doc, frame, fmt); else
+  if (src == 13) dig_global (doc, frame, fmt); else
+  if (src == 14) dig_tvo (doc, frame, fmt); else
+  if (src == 21) dig_bbc (doc, frame, fmt); else
+  if (src == 22) dig_aljazeera (doc, frame, fmt); else
+  if (src == 23) dig_ndtv (doc, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = "Not supported";
+}
+////////////////////
+
+const dig_fox = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "fox"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-video-id="'; var n = textData.search (s);
+  if (n < 0) { s = "video_id="; n = textData.search (s); }
+
+  if (n > 0) url = textData.substr (n + s.length, 13); else
+  {
+    s = 'data-url="'; n = textData.search (s);
+    if (n > 0)
+    {
+      url = textData.substr (n + s.length, 200);
+      url = url.substr (url.search ("/v/") + 3, 13);
+    }
+    else
+    {
+      s = "redirect.mp3"; n = textData.search (s); if (n < 0) throw ("!!!");
+      url = textData.substr (n + s.length + 2, 200);
+      url = url.substr (0, url.search ('"')); if (url == "") throw ("!!!");
+      url = "https://" + url.replace (/\\/g, "");
+      busy = -busy;
+    }
+  }
+  busy = -busy;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (busy > 0)
+  {
+    no_fail (frame); loadwindow (url, frame, tag + ": id-none");
+  }
+  else if (no_fail (frame)) req_fox (url, frame, fmt);
+}
+////////////////////
+
+const dig_abc = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "abc"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-video="'; var x = 0;
+  var n = textData.search (s);
+
+  if (n < 0) { s = 'null/video/itemfeed\\?id='; n = textData.search (s); x = 1; }
+  if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length - x, 100);
+  url = url.substr (0, url.search ('"'));
+
+  if (url.length != 8) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_abc (url, frame, fmt);
+}
+////////////////////
+
+const dig_cbs = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "cbs"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"embedUrl":"';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 300);
+  url = url.substr (0, url.search ('"'));
+  url = url.replace (/\\/g, "");
+
+  if (url != doc)
+  {
+    response = await fetch (cors_bypass + url);
+    textData = await response.text();
+  }
+
+  n = textData.search ("defaultPayload");
+  if (n > 0) textData = textData.substr (n);
+
+  s = '"video":"';
+  n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 300);
+  url = url.substr (0, url.search ('"'));
+  
+  if (url.search ("m3u8") < 0 || stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+}
+////////////////////
+
+const dig_cnbc = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "cnbc"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var r = "'"; var s = "'content_id' : '";
+  var n = textData.search (s);
+
+  if (n < 0)
+  {
+    r = '"'; s = 'data-vilynx-id="';
+    n = textData.search (s); if (n < 0) throw ("!!!");
+  }
+
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.search (r));
+
+  if (url.length != 10) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_cnbc (url, frame, fmt);
+}
+////////////////////
+
+const dig_cnn = async (doc, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  if (is_busy (frame)) return;
+  var tag = "cnn"; var url = doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"embedUrl": "';
+  var n = textData.search (s);
+
+  if (n < 0)
+  {
+    s = 'data-video-id="'; n = textData.search (s); if (n < 0) throw ("!!!");
+    url = textData.substr (n + s.length, 300);
+    url = url.substr (0, url.search ('"'));
+  }
+  else
+  {
+    url = textData.substr (n + s.length, 300);
+    url = url.substr (0, url.search ('&'));
+    url = url.substr (url.search ("video=") + 6);
+  }
+  url = "https://www.cnn.com/video/data/3.0/video/" + url + "/index.json";
+
+  response = await fetch (url);
+  textData = await response.json();
+
+  var sub = textData.files; if (sub == undefined) throw ("!!!");
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  for (n = 0; n < sub.length; n++)
+  {
+    url = sub [n].bitrate;
+    if (url == undefined) continue;
+    if (url.search ("_mp4") < 0) continue;
+
+    if (url.search ("640x360")  == 0) f[0] = n;
+    if (url.search ("896x504")  == 0) f[1] = n;
+    if (url.search ("1280x720") == 0) f[2] = n;
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame); if (!fmt) throw ("!!!");
+
+  n = argformat (fmt); url = sub [f[n]].fileUri; if (url == undefined) throw ("!!!");
+
+  if (n == 0) fmt = 360;
+  if (n == 1) fmt = 504;
+  if (n == 2) fmt = 720;
+
+  url = "http://ht.cdn.turner.com/cnn/big" + url;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+}
+////////////////////
+
+const dig_cspan = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "cspan"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "sources: \\[\\{file: '";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length - 2, 100);
+  url = url.substr (0, url.search ("'"));
+
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+}
+////////////////////
+
+const dig_mrctv = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "mrctv"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  if (url.search ("podcast") > 0)
+  {
+    var s = "/embed/html5/episode/";
+    var n = textData.search (s); if (n < 0) throw ("!!!");
+    url = textData.substr (n + s.length, 10);
+    url = url.substr (0, url.search ("\\?"));
+    url = "https://www.podomatic.com/v2/episodes/" + url;
+
+    response = await fetch (url);
+    textData = await response.json();
+
+    url = textData.episode.media_url;
+    if (url == undefined) throw ("!!!");
+  }
+  else
+  {
+    var n = textData.search ("poster=");
+    if (n < 0)
+    {
+      n = textData.search ("/embed/"); url = textData.substr (n, 100);
+      if (n < 0 || url.search ("\\?") > 0) throw ("!!!");
+      url = url.substr (0, url.search ('"'));
+      url = cors_bypass + "https://www.mrctv.org" + url;
+
+      response = await fetch (url);
+      textData = await response.text();
+    }
+    n = textData.search ("converted");
+    if (n > 0)
+    {
+      url = textData.substr (n, 100); url = url.substr (url.search ("/"));
+      url = url.substr (0, url.search ('"')); if (url == "") throw ("!!!");
+      url = "https://cdn.mrctv.org/sites/default/files/videos/converted" + url;
+    }
+    else
+    {
+      n = textData.search ("poster="); if (n < 0) throw ("!!!");
+      url = textData.substr (n, 100); 
+      url = url.substr (url.search ("video"));
+      url = url.substr (url.search ("/") + 1);
+      url = url.substr (0, url.search ("/"));
+
+      if (url.length < 4 || url.length > 6) throw ("!!!");
+      busy = -busy;
+    }
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (busy > 0)
+  {
+    no_fail (frame); loadwindow (url, frame, tag + ": id-none");
+  }
+  else if (no_fail (frame)) req_mrctv (url, frame, fmt);
+}
+////////////////////
+
+const dig_msnbc = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "msnbc"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'video":{"id":"mmvo';
+  var n = textData.search (s);
+
+  if (n > 0)
+  {
+    url = textData.substr (n + s.length, 20); url = url.substr (0, url.search ('"'));
+    busy = -busy; if (url.length < 11 || url.length > 13) throw ("!!!");
+  }
+  else
+  {
+    n = textData.search ('"embedURL":');
+    if (n < 0) n = textData.search ('"embedUrl":');
+    if (n < 0) throw ("!!!");
+
+    url = textData.substr (n, 200); s = url.substr (url.search ("/p/") + 3);
+    s = s.substr (0, s.search ("/")); n = url.search ("/guid/");
+
+    if (n < 0) { busy = -busy; n = url.search ("media/"); }
+    if (n < 0) throw ("!!!");
+
+    url = url.substr (n + 6); url = url.substr (0, url.search ("\\?"));
+    if (s == "" || url == "") throw ("!!!");
+
+    s = "https://link.theplatform.com/s/" + s + "/media/";
+
+    if (busy < 0)
+    {
+// www.nbcsports.com
+      busy = -busy; url = s + url + "?format=smil";
+
+      response = await fetch (url);
+      textData = await response.text();
+
+      url = crack_smil (textData, frame, fmt); if (url == "") throw ("!!!");
+      n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+    }
+    else
+    {
+// www.nbc.com/dateline
+      url = s + "guid/" + url + "/meta.smil?manifest=m3u";  // mp4 does not work
+
+      if (stream_all (frame, 1)) fmt = 0; else
+      {
+        response = await fetch (url);
+        textData = await response.text();
+
+        url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+        n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+      }
+    }
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (busy > 0)
+  {
+    if (!fmt) no_format (frame); no_fail (frame);
+    loadwindow (url, frame, tag + " [" + fmt + "]: id-none");
+  }
+  else if (no_fail (frame)) req_msnbc (url, frame, fmt);
+}
+////////////////////
+
+const dig_pbs = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "pbs"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '<iframe src="https://player'; var n = textData.search (s);
+
+  if (n < 0)
+  {
+    var r = "'"; s = "'VideoTPMediaId': '"; n = textData.search (s);
+    if (n < 0) { r = '"'; s = 'data-coveid="'; n = textData.search (s); }
+    if (n < 0) throw ("!!!");
+
+    url = textData.substr (n + s.length, 20);
+    url = url.substr (0, url.search (r));
+  }
+  else
+  {
+    url = textData.substr (n, 100);
+    n = url.search ("player/"); if (n < 0) throw ("!!!");
+    url = url.substr (n + 7); url = url.substr (0, url.search ('"'));
+    n = url.search ("/"); if (n > 0) url = url.substr (0, n);
+  }
+
+  if (url.length != 10) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_pbs (url, frame, fmt);
+}
+////////////////////
+
+const dig_cbc = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "cbc"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var r = '"'; var s = '"guid":"'; var n = textData.search (s);
+
+  if (n < 0)
+  {
+    r = "'"; s = "'mediaId': '";
+    n = textData.search (s); if (n < 0) throw ("!!!");
+  }
+
+  url = textData.substr (n + s.length, 100);
+  url = url.substr (0, url.search (r));
+
+  if (url.length < 10 || url.length > 13) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_cbc (url, frame, fmt);
+}
+////////////////////
+
+const dig_ctv = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "ctv"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-video-id="';
+  var n = textData.search (s);
+
+  if (n > 0)
+  {
+    url = textData.substr (n + s.length, 20);
+    url = url.substr (0, url.search ('"'));
+  }
+
+  if (n < 0)
+  {
+    s = "\\); initPlayer\\(";
+    if ((n = textData.search (s)) > 0)
+    {
+      url = textData.substr (n + s.length - 2, 100);
+      url = url.substr (0, url.search ("\\)"));
+    }
+  }
+
+  if (n < 0)
+  {
+    s = "getAuthStates\\(";
+    if ((n = textData.search (s)) > 0)
+    {
+      url = textData.substr (n + s.length, 300);
+      url = url.substr (0, url.search ('"'));
+      sub = url.split (","); if (sub.length == 0) throw ("!!!");
+      url = sub [sub.length - 1];
+    }
+  }
+
+  if (n < 0)
+  {
+    s = "contentId: ";
+    if ((n = textData.search (s)) > 0)
+    {
+      url = textData.substr (n + s.length, 20);
+      url = url.substr (0, url.search (','));
+    }
+  }
+
+  if (n < 0)
+  {
+    s = "currentId=";
+    if ((n = textData.search (s)) > 0)
+    {
+      url = textData.substr (n + s.length, 20);
+      url = url.substr (0, url.search ('&'));
+    }
+  }
+
+  if (n < 0 || url.length != 7) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_ctv (url, frame, fmt);
+}
+////////////////////
+
+const dig_global = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "global"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-displayinline="';
+  var n = textData.search (s);
+
+  if (n < 0)
+  {
+    s = 'data-miniplayer-video="'; n = textData.search (s);
+    if (n < 0) { s = '<iframe src="'; n = textData.search (s); }
+    if (n < 0) throw ("!!!");
+  }
+  url = textData.substr (n, 100);
+
+  s = "/playlist/"; n = url.search (s);
+  if (n < 0) { s = "/embed/"; n = url.search (s); }
+  if (n < 0) throw ("!!!");
+
+  url = url.substr (n + s.length, 7);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_global (url, frame, fmt);
+}
+////////////////////
+
+const dig_tvo = async (doc, frame, fmt) =>
+{
+  find_brightcove (doc, "tvo", frame, fmt);
+}
+////////////////////
+
+const dig_bbc = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "bbc"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "embed\\\\";
+  var n = textData.search (s);
+
+  if (n < 0) { s = "versionID&quot;:&quot;"; n = textData.search (s); }
+  if (n < 0) { s = 'data-vpid="'; n = textData.search (s); }
+  if (n < 0) { s = 'data-id="'; n = textData.search (s); }
+  if (n < 0) { s = '"vpid":"'; n = textData.search (s); }
+  if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 20);
+
+  n = url.search ("\\\\"); if (n < 0) n = url.search ("&");
+  if (n < 0) n = url.search ('"'); if (n != 8) throw ("!!!");
+
+  url = url.substr (0, 8);
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_bbc (url, frame, fmt);
+}
+////////////////////
+
+const dig_aljazeera = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "aljazeera"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "RenderPagesVideo\\('";
+  var n = textData.search (s);
+
+  if (n > 0)
+  {
+    url = textData.substr (n + s.length - 1, 20);
+    url = url.substr (0, url.search ("'"));
+  }
+
+  if (n < 0)
+  {
+    s = "RenderGeneralBCVideo\\(";
+    n = textData.search (s); if (n < 0) throw ("!!!");
+    url = textData.substr (n + s.length - 1, 20);
+    url = url.substr (0, url.search (","));
+  }
+
+  if (url.length != 13) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_aljazeera (url, frame, fmt);
+}
+////////////////////
+
+const dig_ndtv = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "ndtv"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "media_mp4"; var n = textData.search (s);
+
+  if (n > 0)
+  {
+    url = textData.substr (n, 300); n = url.search ("\\.mp4");
+  }
+
+  if (n < 0)
+  {
+    s = "media:"; n = textData.search (s);
+    if (n < 0) { s = '"media"'; n = textData.search (s); }
+    if (n < 0) { s = "'media'"; n = textData.search (s); }
+    if (n < 0) throw ("!!!");
+
+    url = textData.substr (n, 300); n = url.search ("m3u8");
+    if (n < 0) n = url.search ("\\.mp4"); else stream_all (frame, 1);
+    if (n < 0) throw ("!!!");
+  }
+
+  url = url.substr (0, n + 4);
+  url = url.substr (url.search ("http"));
+  url = url.replace (/\\/g, "");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": id-none");
+}
+////////////////////
+
+////////////////////////////
+///// FREE MOVIES & TV /////
+////////////////////////////
+
+var loadmovie = function (frame, mode)
+{
+  var url, fmt, doc, sub, src;
+
+  clear_video (frame); if (mode == 2) return;
+
+  if (mode == 1)
+  {
+    url = document.getElementById ("line" + frame).value;
+    url = url.replace (/\\/g, "");
+    if (url != "") loadwindow (url, frame, "");
+    return;
+  }
+
+  if (mode != 0) return;
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  url = document.getElementById ("stk" + frame).value;
+  if (!url) url = document.getElementById ("id" + frame).value;
+
+  src = document.getElementById ("src" + frame).value;
+  sub = url.split (": ");
+
+  if (sub.length > 1) url = sub [sub.length - 1]; else
+  {
+    sub = url.split (":"); doc = sub [0];
+    if (sub.length > 1 && doc.length < 4)
+    {
+      src = 0; url = sub [sub.length - 1];
+
+      doc = document.getElementById ("src" + frame);
+      if (doc.value != src) for (mode = 0; mode < doc.length; mode++)
+        if (doc.options [mode].value == src) { doc.selectedIndex = mode; break; }
+    }
+  }      
+  if (url == "") return;
+
+  if (src == 1  && (url = getid (url,-18))) req_veoh (url, frame, fmt); else
+  if (src == 2  && (url = getid (url, -8))) req_vidcloud (url, frame, fmt); else
+  if (src == 3  && (url = getid (url,  6))) req_tubitv (url, frame, fmt); else
+  if (src == 4  && (url = getid (url,-11))) req_verystream (url, frame, fmt); else
+  if (src == 5  && (url = getid (url, 12))) req_gounlimited (url, frame, fmt); else
+  if (src == 11 && (url = getid (url, 15))) req_pornhub (url, frame, fmt); else
+  if (src == 17 && (url = getid (url, 12))) req_vidtodo (url, frame, fmt); else
+  if (src == 16 && (url = getid (url, 12))) req_clipwatching (url, frame, fmt); else
+  if (src == 12 && (url = getid (url, 12))) req_flix555 (url, frame, fmt); else
+  if (src == 19 && (url = getid (url, 12))) req_onlystream (url, frame, fmt); else
+  if (src == 13 && (url = getid (url, 12))) req_vidlox (url, frame, fmt); else
+  if (src == 18 && (url = getid (url, 12))) req_vidoza (url, frame, fmt); else
+  if (src == 15 && (url = getid (url, 12))) req_vshare (url, frame, fmt); else
+
+  if (src == 0  && (url = getid (url, 11))) request (url, frame, fmt);
+
+  else document.getElementById ("id" + frame).value = (url ? "Not supported" : "Invalid ID");
+}
+////////////////////
+
+const req_veoh = async (id, frame, fmt) =>
+{
+  var tag = "veoh"; if (is_busy (frame)) return;
+  var url = "https://www.veoh.com/watch/getVideo/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) busy = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var jsonData = await response.json();
+
+  url = jsonData.video.src.HQ;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_vidcloud = async (id, frame, fmt) =>
+{
+  var tag = "vidcloud"; if (is_busy (frame)) return;
+  var url = "https://vidcloud.icu//streaming.php?id=" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var s = "file: '";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 1000);
+  url = url.substr (0, url.search ("'"));
+
+  if (url == "" || url.search ("m3u8") > 0)
+  {
+    s = "window.urlVideo = '";
+    n = textData.search (s); if (n < 0) throw ("!!!");
+
+    url = textData.substr (n + s.length, 200);
+    url = url.substr (0, url.search ("'"));
+    if (url == "") throw ("!!!");
+
+    if (url.search ("m3u8")) (stream_all (frame, 1));
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_tubitv = async (id, frame, fmt) =>
+{
+  var tag = "tubitv"; if (is_busy (frame)) return;
+  var url = "https://tubitv.com/movies/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) busy = 0; else
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"manifest":';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n, 500);
+  url = url.substr (url.search ("http"));
+  url = url.substr (0, url.search ('"'));
+  url = url.replace (/\\u002F/g, "/");
+  if (url == "") throw ("!!!");
+
+  if (stream_all (frame, 1)) fmt = 0; else
+  {
+    response = await fetch (url);
+    textData = await response.text();
+
+    url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_verystream = async (id, frame, fmt) =>
+{
+  var tag = "verystream"; if (is_busy (frame)) return;
+  var url = "https://verystream.com/e/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'id="videolink">';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 200);
+  url = url.substr (0, url.search ('<')); if (url == "") throw ("!!!");
+
+  url = "https://verystream.com/gettoken/" + url;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_gounlimited = async (id, frame) =>
+{
+  tag = "gounlimited"; if (is_busy (frame)) return;
+  var url = "https://gounlimited.to/embed-" + id + ".html";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var n = textData.search ("'\\|\\|\\|"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n - 3, 2000);
+  url = url.substr (url.search ("\\|mp4\\|") + 5);
+  var sub = url.split ("|");
+
+  url = "https://" + sub[1] + ".gounlimited.to/" + sub[0] + "/v.mp4";
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_pornhub = async (id, frame, fmt) =>
+{
+  var i, j, k, f = new Array (8), r = new Array (4);
+
+  var tag = "pornhub"; if (is_busy (frame)) return;
+  var url = "https://www.pornhub.com/embed/" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  url = cors_bypass + "https://www.pornhub.com/view_video.php?viewkey=" + id;
+
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '"mediaDefinitions":';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n, 3000);
+  var sub = url.split ('"quality":"');
+  if (sub.length < 2) throw ("!!!");
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 1; i < sub.length; i++)
+  {
+    k = sub [i]; k = k.substr (0, k.search ('"'));
+    if ((j = chkformat (k)) >= 0) if (r[j] < k) { f[j] = i; r[j] = k; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0) return "";
+
+  url = sub [f[j]]; fmt = r[j];
+  url = url.substr (url.search ("http"));
+  url = url.substr (0, url.search ('"')); if (url == "") return "";
+  url = url.replace (/\\/g, "");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_vidtodo = async (id, frame, fmt) =>
+{
+  var tag = "vidtodo"; if (is_busy (frame)) return;
+  var url = "https://vidtodu.com/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var n = textData.search ("'\\|\\|\\|"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + 3, 2000);
+  url = url.substr (0, url.search ("split"));
+  url = url.replace (/\|\|/g, "|");
+
+  n = url.search ("\\|file\\|"); if (n < 0) throw ("!!!");
+
+  var sub = url.substr (n + 6, 10);
+  if (sub.search ("js") == 0) sub = sub.substr (3);
+  sub = sub.substr (0, sub.search ("\\|"));
+
+  url = crack_stream (url, frame, fmt); if (url == "") throw ("!!!");
+  n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+  url = "https://" + sub + ".vidtodo.com/" + url + "/v.mp4";
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_clipwatching = async (id, frame, fmt) =>
+{
+  var tag = "clipwatch"; if (is_busy (frame)) return;
+  var url = "https://clipwatching.com/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var n = textData.search ("'\\|\\|\\|"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + 3, 2000);
+  url = url.substr (0, url.search ("split"));
+  url = url.replace (/\|\|/g, "|");
+
+  var s = "\\|3D0\\|s"; var n = url.search (s);
+  if (n < 0) { s = "\\|3E\\|s"; n = url.search (s); }
+  if (n < 0) throw ("!!!");
+
+  var sub = url.substr (n + s.length - 3, 10);
+  sub = sub.substr (0, sub.search ("\\|"));
+
+  url = crack_stream (url, frame, fmt); if (url == "") throw ("!!!");
+  n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+  url = "https://" + sub + ".clipwatching.com/" + url + "/v.mp4";
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_flix555 = async (id, frame, fmt) =>
+{
+  var tag = "flix555"; if (is_busy (frame)) return;
+  var url = "https://flix555.com/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var n = textData.search ("'\\|\\|\\|"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + 3, 2000);
+  url = url.substr (0, url.search ("split"));
+  url = url.replace (/\|\|/g, "|");
+
+  n = url.search ("\\|file\\|"); if (n < 0) throw ("!!!");
+
+  var sub = url.substr (n + 6, 10);
+  sub = sub.substr (0, sub.search ("\\|"));
+
+  url = crack_stream (url, frame, fmt); if (url == "") throw ("!!!");
+  n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+
+  url = "https://" + sub + ".flix555.com/" + url + "/v.mp4";
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_onlystream = async (id, frame, fmt) =>
+{
+  var tag = "onlystream"; if (is_busy (frame)) return;
+  var url = "https://onlystream.tv/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var n = textData.search ("'\\|\\|\\|"); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + 3, 2000);
+  url = url.substr (0, url.search ("split"));
+  url = url.replace (/\|\|/g, "|");
+
+  n = url.search ("ostreamcdn"); if (n < 0) throw ("!!!");
+  var sub = url.substr (n + 11); sub = sub.substr (0, sub.search ("\\|"));
+
+  if (url.search ("\\|logo\\|mp4\\|") > 0)
+  {
+    url = crack_stream (url, frame, fmt); if (url == "") throw ("!!!");
+    n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+    url = "https://" + sub + ".ostreamcdn.com/" + url + "/v.mp4";
+  }
+  else
+  {
+    n = url.search ("\\|logo\\|"); if (n < 0) throw ("!!!");
+    url = url.substr (n + 6); url = url.substr (0, url.search ("\\|"));
+    url = "https://" + sub + ".ostreamcdn.com/hls/," + url + ",.urlset/master.m3u8";
+
+    if (stream_all (frame, 1)) fmt = 0; else
+    {
+      response = await fetch (url);
+      textData = await response.text();
+
+      url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+      n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+    }
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+const req_vidlox = async (id, frame, fmt) =>
+{
+  var tag = "vidlox"; if (is_busy (frame)) return;
+  var url = "https://vidlox.me/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var s = "sources:";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n, 1000);
+  var sub = url.split ("http"); if (sub.length < 2) throw ("!!!");
+
+  if (sub [1].search ("mp4")  > 0) n =  1; else
+  if (sub [2].search ("mp4")  > 0) n =  2; else
+  if (sub [1].search ("m3u8") > 0) n = -1; else
+  if (sub [2].search ("m3u8") > 0) n = -2; else throw ("!!!");
+
+  if (n < 0) { n = -n; stream_all (frame, 1); }
+
+  url = "http" + sub [n];
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_vidoza = async (id, frame, fmt) =>
+{
+  var tag = "vidoza"; if (is_busy (frame)) return;
+  var url = "https://vidoza.net/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 200);
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+const req_vshare = async (id, frame, fmt) =>
+{
+  var tag = "vshare"; if (is_busy (frame)) return;
+  var url = "https://vshare.eu/embed-" + id + ".html";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+if (document.getElementById ("mov" + frame + "c").checked) fmt = 0; else
+try
+{
+  var response = await fetch (cors_bypass + url);
+  var textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length, 200);
+  url = url.substr (0, url.search ('"'));
+  if (url == "") throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + ": " + id);
+}
+////////////////////
+
+/*
+const req_milffox = async (id, frame, fmt) =>
+{
+  var tag = "milffox"; if (is_busy (frame)) return;
+  var url = cors_bypass + "https://www.milffox.com/player/config.php?id=" + id;
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  url = jsonData.video_url;
+
+} catch (err) { console.log (err); busy = 0; }
+
+  error = id; no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+*/
+
+///////////////////
+///// DIG DUG /////
+///////////////////
+
+var digmovie = function (frame)
+{
+  var doc, src, fmt;
+
+  clear_video (frame);
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = document.getElementById ("proxy").value; else cors_bypass = "";
+
+  doc = document.getElementById ("fmt" + frame);
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  src = document.getElementById ("src" + frame).value;
+  doc = document.getElementById ("line" + frame).value;
+
+  if (src == 2 ) dig_vidcloud (doc, frame, fmt); else
+  if (src == 3 ) dig_tubitv (doc, frame, fmt); else
+  if (src == 4 ) dig_putlocker (doc, frame, fmt); else
+  if (src == 5 ) dig_lunchflix (doc, frame, fmt); else
+
+  document.getElementById ("id" + frame).value = "Not supported";
+}
+////////////////////
+
+const dig_vidcloud = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "vidcloud"; var url = doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "<iframe src=";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n, 100);
+  url = url.substr (url.search ("id=") + 3);
+  if ((n = url.search ("=")) > 0) url = url.substr (0, n);
+  if ((n = url.search ("&")) > 0) url = url.substr (0, n);
+
+  if (url.length < 6 || url.length > 8) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_vidcloud (url, frame, fmt);
+}
+////////////////////
+
+const dig_tubitv = async (doc, frame, fmt) =>
+{
+  var tag = "tubitv"; if (is_busy (frame)) return;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var url = doc.substr (doc.search ("movies") + 7);
+  url = url.substr (0, url.search ("/"));
+  if (url.length != 6) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_tubitv (url, frame, fmt);
+}
+////////////////////
+
+const dig_putlocker = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "putlocker"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "'shortlink'";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n, 100);
+  url = url.substr (url.search ("p=") + 2);
+  url = url.substr (0, url.search ("'"));
+  if (url == "") throw ("!!!");
+
+  url = cors_bypass + "https://www.putlocker.fyi/embed-src/" + url;
+
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'src="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+  
+  url = textData.substr (n, 100);
+  url = url.substr (url.search ("/e/") + 3);
+  url = url.substr (0, url.search ('"'));
+
+  if (url.length < 9 || url.length > 11) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_verystream (url, frame, fmt);
+}
+////////////////////
+
+const dig_lunchflix = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "lunchflix"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = '<source src="';
+  var n = textData.search (s);
+
+  if (n < 0)
+  {
+    s = '<IFRAME SRC="';
+    n = textData.search (s); if (n < 0) throw ("!!!");
+    url = textData.substr (n, 100);
+
+    url = url.substr (url.search ("embed-") + 6);
+    url = url.substr (0, url.search ('"'));
+    n = url.search ("htm"); if (n > 0) url = url.substr (0, n - 1);
+    if (url.length != 12) throw ("!!!");
+    busy = -busy;
+  }
+  else
+  {
+    url = textData.substr (n + s.length, 500);
+    url = url.substr (0, url.search ('"'));
+    if (url == "") throw ("!!!");
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (busy > 0)
+  {
+    no_fail (frame); no_format (frame);
+   loadwindow (url, frame, tag + ": id-none");
+  }
+  else if (no_fail (frame)) req_gounlimited (url, frame, fmt);
+}
+////////////////////
+
+/*
+const dig_milffox = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "milffox"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = "get_player";
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + s.length + 1, 10);
+  url = url.substr (0, url.search (","));
+  if (url.length != 5) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) req_milffox (url, frame, fmt);
+}
+////////////////////
+
+const dig_streamlord = async (doc, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  var tag = "streamlord"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'return("http';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  url = textData.substr (n + 8, 1000);
+  url = url.substr (0, url.search ('"'));
+  if (url == "") if (n < 0) throw ("!!!");
+
+} catch (err) { console.log (err); busy = 0; }
+
+  no_format (frame); if (no_fail (frame)) loadwindow (url, frame, tag + ": id-none");
+}
+////////////////////
+*/
+
+//////////////////////
+///// LOADWINDOW /////
+//////////////////////
+
+var loadwindow = function (url, frame, site)
+{
+  var h, w, win, raw, title, insert, specs;
+
+  var time = Date.now(); if (last_time > time - 1000) return; last_time = time;
+
+  var multi = document.getElementById ("mov" + frame + "m").checked;
+  var nplay = document.getElementById ("mov" + frame + "n").checked;
+
+  if (document.getElementById ("mov" + frame + "a").checked) raw = 0; else
+  if (document.getElementById ("mov" + frame + "b").checked) raw = 1; else
+  if (document.getElementById ("mov" + frame + "c").checked) raw = 2; else raw = 0;
+
+  if (url == "")
+  {  
+    document.getElementById ("vid" + frame).innerHTML = "No Video";
+    document.getElementById ("id" + frame).value = site;
+    return;
+  }
+
+  if (site != "")
+  {
+    if (typeof (url) != "string" || url.search ("http") != 0)
+    {
+      document.getElementById ("vid" + frame).innerHTML = "Bad URL";
+      return;
+    }
+
+    document.getElementById ("id" + frame).value = site;
+    document.getElementById ("line" + frame).value = url;
+
+    if (nplay)
+    {
+      document.getElementById ("vid" + frame).innerHTML = "No Play";
+      return;
+    }
+  }
+
+  var bstyle = "<body style='margin:0;padding:0;background-color:";
+  var istyle = " style='position:absolute;width:100%;height:100%;border:none;outline:none'";
+  var vstyle = " autoplay allowfullscreen controls ";
+
+  if (raw == 1)
+  {
+    title = "Wrapper";
+    insert = "'><video" + istyle + vstyle + "id='hls' data-hls=''></video></body>";
+  }
+
+  if (raw == 2)
+  {
+    title = "Sandbox";
+    insert = "'><iframe" + istyle + vstyle + "src='" + url +
+      "' sandbox='allow-scripts allow-same-origin allow-forms'></iframe></body>";
+  }
+
+  if (document.getElementById ("btn" + frame + "b").checked)
+  {
+    var lft, top;
+
+    win = document.getElementById ("win" + frame);
+    if (!(specs = win.value)) specs = win.options[0].value;
+
+    h = specs.search (":");
+    w = specs.substr (0, h);
+    h = specs.substr (h + 1);
+
+    lft = (window.screen.width - w)  / 2;
+    top = (window.screen.height - h) / 3;
+
+    specs = "width=" + w + ",height=" + h + ",top=" + top + ",left=" + lft;
+  }
+
+  else if (document.getElementById ("btn" + frame + "a").checked)
+  {
+    h = w = 0; specs = "";
+  }
+
+  else
+  {
+    document.getElementById ("vid" + frame).innerHTML = "No Video";
+    win = document.getElementById ("mov" + frame);
+
+    if (raw != 1) win.src = url; else
+    {
+      win = win.contentDocument; insert = bstyle + "black" + insert;
+      load_stream (frame, true, insert, url, win);
+    }
+    return;
+  }
+
+  if (multi) vidwin = null; else if (h != last_h || w != last_w || raw != last_raw)
+  {
+    if (vidwin) vidwin.close(); vidwin = null;
+  }
+  if (!vidwin || vidwin.closed) vidwin = window.open ("about:blank", "_blank", specs);
+  last_h = h; last_w = w; last_raw = raw;
+
+  if (raw == 0) vidwin.location = url; else
+  {
+    bstyle = "<!DOCTYPE html><html><head><title>" + title + "</title></head>" + bstyle;
+    win = vidwin.document; insert = bstyle + "black" + insert + "</html>";
+    load_stream (frame, false, insert, url, win);
+  }
+  vidwin.focus(); document.getElementById ("vid" + frame).innerHTML = "";
+}
+////////////////////
+
+var load_stream = function (frame, is_local, insert, url, win)
+{
+  var hls_cfg = {
+    capLevelOnFPSDrop: true,
+    capLevelToPlayerSize: true
+  };
+
+  win.open(); win.write (insert); win.close();
+
+  if ((win = win.getElementById ("hls")) == undefined) return;
+
+  var hls = document.getElementById ("hls" + frame).checked;
+  var obj = is_local ? frame : 0;
+
+  if (!hls)
+  {
+    win.src = url;
+  }
+  if (hls == 1)
+  {
+    hls_obj [obj] = new Hls (hls_cfg);
+    hls_obj [obj].loadSource (url);
+    hls_obj [obj].attachMedia (win);
+  }
+  if (hls == 2)
+  {
+    dash_obj [obj] = dashjs.MediaPlayer().create();
+    dash_obj [obj].initialize (win, url, true);
+  }
+}
+////////////////////
+
+/*  HLS configuration options (https://github.com/video-dev/hls.js/blob/master/docs/API.md#fine-tuning)
+
+var config = {
+      autoStartLoad: true,
+      startPosition: -1,
+      debug: false,
+      capLevelOnFPSDrop: false,
+      capLevelToPlayerSize: false,
+      defaultAudioCodec: undefined,
+      initialLiveManifestSize: 1,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 600,
+      maxBufferSize: 60*1000*1000,
+      maxBufferHole: 0.5,
+      lowBufferWatchdogPeriod: 0.5,
+      highBufferWatchdogPeriod: 3,
+      nudgeOffset: 0.1,
+      nudgeMaxRetry: 3,
+      maxFragLookUpTolerance: 0.25,
+      liveSyncDurationCount: 3,
+      liveMaxLatencyDurationCount: Infinity,
+      enableWorker: true,
+      enableSoftwareAES: true,
+      manifestLoadingTimeOut: 10000,
+      manifestLoadingMaxRetry: 1,
+      manifestLoadingRetryDelay: 1000,
+      manifestLoadingMaxRetryTimeout: 64000,
+      startLevel: undefined,
+      levelLoadingTimeOut: 10000,
+      levelLoadingMaxRetry: 4,
+      levelLoadingRetryDelay: 1000,
+      levelLoadingMaxRetryTimeout: 64000,
+      fragLoadingTimeOut: 20000,
+      fragLoadingMaxRetry: 6,
+      fragLoadingRetryDelay: 1000,
+      fragLoadingMaxRetryTimeout: 64000,
+      startFragPrefetch: false,
+      fpsDroppedMonitoringPeriod: 5000,
+      fpsDroppedMonitoringThreshold: 0.2,
+      appendErrorMaxRetry: 3,
+      loader: customLoader,
+      fLoader: customFragmentLoader,
+      pLoader: customPlaylistLoader,
+      xhrSetup: XMLHttpRequestSetupCallback,
+      fetchSetup: FetchSetupCallback,
+      abrController: AbrController,
+      bufferController: BufferController,
+      capLevelController: CapLevelController,
+      fpsController: FPSController,
+      timelineController: TimelineController,
+      enableWebVTT: true,
+      enableCEA708Captions: true,
+      stretchShortVideoTrack: false,
+      maxAudioFramesDrift: 1,
+      forceKeyFrameOnDiscontinuity: true,
+      abrEwmaFastLive: 3.0,
+      abrEwmaSlowLive: 9.0,
+      abrEwmaFastVoD: 3.0,
+      abrEwmaSlowVoD: 9.0,
+      abrEwmaDefaultEstimate: 500000,
+      abrBandWidthFactor: 0.95,
+      abrBandWidthUpFactor: 0.7,
+      abrMaxWithRealBitrate: false,
+      maxStarvationDelay: 4,
+      maxLoadingDelay: 4,
+      minAutoBitrate: 0,
+      emeEnabled: false,
+      widevineLicenseUrl: undefined,
+      requestMediaKeySystemAccessFunc: requestMediaKeySystemAccess
+  };
+*/
+
+//////////////////////////////
+///// GENERIC BRIGHTCOVE /////
+//////////////////////////////
+
+const find_brightcove = async (doc, tag, frame, fmt) =>
+{
+  if (is_busy (frame)) return;
+  if (tag == "") tag = "brightcove"; var url = cors_bypass + doc;
+  document.getElementById ("id" + frame).value = tag + " (DIG)";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var s = 'data-account="';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  var pub = textData.substr (n + s.length, 100);
+  pub = pub.substr (0, pub.search ('"'));
+
+  s = 'data-video-id="'; n = textData.search (s);
+  if (n < 0) { s = 'data-video-id-pending="'; n = textData.search (s); }
+  if (n < 0) throw ("!!!");
+
+  var id = textData.substr (n + s.length, 100);
+  id = id.substr (0, id.search ('"'));
+
+} catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (no_fail (frame)) load_brightcove (pub, id, tag, frame, fmt);
+}
+////////////////////
+
+const load_brightcove = async (pub, id, tag, frame, fmt) =>
+{
+  var i, j, k, f = new Array (8), r = new Array (4);
+
+  if (is_busy (frame)) return;
+  var url = "https://players.brightcove.net/" + pub + "/default_default/index.min.js";
+  document.getElementById ("id" + frame).value = tag + " (ID)";
+
+try
+{
+  response = await fetch (url);
+  textData = await response.text();
+
+  var s = 'accountId:"' + pub + '",policyKey:"';
+  var n = textData.search (s); if (n < 0) throw ("!!!");
+
+  var pk = textData.substr (n + s.length, 200);
+  pk = pk.substr (0, pk.search ('"'));
+
+  url = "https://edge.api.brightcove.com/playback/v1/accounts/" + pub + "/videos/" + id;
+
+  response = await fetch (url, { headers: { 'Accept': 'application/json;pk=' + pk }, });
+  textData = await response.json();
+
+  var url_m3u8 = ""; var dat = textData.sources; if (dat == undefined) throw ("!!!");
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 0; i < dat.length; i++)
+  {
+    url = dat [i].src; if (url == undefined) continue;
+    if (url.search ("m3u8") > 0) { url_m3u8 = url; continue; }
+    k = dat [i].height; if (k == undefined) continue;
+
+    if ((j = chkformat (k)) >= 0) if (r[j] < k) { f[j] = i + 1; r[j] = k; }
+  }
+
+  if ((k = getformat (f, fmt)))
+  {
+    if ((k = argformat (k)) < 0 || (k = f[k] - 1) < 0) throw ("!!!");
+    url = dat [k].src; fmt = dat [k].height; fixformat (f, frame);
+  }
+  else
+  {
+    if ((url = url_m3u8) == "") throw ("!!!");
+    if (stream_all (frame, 1)) fmt = 0; else
+    {
+      response = await fetch (url);
+      textData = await response.text();
+
+      url = crack_m3u8 (url, textData, frame, fmt); if (url == "") throw ("!!!");
+      n = url.search ("<>"); fmt = url.substr (n + 2); url = url.substr (0, n);
+    }
+  }
+
+} catch (err) { console.log (err); busy = 0; }
+
+  if (tag == "brightcove") id = "id-none";
+  error = id; if (!fmt) no_format (frame);
+  if (no_fail (frame)) loadwindow (url, frame, tag + " [" + fmt + "]: " + id);
+}
+////////////////////
+
+var crack_stream = function (data, frame, fmt)
+{
+  var url, n, f = new Array (8);
+
+  n = data.search ("\\|image");
+  if (n > 0) data = data.substr (n);
+
+  f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  n = data.search ("360p"); f[0] = n < 0 ? 0 : n;
+  n = data.search ("480p"); f[1] = n < 0 ? 0 : n;
+  n = data.search ("720p"); f[2] = n < 0 ? 0 : n;
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+
+  if ((n = argformat (fmt)) < 0)
+  { console.log(n);
+    fmt = 0; n = data.search ("\\|mp4\\|"); if (n < 0) return "";
+  }
+  else
+  {
+    if (n == 0) fmt = 360;
+    if (n == 1) fmt = 480;
+    if (n == 2) fmt = 720;
+    n = f[n];
+  }
+    
+  url = data.substr (n + 5);
+
+  n = url.search ("\\|"); if (n >= 0 && n < 20) url = url.substr (n+1);
+  n = url.search ("\\|"); if (n >= 0 && n < 20) url = url.substr (n+1);
+  url = url.substr (0, url.search ("\\|"));
+
+  if (url == "") return ""; else return (url + "<>" + fmt);
+}
+////////////////////
+
+var crack_source = function (data, frame, fmt)
+{
+  var sub, str, url, i, j, f = new Array (8), r = new Array (4);
+
+  sub = data.split ("<source src="); if (sub.length < 2) return "";
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 1; i < sub.length; i++)
+  {
+    str = sub [i]; j = str.search ('label="');
+    str = str.substr (j + 7); str = str.substr (0, str.search ('"'));
+    if ((j = str.search ("p")) > 0) str = str.substr (0, j);
+    if ((j = chkformat (str)) >= 0) if (r[j] < str) { f[j] = i; r[j] = str; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0) return "";
+
+  str = sub [f[j]]; fmt = r[j];
+  url = str.substr (1); str = str.substr (0,1);
+  url = url.substr (0, url.search (str)); if (url == "") return "";
+
+  return (url + "<>" + fmt);
+}
+////////////////////
+
+var crack_smil = function (data, frame, fmt)
+{
+  var sub, str, url, i, j, url, f = new Array (8), r = new Array (4);
+
+  str = '<audio src="'; j = data.search (str);
+
+  if (j > 0)
+  {
+    url = data.substr (j + str.length, 200);
+    url = url.substr (0, url.search ('"'));
+
+    if (url == "") return ""; else return (url + "<>");
+  }
+
+  sub = data.split ('<video src="');
+  if (sub.length < 2) return "";
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  for (i = 1; i < sub.length; i++)
+  {
+    str = sub [i];
+
+    if ((j = str.search ("height")) > 0)
+    {
+      str = str.substr (j + 8);
+      str = str.substr (0, str.search ('"'));
+    }
+    else if ((j = str.search ("bitrate")) < 0) continue; else
+    {
+      str = str.substr (j + 9);
+      str = str.substr (0, str.search ('"'));
+      if (str == "1700000") str = "720"; else
+      if (str == "1300000") str = "504"; else
+      if (str ==  "900000") str = "360"; else continue;
+    }
+
+    if ((j = chkformat (str)) >= 0) if (r[j] < str) { f[j] = i; r[j] = str; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0) return "";
+
+  url = sub [f[j]]; fmt = r[j];
+  url = url.substr (0, url.search ('"'));
+  if (url == "") return "";
+
+  return (url + "<>" + fmt);
+}
+////////////////////
+
+///////////////////////
+///// M3U8 LOADER /////
+///////////////////////
+
+var crack_m3u8 = function (path, data, frame, fmt)
+{
+  var sub, str, url, audio, i, j, f = new Array (8), r = new Array (4);
+
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = r[0] = r[1] = r[2] = r[3] = 0;
+
+  sub = data.split ("#EXT-X-STREAM-INF"); if (sub.length < 2) return "";
+
+  for (i = 1; i < sub.length; i++)
+  {
+    j = sub [i].search ("RESOLUTION"); if (j < 0) continue;
+
+    str = sub [i]; str = str.substr (j);
+    str = str.substr (str.search ("x") + 1, 4);
+    url = str.substr (3,1); if (url < "0" || url > "9") str = str.substr (0,3);
+
+    if ((j = chkformat (str)) >= 0) if (r[j] < str) { f[j] = i; r[j] = str; }
+  }
+
+  fmt = getformat (f, fmt); fixformat (f, frame);
+  if ((j = argformat (fmt)) < 0) return (path + "<>0");
+
+  audio = sub [0]; sub = sub [f[j]].split ("\n");
+  str = sub [1]; url = merge_url (path, str) + str;
+
+  if ((i = audio.search ("#EXT-X-MEDIA:TYPE=AUDIO")) < 0) audio = ""; else
+    if ((i = audio.search ('URI="')) < 0) audio = ""; else
+    {
+      audio = audio.substr (i + 5); audio = audio.substr (0, audio.search ('"'));
+    }
+
+  if (document.getElementById ("mov" + frame + "n").checked) make_downloader (url, audio);
+  fmt = 0; if (audio != "") url = path; else fmt = r[j];
+  return (url + "<>" + fmt);
+}
+////////////////////
+
+var merge_url = function (path1, path2)
+{
+  var url = "", sub, i, j, k;
+
+  if (path2.search ("http") == 0) return "";
+
+  sub = path1.split ("/"); j = sub.length - 1;
+  if ((k = path2.search ("/")) == 0) --j;
+
+  for (i = 0; i < j; i++) url = url + sub [i] + "/";
+
+  if (k == 0) url = url.substr (0, url.length - 1);
+
+  return url;
+}
+////////////////////
+
+//////////////////////
+///// DOWNLOADER /////
+//////////////////////
+
+const make_downloader = async (vid, aud) =>
+{
+  var i, m, n, p = 0, url, data, name, doc, done = false, plain_text = false;
+
+  url = vid; doc = head; download_doc = head + "Waiting for stream file..." + tail;
+
+try
+{ 
+  var response = await fetch (url);
+  var textData = await response.text();
+
+} catch (err) { download_doc = head + "Could not get stream file." + tail; return; }
+
+  
+  if (aud != "") if (plain_text)
+    doc = doc + "\n<br>Audio Stream Source<br>\n" + aud + "\n<br>"; else
+    doc = doc + "\n<p>\n<a href='" + aud + "'>Audio Stream Source</a>";
+
+  if (plain_text)
+    doc = doc + "\n<br>Video Stream Source<br>\n" + url + "\n<br><br>"; else
+    doc = doc + "\n<p>\n<a href='" + url + "'>Video Stream Source</a>\n<br><br>";
+
+  var sub = textData.split ("#EXTINF");
+
+  for (i = 1; i < sub.length - 1; i++)
+  {
+    data = sub [i].split ("\n");
+    if (!done) { url = merge_url (url, data [1]); done = true; }
+    data = url + data [1];
+
+    name = ++p; if (p < 10) name = "00" + p; else if (p < 100) name = "0" + p;
+
+    if (plain_text)
+      data = "\n<p>\n" + data; else
+      data = "\nSegment <a href='" + data + "'>" + name + "</a>&nbsp;&nbsp;&nbsp;";
+
+    if (!(p % 5)) data = data + "\n<br><br>";
+
+    doc = doc + data;
+  }
+
+  download_doc = doc + "\n<br>\n<div style='width:10vw; height:10vw'></div>" + tail + "\n\n";
+}
+////////////////////
+
+var open_downloader = function ()
+{
+  var downloader = window.open ();
+  downloader.document.write (download_doc);
+  downloader.document.close ();
+}
+////////////////////
+
+</script>
+
+</html> 

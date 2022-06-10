@@ -1,0 +1,495 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+
+Youtube Player
+
+</title></head>
+
+<style type="text/css">
+
+.widevid {
+  position: relative;
+  width: 72vw;
+  padding-bottom: 40.5vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.widevid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+.televid {
+  position: relative;
+  width: 60vw;
+  padding-bottom: 45vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.televid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border: none;
+  background-color: transparent;
+}
+
+button {
+  width: auto;
+  height: 100%;
+  font-size: 12px;
+  background-color: powderblue;
+}
+
+button.is_off {
+  background-color: pink;
+  border-style: outset;
+}
+
+button.is_on {
+  background-color: lightgreen;
+  border-style: inset;
+}
+
+button.copy {
+  font-size: 20px;
+}
+
+select.movies {
+  width: 100%;
+  max-width: 100%;
+}
+
+table {
+  border: 3px solid green;
+}
+
+table.innerbox {
+  display: inline-block;
+  border: 2px solid red;
+}
+
+td {
+  padding: 0;
+  vertical-align: top;
+}
+
+td.text {
+  text-align: center;
+  padding: 0 8px 0 8px;
+  border-top: 1px solid green;
+  border-bottom: 1px solid green;
+  width: 28vw;
+}
+
+td.list {
+  text-align: center;
+  padding: 0 12px 0 12px;
+  border: 1px solid crimson;
+}
+
+ul {
+  list-style: square;
+  padding: 1em;
+  padding-top: 0;
+}
+
+h2.vidbox {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  right: 40%;
+  text-align: center;
+  border-radius: 10px;
+  font-style: italic;
+  background-color: slateblue;
+  color: lavender;
+}
+
+b_ {color: blue;}
+r_ {color: crimson;}
+g_ {color: seagreen;}
+w_ {color: saddlebrown;}
+
+</style><body style="color: darkblue">
+
+<h1><g_>Youtube Player v2</g_></h1>
+
+Refer to my previous comments in the previous version of the Youtube player.
+<p>
+This is pretty sweet. The interface hasn't changed all much here but the cool feature is the ability
+to play vids in multiple popup windows. I suppose you could get crazy and open up lots of little
+vids all over your desktop and I guess somebody will try that. You can also build playlists if you
+want but that involves breaking out the html code since there is no ability
+to save vids to a playlist. But this is an experiment, not an attempt to make a general purpose
+utility. The idea with this (and the movie player) is to figure out the best ways to access
+videos for embedding into some articles I am working on.
+<p>
+Now, embedding is easy. It just requires injecting a url into an iframe and away it goes. Including
+Javascript in the process can be problematic since Javascript has some severe restrictions
+regarding access to files on remote servers or access to the contents of an iframe. The
+dreaded "Cross-Origin Resource Sharing" (CORS) makes it difficult to access resources not in the
+same domain as the Javascript. There are two solutions to this. First, a remote resource can be
+accessed via a proxy (I've been using https://cors.io) but that requires the proxy to always be
+available and that is not the case. These proxies tend to be down or very slow at times. I just
+haven't been able to find one that is reliable so this is not a good solution.
+<p>
+There is an extension to fix the CORS problem on Firefox
+<a href="https://addons.mozilla.org/en-US/firefox/addon/cross-domain-cors/">here</a>. For other
+browsers, you can do a simple search on "cors" or "cross-origin" to find one. I like the one I
+got since it is simple. By default, it disables the CORS restriction everywhere and that is not something you
+should do (it compromises browser security). Instead, remove the default (/.*/) and replace it
+with "invidio.us/embed" to run this video player properly (this disables CORS only for that
+specific domain so it will not compromise your security). The only reason access to this domain
+is needed is to get the list of available video formats. The player runs fine without the format
+lookup. So that gets rid of the proxy and I am really happy about that but it still kinda sucks
+that this even needs to be done.
+<p>
+The player is no longer trying to access "www.youtube.com/get_video_info". It was not needed in
+the first place since the info is available from "invidio.us". The correct way to read
+"get_video_info" is this: "https://www.youtube.com/get_video_info?el=detailpage&video_id=xxxxxxxxxxx".
+The "el=detailpage" part is important since otherwise you won't get the correct info for some vids.
+This tidbit was learned <a href="https://github.com/ytdl-org/youtube-dl/tree/master/youtube_dl/extractor">
+here</a>. Anyway, that is just academic now since Invidious suits my purpose better.
+<p>
+Html sucks at times. I still haven't figured out how to get rid of the vertical scroll bar on the
+formats list. If it isn't showing for you then that's good. I can't seem to find a way to make it
+go away on my Firefox short of just building my own version of the list box from scratch. I might
+do that but not any time soon. The rest of the interface works nicely though. One little point I
+should make. If you select a video from the drop-down play list and then decide to enter an ID
+on the input line, be warned that the video will not play. You need to deselect the video in
+the drop-down (just click the top item). Other than that, there don't seem to be any issues
+that I need to warn you about. I might decide to implement some code to parse the ID out of a url
+like "youtu.be/xxxxxxxxxxx" because it is a pain in the ass to have to edit the input.
+Also, this has not been tested on a wide screen since I am only using an old-style tube monitor.
+I got a few of those around so might as well burn them out. Anyway, have fun.
+
+<div style="width: 100vw; height: 20vw"></div>
+
+<table><tr><td class=text>
+
+<button onclick="javascript:loadid (5,0)">Play ID</button>
+<button onclick="javascript:loadid (5,1)">Play URL</button>
+<button onclick="javascript:loadid (5,2)">Clear</button>
+<p><input type=text size=32 id="mov5i" maxlength=512>
+
+<p><select id="mov5f" size=1 class=movies>
+<option value=''>Select a video stack</select>
+
+<p><w_>Format Lookup: </w_>
+  <input type=radio name="format" checked><r_>Off</r_>
+  <input type=radio name="format" id="mov5r"><g_>On</g_>
+
+<p><select id="mov5s" size=8>
+ <option value=18>mp4 - [18] 360p *
+ <option value=19>mp4 - [19] 480p *
+ <option value=22>mp4 - [22] 720p *
+ <option value=37>mp4 - [37] 1080 *
+ <option value=43>webm [43] 360p *
+ <option value=44>webm [44] 480p *
+ <option value=45>webm [45] 720p *
+ <option value=46>webm [46] 1080 *
+</select>
+
+<p><button id="mov5a" class="is_off" onclick="javascript:buttonpress (5,0)">New Window</button>
+<button id="mov5b" class="is_off" onclick="javascript:buttonpress (5,1)">Popup Window</button>
+
+<p><select id="mov5w" size=1>
+<option value=0>320 x 180 (16:9)
+<option value=1>480 x 270 (16:9)
+<option value=2>640 x 360 (16:9)
+<option value=3>800 x 450 (16:9)
+<option value=4>240 x 180 (4:3)
+<option value=5>360 x 270 (4:3)
+<option value=6>480 x 360 (4:3)
+<option value=7>600 x 450 (4:3)
+</select></div>
+
+<p></p><input type=checkbox id="mov5m"><w_>Allow multiple</w_>
+
+</td><td>
+
+<!-- VIDEO -->
+<div class=widevid><h2 id="mov5v" class=vidbox>No Video</h2>
+<iframe id="mov5" name="mov5" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen></iframe></div>
+
+</td></tr></table>
+
+<p style="text-align:center">
+<button class=copy onclick="javascript:copylist (5,1)">Stack 1</button>
+<button class=copy onclick="javascript:copylist (5,2)">Stack 2</button>
+<button class=copy onclick="javascript:copylist (5,3)">Stack 3</button>
+
+<div style="width: 100vw; height: 30vw"></div>
+
+</body>
+
+<script>
+
+var list_1 = [
+    "NOZKLtIIUZE" , "Hitler Rant"
+  , "m_MaJDK3VNE" , "Herding Cats"
+  , "hTa1t_9HfFQ" , "Mike Hammer"
+  , "uaPKEbVypRQ" , "Typing Lesson"
+  , "0fDOdzY18XE" , "V - The Miniseries"
+  , "kJAsn_vJyY4" , "Starship Enterprise"
+];
+
+var list_2 = [
+    "We-HMZDSWFU" , "Me and You and a Dog Named Boo"
+  , "8Pa9x9fZBtY" , "Sultans of Swing"
+  , "8sPWIrF0oSY" , "Jack Benny meets Perry Mason"
+  , "CGq8Ee2gOe4" , "DooM at QuakeCon"
+  , "6Ath-3JGk8M" , "Flashdance"
+];
+
+var list_3 = [
+    "4JIOtUTMGuM" , "Perry Mason in colour"
+  , "onJspmvJr0E" , "Flashdance Love Theme"
+];
+
+var busy = 0; current = "", vidwin = null;
+
+var copylist = function (frame, num)
+{
+  var list, box, i, j;
+
+  if (num == 1) list = list_1; else
+  if (num == 2) list = list_2; else
+  if (num == 3) list = list_3; else
+  if (num == 4) list = list_3; else
+  if (num == 5) list = list_3; else return;
+
+  box = document.getElementById ("mov" + frame + "f");
+
+  for (i = box.length - 1; i > 0; i--) box.remove (i);
+
+  for (i = 0, j = 1; i < list.length; i += 2, j++)
+  {
+    box.options[j] = new Option ("[" + (j < 10 ? "0" : "") + j + "] " + list[i+1], list[i]);
+  }
+
+  box.options[0].innerHTML = "Select a video (stack " + num + ")";
+  box.selectedIndex = 0;
+}
+
+var buttonpress = function (frame, num)
+{
+  var id1, id2, doc1, doc2, chk, txt;
+
+  id1 = "mov" + frame + "a"; id2 = "mov" + frame + "b";
+
+  doc1 = document.getElementById (num ? id2 : id1);
+  doc2 = document.getElementById (num ? id1 : id2);
+
+  chk = doc1.checked; doc1.checked = !chk;
+  doc1.className = (chk ? "is_off" : "is_on");
+  doc2.checked = false; doc2.className = "is_off";
+}
+
+var loadid = function (frame, mode)
+{
+  var url;
+
+  if (mode == 2)
+  {
+    document.getElementById ("mov" + frame).src = "about:blank";
+    return;
+  }
+
+  if (mode == 1)
+  {
+    url = document.getElementById ("mov" + frame + "i").value;
+    document.getElementById ("mov" + frame).src = url;
+    return;
+  }
+
+  url = document.getElementById ("mov" + frame + "f").value;
+  if (!url) url = document.getElementById ("mov" + frame + "i").value;
+
+  if (mode.length > 1) { url = mode; mode = 0; }
+
+  var sub = url.split (": "); if (sub.length > 1) { url = sub [1]; }
+
+  site = ""; if (url == "") { return; }
+
+  if (mode == 0)
+  {
+    if (url.length == 11) { site = "invidious"; }
+
+    else { document.getElementById ("mov" + frame + "i").value = "Invalid ID"; return; }
+  }
+
+  if (url != "") request (url, frame, site);
+}
+
+var fixlist = function (item, doc, state)
+{
+  var txt = doc.options[item].text.slice (0,-1);
+  if (state < 0) txt = txt + '*'; else if (state > 0) txt = txt + '+'; else txt = txt + '-';
+  doc.options[item].text = txt;
+}
+
+const request = async (id, frame, site) =>
+{
+  var n, m = 0, p, f = new Array (6);
+
+  var doc = document.getElementById ("mov" + frame + "s");
+  var chk = document.getElementById ("mov" + frame + "r").checked;
+  var url = "https://invidio.us/latest_version?id=" + id + "&itag=";
+
+  if (chk && busy) return;
+
+  if (!(p = n = doc.value)) p = n = doc.options[0].value;
+
+  document.getElementById ("mov" + frame).src = "about:blank";
+/*
+  if (id == current)
+  {
+    loadwindow (url + p, frame, site + " [" + p + "]: " + id);
+    return;
+  }
+  current = id;
+*/
+  if (chk)
+  {
+    busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+    var lookup = "https://invidio.us/embed/" + id;
+
+    try { var response = await fetch (lookup); } catch (err) { console.log (err); chk = 0; }
+
+    if (chk) try { var textData = await response.text(); } catch (err) { chk = 0; }
+
+    if (chk)
+    {
+      f[0] = textData.search ('&itag=18"') + 1;
+      f[1] = textData.search ('&itag=19"') + 1;
+      f[2] = textData.search ('&itag=22"') + 1;
+      f[3] = textData.search ('&itag=37"') + 1;
+      f[4] = textData.search ('&itag=43"') + 1;
+      f[5] = textData.search ('&itag=44"') + 1;
+      f[6] = textData.search ('&itag=45"') + 1;
+      f[7] = textData.search ('&itag=46"') + 1;
+    }
+
+    busy = 0;
+  }
+
+  if (!chk) { f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = -1; }
+
+  fixlist (0, doc, f[0]);
+  fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]);
+  fixlist (3, doc, f[3]);
+  fixlist (4, doc, f[4]);
+  fixlist (5, doc, f[5]);
+  fixlist (6, doc, f[6]);
+  fixlist (7, doc, f[7]);
+
+  if (n == 46) if (f[7]) m = n; else { if (!m) m = 37; n = 45; }
+  if (n == 45) if (f[6]) m = n; else { if (!m) m = 22; n = 44; }
+  if (n == 44) if (f[5]) m = n; else { if (!m) m = 19; n = 43; }
+  if (n == 43) if (f[4]) m = n; else { if (!m) m = 18; n = m;  }
+
+  if (n == 37) { if (f[3]) m = n; else n = 22; }
+  if (n == 22) { if (f[2]) m = n; else n = 19; }
+  if (n == 19) { if (f[1]) m = n; else n = 18; }
+  if (n == 18) { if (f[0]) m = n; else m = p;  }
+
+  loadwindow (url + m, frame, site + " [" + m + "]: " + id);
+}
+
+var loadwindow = function (url, frame, site)
+{
+  var specs;
+
+  document.getElementById ("mov" + frame + "i").value = site;
+  var multi = document.getElementById ("mov" + frame + "m").checked;
+  if (!multi && vidwin != null) { vidwin.close(); vidwin = null; }
+
+  if (document.getElementById ("mov" + frame + "b").checked)
+  {
+    var w, h, lft, top, x = document.getElementById ("mov" + frame + "w").value;
+
+    if (x < 4)
+      { w = x * 160 + 320; h = x * 90 + 180; } else
+      { w = x * 120 - 240; h = x * 90 - 180; }
+
+    lft = (window.screen.width - w) / 2;
+    top = (window.screen.height - h) / 3;
+
+    specs = "width=" + w + ",height=" + h + ",top=" + top + ",left=" + lft;
+  }
+
+  else if (document.getElementById ("mov" + frame + "a").checked)
+  {
+    specs = "";
+  }
+
+  else
+  {
+    document.getElementById ("mov" + frame + "v").innerHTML = "No Video";
+    document.getElementById ("mov" + frame).src = url;
+    return;
+  }
+
+  document.getElementById ("mov" + frame + "v").innerHTML = "";
+  vidwin = window.open (url, (multi ? "" : "vidwin"), specs);
+  vidwin.focus(); if (multi) vidwin = null;
+}
+
+
+/*  
+https://cors.io/?
+https://crossorigin.me/
+https://bypasscors.herokuapp.com/api/?url=
+
+"https://www.youtube.com/get_video_info?el=detailpage&video_id=" + id;
+
+var url = "https://www.h3xed.com/blogmedia/youtube-info.php";
+
+const response = await fetch (url,
+{
+  method: 'POST',
+  headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  body: ("ytdurl=0fDOdzY18XE")
+});
+
+*/
+
+</script>
+
+</html> 

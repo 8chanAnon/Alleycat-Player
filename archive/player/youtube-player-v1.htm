@@ -1,0 +1,320 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+
+Youtube Player
+
+</title></head>
+
+<style type="text/css">
+
+.widevid {
+  position: relative;
+  width: 60vw;
+  padding-bottom: 33.75vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.widevid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+.televid {
+  position: relative;
+  width: 60vw;
+  padding-bottom: 45vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.televid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border: none;
+  background-color: transparent;
+}
+
+button {
+  width: auto;
+  height: 100%;
+  font-size: 12px;
+}
+
+table {
+  border: 3px solid green;
+}
+
+td {
+  padding: 0;
+  vertical-align: top;
+}
+
+td.text {
+  text-align: center;
+  padding: 0 8px 0 8px;
+  border-top: 1px solid green;
+  border-bottom: 1px solid green;
+}
+
+td.list {
+  text-align: center;
+  padding: 0 10px 0 10px;
+  border: 1px solid crimson;
+}
+
+.textbox {
+  text-align: left;
+}
+
+ul {
+  list-style: square;
+  padding: 1em;
+  padding-top: 0;
+}
+
+h2.vidbox {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  right: 40%;
+  text-align: center;
+  border-radius: 10px;
+  font-style: italic;
+  background-color: slateblue;
+  color: lavender;
+}
+
+b_ {color: blue;}
+r_ {color: crimson;}
+g_ {color: seagreen;}
+w_ {color: orange;}
+
+</style><body style="color: darkblue">
+
+<h1><g_>Youtube Player v1</g_></h1>
+
+I almost killed myself for this one. If you look at the code, you wouldn't think so. The problem
+is that finding information about <b>anything</b> can be like pulling hen's teeth. I like simple
+solutions to simple problems but that's not what you don't get from a web search. There are a lot
+of confused people with the same questions but no answers forthcoming. Aargh. So, the solution
+presented here for a Youtube player is a hodgepodge that sort of works but, looking around, I see
+that it doesn't work for everyone else either. Including the Youtube coders themselves. I see some
+vids don't play when embedded. Some show the wrong formats in the selector tool. And Invidious
+(invidio.us), which I'm using in this first version of my code, does not play some vids even
+though they can still be downloaded.
+<p>
+It looks like the confusion may come from "www.youtube.com/get_video_info" which delivers a file
+containing everything you might want to know about a vid. This is supposed to be deprecated but
+Youtube still uses it. Huh? Apparently, Invidious uses it too since they get the same wrong info
+that I do from it. Sigh. Anyway, my current approach is to try to get the list of available
+formats from "get_video_info" and then request the appropriate file from Invidious. The
+interesting thing about Invidious is that the url to a video file is effectively a permanent
+direct link in the form of "invidio.us/latest_version?id=xxxxxxxxxxx&itag=18". What this does is
+redirect to a temporary link on the Google servers. That way, I don't have to try to extract the
+link from "get_video_info", although that will likely be my next step.
+<p>
+One problem I have with "get_video_info" is that I can't reach it due to the insanely restrictive
+cross-origin rules on Firefox. So, I am going through a proxy (cors.io). There must be a
+better way but I can't see it yet. Also, for some videos, I am not receiving the complete file.
+It is truncated for some unknown reason. Thus, I can't get the format info for a lot of vids. That
+is why the format lookup function can be disabled (plus the proxy may be slow or unreliable).
+Without knowing which formats are available, the only course is to try to download the desired
+format and see if it works. That's not actually a difficult task since the only formats I have
+seen are "mp4-360p", "mp4-720p" and "webm-360p". Where are the others? Also, "mp4-360p" ALWAYS
+works. I suppose that is Youtube's default format.
+<p>
+I'm not offering much instruction here as to how to use this tool but it ought to be obvious
+anyway since this is based on my previous experiments. Plus, this is all gonna change anyway.
+It isn't what I want but it serves as a good experimental base until I figure everything out.
+Have fun.
+<p>
+
+<table><tr><td>
+
+<!-- VIDEO -->
+<div class=televid><h2 class=vidbox>No Video</h2>
+<iframe id="mov5" name="mov5" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen></iframe></div></td><td class=text><div>
+<!-- Buttons -->
+<a href="javascript:loadid (5,0)"><button>Play ID</button></a>
+<a href="javascript:loadid (5,1)"><button>Play URL</button></a>
+<a href="about:blank" target="mov5"><button>Clear</button></a>
+<p><input type=text size=32 id="mov5i" maxlength=512>
+
+<br><b_>Format Lookup: </b_>
+  <input type=radio name="format" checked><r_>Off</r_>
+  <input type=radio name="format" id="mov5r"><g_>On</g_>
+
+<br><select id="mov5s" size=8>
+ <option value="18">mp4 - [18] 360p *
+ <option value="19">mp4 - [19] 480p *
+ <option value="22">mp4 - [22] 720p *
+ <option value="37">mp4 - [37] 1080 *
+ <option value="43">webm [43] 360p *
+ <option value="44">webm [44] 480p *
+ <option value="45">webm [45] 720p *
+ <option value="46">webm [46] 1080 *
+</select>
+
+<br><a href="javascript:loadid (5,'NOZKLtIIUZE')">Hitler Rant</a>
+<br><a href="javascript:loadid (5,'m_MaJDK3VNE')">Herding Cats</a>
+<br><a href="javascript:loadid (5,'hTa1t_9HfFQ')">Mike Hammer</a>
+<br><a href="javascript:loadid (5,'uaPKEbVypRQ')">Typing Lesson</a>
+<br><a href="javascript:loadid (5,'0fDOdzY18XE')">V - The Miniseries</a>
+<br><a href="javascript:loadid (5,'kJAsn_vJyY4')">Starship Enterprise</a>
+<br><a href="javascript:loadid (5,'We-HMZDSWFU')">Me and You and a Dog Named Boo</a>
+<br><a href="javascript:loadid (5,'8Pa9x9fZBtY')">Sultans of Swing</a>
+<br><a href="javascript:loadid (5,'8sPWIrF0oSY')">Jack Benny meets Perry Mason</a>
+<br><a href="javascript:loadid (5,'CGq8Ee2gOe4')">DooM at QuakeCon</a>
+<br><a href="javascript:loadid (5,'6Ath-3JGk8M')">Flashdance</a>
+
+<!-- TEXT -->
+<!-- END -->
+</td></tr>
+<!--
+4JIOtUTMGuM
+onJspmvJr0E
+//-->
+
+</table>
+
+<div style="width: 100vw; height: 30vw"></div>
+
+</body>
+
+<script>
+
+var loadid = function (frame, mode)
+{
+  var url;
+
+  url = document.getElementById ("mov" + frame + "i").value;
+
+  if (mode == 1)
+  {
+    document.getElementById ("mov" + frame).src = url;
+    return;
+  }
+
+  if (mode.length > 1) { url = mode; mode = 0; }
+
+  var sub = url.split (": "); if (sub.length > 1) { url = sub [1]; }
+
+  site = ""; if (url == "") { return; }
+
+  if (mode == 0)
+  {
+    if (url.length == 11) { site = "invidious"; }
+
+    else { document.getElementById ("mov" + frame + "i").value = "Invalid ID"; return; }
+  }
+
+  if (url != "") request (url, frame, site);
+}
+
+var fixlist = function (item, doc, state)
+{
+  var txt = doc.options[item].text.slice (0,-1);
+  if (state < 0) txt = txt + '*'; else if (state > 0) txt = txt + '+'; else txt = txt + '-';
+  doc.options[item].text = txt;
+}
+
+const request = async (id, frame, site) =>
+{
+  var n, m = 0, p, f = new Array (6);
+
+  var doc = document.getElementById ("mov" + frame + "s");
+  var chk = document.getElementById ("mov" + frame + "r").checked;
+  var url = "https://cors.io/?http://www.youtube.com/get_video_info?video_id=" + id;
+
+  if (chk)
+  {
+    const response = await fetch (url);
+    const textData = await response.text();
+
+    console.log (textData.length);
+
+ // chk = "%2526itag%253D";
+    chk = "itag%3D";
+
+    f[0] = textData.search (chk + "18%") + 1;
+    f[1] = textData.search (chk + "19%") + 1;
+    f[2] = textData.search (chk + "22%") + 1;
+    f[3] = textData.search (chk + "37%") + 1;
+    f[4] = textData.search (chk + "43%") + 1;
+    f[5] = textData.search (chk + "44%") + 1;
+    f[6] = textData.search (chk + "45%") + 1;
+    f[7] = textData.search (chk + "46%") + 1;
+
+  } else { f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = -1; }
+
+  fixlist (0, doc, f[0]);
+  fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]);
+  fixlist (3, doc, f[3]);
+  fixlist (4, doc, f[4]);
+  fixlist (5, doc, f[5]);
+  fixlist (6, doc, f[6]);
+  fixlist (7, doc, f[7]);
+
+  if (!(p = n = document.getElementById ("mov" + frame + "s").value))
+  {
+    p = n = document.getElementById ("mov" + frame + "s").options[0].value;
+  }
+
+  if (n == 37) { if (f[3]) m = n; else n = 22; }
+  if (n == 22) { if (f[2]) m = n; else n = 19; }
+  if (n == 19) { if (f[1]) m = n; else n = 18; }
+  if (n == 18) { if (f[0]) m = n; else m = p;  }
+
+  if (n == 46) { if (f[7]) m = n; else n = 45; }
+  if (n == 45) { if (f[6]) m = n; else n = 44; }
+  if (n == 44) { if (f[5]) m = n; else n = 43; }
+  if (n == 43) { if (f[4]) m = n; else m = p;  }
+
+  url = "https://invidio.us/latest_version?id=" + id + "&itag=" + m;
+
+  document.getElementById ("mov" + frame + "i").value = site + " [" + m + "]: " + id;
+  document.getElementById ("mov" + frame).src = url;
+}
+
+/*  
+https://cors.io/?
+https://crossorigin.me/
+https://bypasscors.herokuapp.com/api/?url=
+*/
+
+</script>
+
+</html> 

@@ -1,0 +1,808 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+
+Youtube Player
+
+</title></head>
+
+<style type="text/css">
+
+.widevid {
+  position: relative;
+  width: 72vw;
+  padding-bottom: 40.5vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.widevid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+.televid {
+  position: relative;
+  width: 60vw;
+  padding-bottom: 45vw;
+  overflow: hidden;
+  border: 2px solid red;
+  background-color: black;
+}
+
+.televid img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  border: none;
+}
+
+video {
+  width: 100%;
+  height: auto;
+}
+
+iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  border: none;
+  background-color: transparent;
+}
+
+button {
+  width: auto;
+  height: 100%;
+  font-size: 12px;
+  background-color: powderblue;
+}
+
+button.is_off {
+  background-color: pink;
+  border-style: outset;
+}
+
+button.is_on {
+  background-color: lightgreen;
+  border-style: inset;
+}
+
+button.copy {
+  font-size: 18px;
+  color: darkblue;
+}
+
+select.movies {
+  width: 100%;
+  max-width: 100%;
+}
+
+table {
+  border: 3px solid green;
+}
+
+table.innerbox {
+  display: inline-block;
+  border: 2px solid red;
+}
+
+td {
+  padding: 0;
+  vertical-align: top;
+}
+
+td.text {
+  text-align: center;
+  padding: 0 8px 0 8px;
+  border-top: 1px solid green;
+  border-bottom: 1px solid green;
+  width: 28vw;
+}
+
+td.list {
+  text-align: center;
+  padding: 0 12px 0 12px;
+  border: 1px solid crimson;
+}
+
+ul {
+  list-style: square;
+  padding: 1em;
+  padding-top: 0;
+}
+
+h2.vidbox {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  right: 40%;
+  text-align: center;
+  border-radius: 10px;
+  font-style: italic;
+  background-color: slateblue;
+  color: lavender;
+}
+
+b_ {color: blue;}
+r_ {color: crimson;}
+g_ {color: seagreen;}
+w_ {color: saddlebrown;}
+
+</style><body style="color: darkblue">
+
+<h1><g_>Youtube Player v3</g_></h1>
+
+Refer to my previous comments in the previous versions of the Youtube player.
+<p>
+Okay. This just gets more awesome by the day. Now supporting Fox News, BitChute, Vimeo and Info Wars. The code
+has gotten more complicated due to this additional support but it is still pretty readable. If you're trying to get into
+Javascript, pay careful attention to the sections marked out in a try/catch construct. You won't find code like this
+anywhere. I literally spent a dozen hours (at least) researching how to do this. Nobody knows how to code anymore. They
+all write long and complicated sequences of gibberish to solve simple problems so it is hard to drill down to the
+basics. The reason for the try/catch thing is because Javascript does not return any error code when you are trying
+to load a file or parse it. It just abandons your code and puts a message on the console. Catching errors requires
+the try/catch construct in order to maintain control of your program. A single construct is all that is needed to trap
+any error evolving from file access.
+<p>
+In the case of Fox News and Vimeo, the code parses what is called a JSON object. This is built in to Javascript so
+no need to write anything complicated. Use the Network tool included with your browser to see what the JSON actually
+looks like and write the code accordingly. Pretty straight-forward once you get the hang of it. In the case of BitChute
+and Info Wars, the code loads an html file and applies a very simple keyword search for the video link. Again, pretty
+straight-forward.
+<p>
+There is a bunch of code for parsing the ID out of an input. In all cases, the ID is expected to be at the tail end of
+the input with no additional characters appearing after, with the sole exception of a single slash. For each supported
+site, the ID is expected to be a certain length so this number of characters is chopped off and used as the ID. There is
+no test to see if the ID makes sense, except to check if an '=' or '/' character got included in the string. In the case of
+BitChute and Vimeo, the length of the ID can be different by one character and the code accounts for that.
+<p>
+In the last version, I mentioned an extension for Firefox (the same tool is available for Chrome). Grab it
+<a href="https://addons.mozilla.org/en-US/firefox/addon/cross-domain-cors/">here</a>. I found an interesting detail
+regarding how this tool parses a domain url. The domain "invidio.us/embed" does not work correctly if you type it in that
+way. The domain for Vimeo is "player.vimeo.com/video" and for BitChute it is "www.bitchute.com/video". Guess what? EITHER
+one of those disables CORS for the other because they have the "video" part in common. WTF? This means that any url
+that has "embed" as a subdomain will be activated by "invidio.us/embed". This is not what I expected. I want to isolate
+a very specific part of a larger domain so that the whole domain is not CORS disabled. Granted, I doubt that there
+is any security issue with these particular domains but I am assuming the worst. In any case, the correct way to enter
+the url for these sites is (Fox News and Info Wars do not need inclusion):
+<p>
+invidio\.us\57embed\57<br>
+www\.bitchute\.com\57video\57<br>
+player\.vimeo\.com\57video\57
+<p>
+The reason is that the tool is expecting a regular expression and not just a simple string. Why? Because it makes it easier
+to specify a gang of urls with a single entry. I don't give a shit about that. I want to be very specific. After much
+research, I have figured out how to code the regular expression for specificity. The "\57" part is RE speak for a slash. This
+blocks the extension from parsing out the "embed" or "video" part. In a RE, the period stands for "any character" and "\."
+means a fucking period. Whatever. It's done and working as I want. There really isn't any valid security reason for not
+just using "invidio.us", "player.vimeo.com" or "bitchute.com". I'm just being a stickler for detail.
+<p>
+By default, the use of a proxy is enabled but I now have a checkbox to turn off the proxy if you have the CORS extension.
+You can also disable the proxy by changing the path in the Javascript. You will see that there are two other available proxies
+just in case the default proxy doesn't work for you. Note that the option "Format Lookup" is only valid for Invidious.
+This allows you to just run blind if the proxy is not working. For BitChute and Vimeo, you are shit out of luck if the
+proxy isn't working. No proxy needed for Fox News or Info Wars.
+<p>
+The only sources that offer a choice of video formats are Vimeo and Invidious. BitChute is stuck at 480p, Fox News is
+432p and Info Wars is whatever you get (usually 720p). Vimeo is a bit clunky in this regard. The videos can be virtually any
+size but Vimeo applies a quality rating expressed as one of: 270p, 360p, 480p, 540p, 720p and (I think) 1080p. The actual
+height of the video will be indicated on the input line.
+<p>
+There is now the ability to copy the URL employed to run the video. This allows you to play the video on an external
+player like VLC (does not work for me) or SMPlayer (highly recommended). If all you want is the URL, just check the box
+"No Play" to block the video from playing. Note that the URL from Vimeo is only temporary but the others are persistent.
+You can now use "Play URL" with a window. Note that there is no sandboxing in a window so watch out for malicious sites.
+<p>
+That's about all, I guess. Have fun.
+<p>
+
+<div style="width: 90vw; height: 20vw"></div>
+
+<table><tr><td class=text>
+
+<button onclick="javascript:loadid (5,0)">Play ID</button>
+<button onclick="javascript:loadid (5,1)">Play URL</button>
+<button onclick="javascript:loadid (5,2)">Clear</button>
+
+<p><input type=text size=32 id="mov5i" onclick="javascript:hidelist (5)" maxlength=512>
+
+<p><select id="mov5k" size=1 class=movies>
+<option value=''>Select a video stack</select>
+
+<p><select id="mov5s" size=1>
+  <option value=0>YouTube (Invidious)
+  <option value=1>Fox News
+  <option value=2>BitChute
+  <option value=3>Vimeo
+  <option value=4>InfoWars
+</select>
+
+<p>
+  <input type=checkbox id="mov5r" checked><w_>Format Lookup&nbsp;</w_>
+  <input type=checkbox id="mov5p" checked><w_>Use Proxy</w_>
+
+<p><select id="mov5f" size=6>
+ <option value=18>mp4 - [18] 360p *
+ <option value=19>mp4 - [19] 480p *
+ <option value=22>mp4 - [22] 720p *
+ <option value=43>webm [43] 360p *
+ <option value=44>webm [44] 480p *
+ <option value=45>webm [45] 720p *
+</select>
+
+<!--
+  <option value=37>mp4 - [37] 1080 *
+  <option value=46>webm [46] 1080 *
+//-->
+
+<p><button id="mov5a" class="is_off" onclick="javascript:buttonpress (5,0)">New Window</button>
+<button id="mov5b" class="is_off" onclick="javascript:buttonpress (5,1)">Popup Window</button>
+
+<p><select id="mov5w" size=1>
+  <option value=0>320 x 180 (16:9)
+  <option value=1>480 x 270 (16:9)
+  <option value=2>640 x 360 (16:9)
+  <option value=3>800 x 450 (16:9)
+  <option value=4>240 x 180 (4:3)
+  <option value=5>360 x 270 (4:3)
+  <option value=6>480 x 360 (4:3)
+  <option value=7>600 x 450 (4:3)
+</select>
+
+<p></p><input type=checkbox id="mov5m"><w_>Allow multiple&nbsp;</w_>
+<input type=checkbox id="mov5n"><w_>No Play</w_>
+
+</td><td>
+
+<!-- VIDEO -->
+<div class=widevid><h2 id="mov5v" class=vidbox>No Video</h2>
+<iframe id="mov5" name="mov5" sandbox="allow-scripts allow-same-origin allow-forms"
+  autoplay allowfullscreen></iframe></div>
+
+</td></tr></table>
+
+<p style="text-align:center">
+<button onclick="javascript:urlcopy (5)">Copy URL</button>
+<input type=text id="mov5c" maxlength=512 style="background-color:floralwhite;color:steelblue;width:75vw">
+
+<p style="text-align:center">
+<button class=copy id="stk1" onclick="javascript:copylist (5,1)">Stack 1</button>
+<button class=copy id="stk2" onclick="javascript:copylist (5,2)">Stack 2</button>
+<button class=copy id="stk3" onclick="javascript:copylist (5,3)">Stack 3</button>
+&nbsp;
+<button class=copy id="stk4" onclick="javascript:copylist (5,4)">Fox News</button>
+<button class=copy id="stk5" onclick="javascript:copylist (5,5)">BitChute</button>
+<button class=copy id="stk6" onclick="javascript:copylist (5,6)">Vimeo</button>
+<button class=copy id="stk7" onclick="javascript:copylist (5,7)">Info Wars</button>
+
+<div style="width: 90vw; height: 30vw"></div>
+
+</body>
+
+<script>
+
+///// User Settings /////
+
+var list_1 = [
+    ":NOZKLtIIUZE" , "Hitler Rant"
+  , ":m_MaJDK3VNE" , "Herding Cats"
+  , ":hTa1t_9HfFQ" , "Mike Hammer"
+  , ":uaPKEbVypRQ" , "Typing Lesson"
+  , ":0fDOdzY18XE" , "V - The Miniseries"
+  , ":kJAsn_vJyY4" , "Starship Enterprise"
+];
+
+var list_2 = [
+    ":We-HMZDSWFU" , "Me and You and a Dog Named Boo"
+  , ":8Pa9x9fZBtY" , "Sultans of Swing"
+  , ":8sPWIrF0oSY" , "Jack Benny meets Perry Mason"
+  , ":CGq8Ee2gOe4" , "DooM at QuakeCon"
+  , ":6Ath-3JGk8M" , "Flashdance"
+];
+
+var list_3 = [
+    ":4JIOtUTMGuM" , "Perry Mason in colour"
+  , ":onJspmvJr0E" , "Flashdance Love Theme"
+  , ":FnV0LqHd3h8" , "Make America Great Again"
+  , ":5iV_hB08Uns" , "Boston Dynamics Robot"
+];
+
+var list_4 = [
+    "f:6019082804001" , "Sean Hannity"
+  , "f:5986227428001" , "Tucker Carlson"
+];
+
+var list_5 = [
+    "b:TOtFnGVssVJO" , "Farm goats"
+  , "b:A7jZJfaEJK2p" , "Malice in the Palace"
+];
+
+var list_6 = [
+    "v:129463420" , "Miniatur Wunderland"
+  , "v:166403522" , "Some Kind of Quest"
+  , "v:31883614"  , "Star Trek: Aurora"
+];
+
+var list_7 = [
+    "i:5ca2a1c94b025c001747b176" , "War Room with Owen Shroyer"
+  , "i:5ca3adb6be0c561e93cca99d" , "The David Knight Show"
+  , "i:5ca26237c88e7100170702b1" , "Kaitlin Bennett"
+];
+
+//var proxy = "";
+var proxy = "https://cors.io/?";
+//var proxy = "https://crossorigin.me/";
+//var proxy = "https://bypasscors.herokuapp.com/api/?url=";
+
+///// End Settings /////
+
+var busy = 0, cors_bypass = "";
+
+var copylist = function (frame, num)
+{
+  var list, box, i, j;
+
+  if (num == 1) list = list_1; else
+  if (num == 2) list = list_2; else
+  if (num == 3) list = list_3; else
+  if (num == 4) list = list_4; else
+  if (num == 5) list = list_5; else
+  if (num == 6) list = list_6; else
+  if (num == 7) list = list_7; else
+  if (num == 8) list = list_8; else
+  if (num == 9) list = list_9; else return;
+
+  box = document.getElementById ("mov" + frame + "k");
+
+  for (i = box.length - 1; i > 0; i--) box.remove (i);
+
+  for (i = 0, j = 1; i < list.length; i += 2, j++)
+  {
+    box.options[j] = new Option ("[" + (j < 10 ? "0" : "") + j + "] " + list[i+1], list[i]);
+  }
+
+  list = document.getElementById ("stk" + num).innerText;
+  box.options[0].innerText = "Select a video (" + list + ")";
+  box.selectedIndex = 0;
+}
+
+var hidelist = function (frame)
+{
+  document.getElementById ("mov" + frame + "k").selectedIndex = 0;
+}
+
+var buttonpress = function (frame, num)
+{
+  var id1, id2, doc1, doc2, chk, txt;
+
+  id1 = "mov" + frame + "a"; id2 = "mov" + frame + "b";
+
+  doc1 = document.getElementById (num ? id2 : id1);
+  doc2 = document.getElementById (num ? id1 : id2);
+
+  chk = doc1.checked; doc1.checked = !chk;
+  doc1.className = (chk ? "is_off" : "is_on");
+  doc2.checked = false; doc2.className = "is_off";
+}
+
+var urlcopy = function (frame)
+{
+    var doc = document.getElementById ("mov" + frame + "c");
+    doc.select(); document.execCommand ("copy");
+}
+
+var loadid = function (frame, mode)
+{
+  var url, fmt, doc, sub, src;
+
+  document.getElementById ("mov" + frame).src = "about:blank";
+
+  if (mode == 2)
+  {
+    return;
+  }
+
+  if (mode == 1)
+  {
+    url = document.getElementById ("mov" + frame + "i").value;
+    if (url != "") loadwindow (url, frame, "");
+    return;
+  }
+
+  if (document.getElementById ("mov" + frame + "p").checked)
+    cors_bypass = proxy; else cors_bypass = "";
+
+  doc = document.getElementById ("mov" + frame + "f");
+  if (!(fmt = doc.value)) fmt = doc.options[0].value;
+
+  url = document.getElementById ("mov" + frame + "k").value;
+  if (!url) url = document.getElementById ("mov" + frame + "i").value;
+
+  if (mode.length > 1) url = mode;
+
+  src = document.getElementById ("mov" + frame + "s").value;
+  sub = url.split (": ");
+
+  if (sub.length > 1) url = sub [sub.length - 1]; else
+  {
+    sub = url.split (":");
+    if (sub.length > 1 && sub[0].length < 2)
+    {
+      src = 0; url = sub [sub.length - 1];
+      if (sub [0] == "f") src = 1;
+      if (sub [0] == "b") src = 2;
+      if (sub [0] == "v") src = 3;
+      if (sub [0] == "i") src = 4;
+      document.getElementById ("mov" + frame + "s").selectedIndex = src;
+    }
+  }      
+  if (url == "") return;
+
+  if (src == 1 && (url = get_id (url, 13))) req_foxnews (url, frame, fmt); else
+  if (src == 2 && (url = get_id (url,-12))) req_bitchute (url, frame, fmt); else
+  if (src == 3 && (url = get_id (url, -9))) req_vimeo (url, frame, fmt); else
+  if (src == 4 && (url = get_id (url, 24))) req_infowars (url, frame, fmt); else
+
+  if (src == 0 && (url = get_id (url, 11))) request (url, frame, fmt);
+
+  else document.getElementById ("mov" + frame + "i").value = "Invalid ID";
+}
+
+var get_id = function (url, len)
+{
+  var tst = url.substr (-1);
+
+  if (tst == "/") url = url.substr (0, url.length - 1);
+
+  if (len < 0)
+  {
+    len = -len;
+    if (url.length < len - 1) return "";
+    if (url.length == len - 1) return url;
+    if (url.length == len) return url;
+
+    url = url.substr (url.length - len, len);
+    if ((len = url.search ("/")) > 0) url = "";
+    if (len && (len = url.search ("=")) > 0) url = "";
+
+    if (!len) url = url.substr (1);
+    return url;
+  }
+
+  if (url.length < len) return "";
+  if (url.length == len) return url;
+
+  url = url.substr (url.length - len, len);
+  if (url.search ("/") >= 0) url = "";
+  if (url.search ("=") >= 0) url = "";
+  return url;
+}
+
+const req_foxnews = async (id, frame, fmt) =>
+{
+  if (busy) return;
+
+  document.getElementById ("mov" + frame + "i").value = "foxnews:";
+
+  var url = "https://video.foxnews.com/v/feed/video/" + id +".js";
+
+  busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+try
+{ 
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  url = jsonData.channel.item["media-content"]["mvn-flv1200"];
+}
+catch (err) { console.log (err); busy = 0; }
+
+  if (!busy) document.getElementById ("mov" + frame + "v").innerHTML = "Error"; else
+  {
+    loadwindow (url, frame, "foxnews: " + id);
+  }
+
+  busy = 0; noformat (frame);
+}
+
+const req_bitchute = async (id, frame, fmt) =>
+{
+  if (busy) return;
+
+  document.getElementById ("mov" + frame + "i").value = "bitchute:";
+
+  var url = cors_bypass + "https://www.bitchute.com/video/" + id + "/";
+
+  busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var n = textData.search ("<source src=");
+
+  if (n < 0) throw ("!!!"); else
+  {
+    url = textData.substr (n+13, 100);
+    url = url.substr (0, url.search ('"'));
+  }
+}
+catch (err) { console.log (err); busy = 0; }
+
+  if (!busy) document.getElementById ("mov" + frame + "v").innerHTML = "Error"; else
+  {
+    loadwindow (url, frame, "bitchute: " + id);
+  }
+
+  busy = 0; noformat (frame);
+}
+
+const req_vimeo = async (id, frame, fmt) =>
+{
+  var i, j, f = new Array (8);
+
+  if (busy) return;
+
+  document.getElementById ("mov" + frame + "i").value = "vimeo:";
+
+  var url = cors_bypass + "https://player.vimeo.com/video/" + id + "/config";
+
+  busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+try
+{
+  var response = await fetch (url);
+  var jsonData = await response.json();
+
+  url = jsonData.request.files.progressive;
+  
+  f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = 0;
+
+  for (i = 0; i < url.length; i++)
+  {
+    if ((j = chkformat (url[i].quality)) >= 0) f[j] = i + 1;
+  }
+
+  fixformat (f, frame); fmt = getformat (f, fmt);
+  if (!fmt) throw ("!!!"); else
+  {
+    if (fmt == 18) j = 0;
+    if (fmt == 19) j = 1;
+    if (fmt == 22) j = 2;
+
+    if ((i = f[j] - 1) < 0) throw ("!!!"); else
+    {
+      fmt = url[i].height; url = url[i].url;
+    }
+  }
+} 
+catch (err) { console.log (err); busy = 0; }
+
+  if (!busy) document.getElementById ("mov" + frame + "v").innerHTML = "Error"; else
+  {
+    loadwindow (url, frame, "vimeo [" + fmt + "]: " + id);
+  }
+
+  busy = 0;
+}
+
+const req_infowars = async (id, frame, fmt) =>
+{
+  if (busy) return;
+
+  document.getElementById ("mov" + frame + "i").value = "iw:";
+
+  var url = "https://vod-api.infowars.com/embed/" + id;
+
+  busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+try
+{
+  var response = await fetch (url);
+  var textData = await response.text();
+
+  var n = textData.search ("downloadUrl=");
+
+  if (n < 0) throw ("!!!"); else
+  {
+    url = textData.substr (n+13, 100);
+    url = url.substr (0, url.search ('"'));
+  }
+}
+catch (err) { console.log (err); busy = 0; }
+
+  if (!busy) document.getElementById ("mov" + frame + "v").innerHTML = "Error"; else
+  {
+    loadwindow (url, frame, "iw: " + id);
+  }
+
+  busy = 0; noformat (frame);
+}
+
+const request = async (id, frame, fmt) =>
+{
+  var f = new Array (8);
+
+  if (busy) return;
+
+  document.getElementById ("mov" + frame + "i").value = "invidious:";
+
+  var chk = document.getElementById ("mov" + frame + "r").checked;
+  var url = cors_bypass + "https://invidio.us/embed/" + id;
+
+try
+{
+  if (chk)
+  {
+    busy = 1; document.getElementById ("mov" + frame + "v").innerHTML = "Busy";
+
+    var response = await fetch (url);
+    var textData = await response.text();
+
+    f[0] = textData.search ('&itag=18"') + 1;
+    f[1] = textData.search ('&itag=19"') + 1;
+    f[2] = textData.search ('&itag=22"') + 1;
+    f[3] = textData.search ('&itag=37"') + 1;
+    f[4] = textData.search ('&itag=43"') + 1;
+    f[5] = textData.search ('&itag=44"') + 1;
+    f[6] = textData.search ('&itag=45"') + 1;
+    f[7] = textData.search ('&itag=46"') + 1;
+
+  }
+}
+catch (err) { console.log (err); chk = 0; }
+
+  if (!chk) { f[0] = f[1] = f[2] = f[3] = f[4] = f[5] = f[6] = f[7] = -1; }
+
+  fixformat (f, frame); chk = getformat (f, fmt); if (chk) fmt = chk;
+
+  url = "https://invidio.us/latest_version?id=" + id + "&itag=" + fmt;
+
+  loadwindow (url, frame, "invidious [" + fmt + "]: " + id);
+
+  busy = 0;
+}
+
+var chkformat = function (q)
+{
+  if (q == "360p") return 0; else
+  if (q == "480p") return 1; else
+  if (q == "540p") return 1; else
+  if (q == "720p") return 2; else
+  return (-1);
+}
+
+var getformat = function (f, fmt)
+{
+  var m = 0, n = fmt;
+
+  if (n == 46) if (f[7]) m = n; else { if (!m) m = 37; n = 45; }
+  if (n == 45) if (f[6]) m = n; else { if (!m) m = 22; n = 44; }
+  if (n == 44) if (f[5]) m = n; else { if (!m) m = 19; n = 43; }
+  if (n == 43) if (f[4]) m = n; else { if (!m) m = 18; n = m;  }
+
+  if (n == 37) { if (f[3]) m = n; else n = 22; }
+  if (n == 22) { if (f[2]) m = n; else n = 19; }
+  if (n == 19) { if (f[1]) m = n; else n = 18; }
+  if (n == 18) { if (f[0]) m = n; else m = 0;}
+
+  return m;
+}
+
+var fixlist = function (item, doc, state)
+{
+  var txt = doc.options[item].text.slice (0,-1);
+  if (state < 0) txt = txt + '*'; else if (state > 0) txt = txt + '+'; else txt = txt + '-';
+  doc.options[item].text = txt;
+}
+
+var fixformat = function (f, frame)
+{
+  var doc = document.getElementById ("mov" + frame + "f");
+
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]); fixlist (3, doc, f[4]);
+  fixlist (4, doc, f[5]); fixlist (5, doc, f[6]);
+
+/*
+  fixlist (0, doc, f[0]); fixlist (1, doc, f[1]);
+  fixlist (2, doc, f[2]); fixlist (3, doc, f[3]);
+  fixlist (4, doc, f[4]); fixlist (5, doc, f[5]);
+  fixlist (6, doc, f[6]); fixlist (7, doc, f[7]);
+*/
+}
+
+var noformat = function (frame)
+{
+  var doc = document.getElementById ("mov" + frame + "f");
+
+  fixlist (0, doc, -1); fixlist (1, doc, -1);
+  fixlist (2, doc, -1); fixlist (3, doc, -1);
+  fixlist (4, doc, -1); fixlist (5, doc, -1);
+}
+
+var loadwindow = function (url, frame, site)
+{
+  var specs;
+
+  if (site != "")
+  {
+    document.getElementById ("mov" + frame + "c").value = url;
+    document.getElementById ("mov" + frame + "i").value = site;
+
+    if (document.getElementById ("mov" + frame + "n").checked)
+    {
+      document.getElementById ("mov" + frame + "v").innerHTML = "No Play";
+      return;
+    }
+  }
+
+  var multi = document.getElementById ("mov" + frame + "m").checked;
+
+  if (!multi && (vidwin = window.open ("", "vidwin"))) vidwin.close();
+
+  if (document.getElementById ("mov" + frame + "b").checked)
+  {
+    var w, h, lft, top, x = document.getElementById ("mov" + frame + "w").value;
+
+    if (x < 4)
+      { w = x * 160 + 320; h = x * 90 + 180; } else
+      { w = x * 120 - 240; h = x * 90 - 180; }
+
+    lft = (window.screen.width - w) / 2;
+    top = (window.screen.height - h) / 3;
+
+    specs = "width=" + w + ",height=" + h + ",top=" + top + ",left=" + lft;
+  }
+
+  else if (document.getElementById ("mov" + frame + "a").checked)
+  {
+    specs = "";
+  }
+
+  else
+  {
+    document.getElementById ("mov" + frame + "v").innerHTML = "No Video";
+    document.getElementById ("mov" + frame).src = url;
+    return;
+  }
+
+  document.getElementById ("mov" + frame + "v").innerHTML = "";
+  window.open (url, (multi ? "" : "vidwin"), specs);
+}
+
+
+/*  
+
+"https://www.youtube.com/get_video_info?el=detailpage&video_id=" + id;
+
+var url = "https://www.h3xed.com/blogmedia/youtube-info.php";
+
+const response = await fetch (url,
+{
+  method: 'POST',
+  headers: {'Content-Type':'application/x-www-form-urlencoded'},
+  body: ("ytdurl=0fDOdzY18XE")
+});
+
+*/
+
+</script>
+
+</html> 

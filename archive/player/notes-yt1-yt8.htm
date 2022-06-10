@@ -1,0 +1,564 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="https://8chananon.github.io/Alleycat-Player/archive/player/" target="_blank">
+<link rel="icon" href="favicon.ico">
+
+<title>Release Notes</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 15px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body>
+
+<h1 style="text-align:center"><r_>Youtube Player</r_> <g_>Release Notes</g_> (v1 to v8)</h1>
+
+<p><hr><p>
+<b>Alleycat Player</b> began life as <b>Youtube Player</b> in March, 2019. These old versions are in various states
+of brokeness, mostly due to expired links and changes to website page formats. Some of the CSS doesn't work so well
+either due to changes that have occurred with the web browsers. It isn't worth your bother to try running
+any of these apps unless you want to experiment with the Javascript or you just want to see how the app has evolved
+appearance-wise. Messing around with the earlier and smaller versions would be a really good way to learn JS and HTML.
+
+<p><hr><p>
+<b>Youtube Player v1</b> (March 25, 2019) -- <a href="youtube-player-v1.htm">source</a>
+<p>
+I almost killed myself for this one. If you look at the code, you wouldn't think so. The problem
+is that finding information about <b>anything</b> can be like pulling hen's teeth. I like simple
+solutions to simple problems but that's not what you don't get from a web search. There are a lot
+of confused people with the same questions but no answers forthcoming. Aargh. So, the solution
+presented here for a Youtube player is a hodgepodge that sort of works but, looking around, I see
+that it doesn't work for everyone else either. Including the Youtube coders themselves. I see some
+vids don't play when embedded. Some show the wrong formats in the selector tool. And Invidious
+(invidio.us), which I'm using in this first version of my code, does not play some vids even
+though they can still be downloaded.
+<p>
+It looks like the confusion may come from "www.youtube.com/get_video_info" which delivers a file
+containing everything you might want to know about a vid. This is supposed to be deprecated but
+Youtube still uses it. Huh? Apparently, Invidious uses it too since they get the same wrong info
+that I do from it. Sigh. Anyway, my current approach is to try to get the list of available
+formats from "get_video_info" and then request the appropriate file from Invidious. The
+interesting thing about Invidious is that the url to a video file is effectively a permanent
+direct link in the form of "invidio.us/latest_version?id=xxxxxxxxxxx&itag=18". What this does is
+redirect to a temporary link on the Google servers. That way, I don't have to try to extract the
+link from "get_video_info", although that will likely be my next step.
+<p>
+One problem I have with "get_video_info" is that I can't reach it due to the insanely restrictive
+cross-origin rules on Firefox. So, I am going through a proxy (cors.io). There must be a
+better way but I can't see it yet. Also, for some videos, I am not receiving the complete file.
+It is truncated for some unknown reason. Thus, I can't get the format info for a lot of vids. That
+is why the format lookup function can be disabled (plus the proxy may be slow or unreliable).
+Without knowing which formats are available, the only course is to try to download the desired
+format and see if it works. That's not actually a difficult task since the only formats I have
+seen are "mp4-360p", "mp4-720p" and "webm-360p". Where are the others? Also, "mp4-360p" ALWAYS
+works. I suppose that is Youtube's default format.
+<p>
+I'm not offering much instruction here as to how to use this tool but it ought to be obvious
+anyway since this is based on my previous experiments. Plus, this is all gonna change anyway.
+It isn't what I want but it serves as a good experimental base until I figure everything out.
+Have fun.
+
+<p><hr><p>
+<b>Youtube Player v2</b> (March 27, 2019) -- <a href="youtube-player-v2.htm">source</a>
+<p>
+This is pretty sweet. The interface hasn't changed all much here but the cool feature is the ability
+to play vids in multiple popup windows. I suppose you could get crazy and open up lots of little
+vids all over your desktop and I guess somebody will try that. You can also build playlists if you
+want but that involves breaking out the html code since there is no ability
+to save vids to a playlist. But this is an experiment, not an attempt to make a general purpose
+utility. The idea with this (and the movie player) is to figure out the best ways to access
+videos for embedding into some articles I am working on.
+<p>
+Now, embedding is easy. It just requires injecting a url into an iframe and away it goes. Including
+Javascript in the process can be problematic since Javascript has some severe restrictions
+regarding access to files on remote servers or access to the contents of an iframe. The
+dreaded "Cross-Origin Resource Sharing" (CORS) makes it difficult to access resources not in the
+same domain as the Javascript. There are two solutions to this. First, a remote resource can be
+accessed via a proxy (I've been using https://cors.io) but that requires the proxy to always be
+available and that is not the case. These proxies tend to be down or very slow at times. I just
+haven't been able to find one that is reliable so this is not a good solution.
+<p>
+There is an extension to fix the CORS problem on Firefox
+<a href="https://addons.mozilla.org/en-US/firefox/addon/cross-domain-cors/">here</a>. For other
+browsers, you can do a simple search on "cors" or "cross-origin" to find one. I like the one I
+got since it is simple. By default, it disables the CORS restriction everywhere and that is not something you
+should do (it compromises browser security). Instead, remove the default (/.*/) and replace it
+with "invidio.us/embed" to run this video player properly (this disables CORS only for that
+specific domain so it will not compromise your security). The only reason access to this domain
+is needed is to get the list of available video formats. The player runs fine without the format
+lookup. So that gets rid of the proxy and I am really happy about that but it still kinda sucks
+that this even needs to be done.
+<p>
+The player is no longer trying to access "www.youtube.com/get_video_info". It was not needed in
+the first place since the info is available from "invidio.us". The correct way to read
+"get_video_info" is this: "https://www.youtube.com/get_video_info?el=detailpage&video_id=xxxxxxxxxxx".
+The "el=detailpage" part is important since otherwise you won't get the correct info for some vids.
+This tidbit was learned <a href="https://github.com/ytdl-org/youtube-dl/tree/master/youtube_dl/extractor">
+here</a>. Anyway, that is just academic now since Invidious suits my purpose better.
+<p>
+Html sucks at times. I still haven't figured out how to get rid of the vertical scroll bar on the
+formats list. If it isn't showing for you then that's good. I can't seem to find a way to make it
+go away on my Firefox short of just building my own version of the list box from scratch. I might
+do that but not any time soon. The rest of the interface works nicely though. One little point I
+should make. If you select a video from the drop-down play list and then decide to enter an ID
+on the input line, be warned that the video will not play. You need to deselect the video in
+the drop-down (just click the top item). Other than that, there don't seem to be any issues
+that I need to warn you about. I might decide to implement some code to parse the ID out of a url
+like "youtu.be/xxxxxxxxxxx" because it is a pain in the ass to have to edit the input.
+Also, this has not been tested on a wide screen since I am only using an old-style tube monitor.
+I got a few of those around so might as well burn them out. Anyway, have fun.
+
+<p><hr><p>
+<b>Youtube Player v3</b> (April 3, 2019) -- <a href="youtube-player-v3.htm">source</a>
+<p>
+Okay. This just gets more awesome by the day. Now supporting Fox News, BitChute, Vimeo and Info Wars. The code
+has gotten more complicated due to this additional support but it is still pretty readable. If you're trying to get into
+Javascript, pay careful attention to the sections marked out in a try/catch construct. You won't find code like this
+anywhere. I literally spent a dozen hours (at least) researching how to do this. Nobody knows how to code anymore. They
+all write long and complicated sequences of gibberish to solve simple problems so it is hard to drill down to the
+basics. The reason for the try/catch thing is because Javascript does not return any error code when you are trying
+to load a file or parse it. It just abandons your code and puts a message on the console. Catching errors requires
+the try/catch construct in order to maintain control of your program. A single construct is all that is needed to trap
+any error evolving from file access.
+<p>
+In the case of Fox News and Vimeo, the code parses what is called a JSON object. This is built in to Javascript so
+no need to write anything complicated. Use the Network tool included with your browser to see what the JSON actually
+looks like and write the code accordingly. Pretty straight-forward once you get the hang of it. In the case of BitChute
+and Info Wars, the code loads an html file and applies a very simple keyword search for the video link. Again, pretty
+straight-forward.
+<p>
+There is a bunch of code for parsing the ID out of an input. In all cases, the ID is expected to be at the tail end of
+the input with no additional characters appearing after, with the sole exception of a single slash. For each supported
+site, the ID is expected to be a certain length so this number of characters is chopped off and used as the ID. There is
+no test to see if the ID makes sense, except to check if an '=' or '/' character got included in the string. In the case of
+BitChute and Vimeo, the length of the ID can be different by one character and the code accounts for that.
+<p>
+In the last version, I mentioned an extension for Firefox (the same tool is available for Chrome). Grab it
+<a href="https://addons.mozilla.org/en-US/firefox/addon/cross-domain-cors/">here</a>. I found an interesting detail
+regarding how this tool parses a domain url. The domain "invidio.us/embed" does not work correctly if you type it in that
+way. The domain for Vimeo is "player.vimeo.com/video" and for BitChute it is "www.bitchute.com/video". Guess what? EITHER
+one of those disables CORS for the other because they have the "video" part in common. WTF? This means that any url
+that has "embed" as a subdomain will be activated by "invidio.us/embed". This is not what I expected. I want to isolate
+a very specific part of a larger domain so that the whole domain is not CORS disabled. Granted, I doubt that there
+is any security issue with these particular domains but I am assuming the worst. In any case, the correct way to enter
+the url for these sites is (Fox News and Info Wars do not need inclusion):
+<p>
+invidio\.us\57embed\57<br>
+www\.bitchute\.com\57video\57<br>
+player\.vimeo\.com\57video\57
+<p>
+The reason is that the tool is expecting a regular expression and not just a simple string. Why? Because it makes it easier
+to specify a gang of urls with a single entry. I don't give a shit about that. I want to be very specific. After much
+research, I have figured out how to code the regular expression for specificity. The "\57" part is RE speak for a slash. This
+blocks the extension from parsing out the "embed" or "video" part. In a RE, the period stands for "any character" and "\."
+means a fucking period. Whatever. It's done and working as I want. There really isn't any valid security reason for not
+just using "invidio.us", "player.vimeo.com" or "bitchute.com". I'm just being a stickler for detail.
+<p>
+By default, the use of a proxy is enabled but I now have a checkbox to turn off the proxy if you have the CORS extension.
+You can also disable the proxy by changing the path in the Javascript. You will see that there are two other available proxies
+just in case the default proxy doesn't work for you. Note that the option "Format Lookup" is only valid for Invidious.
+This allows you to just run blind if the proxy is not working. For BitChute and Vimeo, you are shit out of luck if the
+proxy isn't working. No proxy needed for Fox News or Info Wars.
+<p>
+The only sources that offer a choice of video formats are Vimeo and Invidious. BitChute is stuck at 480p, Fox News is
+432p and Info Wars is whatever you get (usually 720p). Vimeo is a bit clunky in this regard. The videos can be virtually any
+size but Vimeo applies a quality rating expressed as one of: 270p, 360p, 480p, 540p, 720p and (I think) 1080p. The actual
+height of the video will be indicated on the input line.
+<p>
+There is now the ability to copy the URL employed to run the video. This allows you to play the video on an external
+player like VLC (does not work for me) or SMPlayer (highly recommended). If all you want is the URL, just check the box
+"No Play" to block the video from playing. Note that the URL from Vimeo is only temporary but the others are persistent.
+You can now use "Play URL" with a window. Note that there is no sandboxing in a window so watch out for malicious sites.
+<p>
+That's about all, I guess. Have fun.
+
+<p><hr><p>
+<b>Youtube Player v4</b> (April 14, 2019) -- <a href="youtube-player-v4.htm">source</a>
+<p>
+More features and more sites to explore. I've added a bunch of corporate news media: ABC, CBS, CNBC, CNN, MSNBC,
+CBC, CTV, Global, BBC. I have also added Brighteon, C-SPAN, TVO. The latter is in Canada and is like PBS in the US. I'm in Canada
+so PBS is region locked to me. Can't hack it. Maybe through a VPN? TVO, of course, is region locked to the US.
+The new sites are in a separate window in order to minimize the clutter. Twitter support is not ready yet. Tried to hack
+Facebook but came up empty.
+<p>
+A new capability, called DIG, has been added because a lot of sites do not expose the ID numbers for the videos. The DIG
+option takes the URL of a news article and digs into it to find a video. This does not necessarily work everywhere.
+Some sites have multiple page formats and I've tried to cover them all but some videos are simply unreachable because they
+are stuck behind a Javascript tag, region locking, DRM or some other barrier.
+
+<p><hr><p>
+<b>Youtube Player v5</b> (April 19, 2019) -- <a href="youtube-player-v5.htm">source</a>
+<p>
+The DIG code has been updated for CBS (was not working with "60 minutes") and CTV (was not working with "W5" and others).
+<p>
+There is now a DIG option for Twitter links that look like this: "pic.twitter.com/xxxxxxxxxx" (https://t.co/xxxxxxxxxx).
+Note that the video link is not derived directly from Twitter (m3u8 is available but mp4 is locked behind a
+platform API). Rather, the video is found via "threadreaderapp.com" but it does not always work (though it should work on a
+second try).
+<p>
+Some buttons have been moved around. It is trivial to change this in the code, if you want.
+<p>
+Resolution selection from the format box is now supported for m3u8. This can be disabled by unchecking
+"Format Lookup". In that case, the video player will auto-select the appropriate resolution. Supposedly. I have not seen
+any players that do a good job of this. Not supported for Brighteon due to the fact that the audio is separate from the
+video. Not supported for mpd due to the file format. In both of these cases, the Youtube Player would have to
+intercede between the server and the video player. Might be a project for the (distant?) future.
+<p>
+PBS and Al Jazeera have been added. Interesting thing about PBS is that the Youtube Player breaks the region locking. How
+fortunate. Al Jazeera has no region locking. Fox, CBS, CNBC and C-SPAN also do not appear to be region locked
+(at least, as far as I can tell from Canada). CBC, CTV, Global and TVO are likely region locked outside Canada but I really
+have no idea. BBC is region locked on "bbc.co.uk" but not "bbc.com".
+<p>
+I really wish that a CORS bypass proxy was not necessary but that is the fault of the restrictions placed on Javascript
+by the browser. As mentioned before, you can use a CORS bypass extension instead. The proxy server "cors.io" seems pretty
+reliable so far. There are three other options which you will find in the code. Oddly enough, I found one being used by the
+CBC and I've included that but it seems unreliable. It also shows how prevalent the CORS problem is. CBC uses the proxy to
+hit the Instagram server. No doubt, the other networks use proxies as well but I just haven't noticed.
+<p>
+For the m3u8 and mpd formats, whether or not you can play them depends on your system. If you cannot play these formats,
+get an extension for your browser or find an external player that can handle it. My version of SMPlayer can handle m3u8
+but not mpd. I have a Firefox plugin for m3u8 and mpd. The Beeb (BBC) uses Flash on its site, not the mpd format, but mpd
+does exist in its database. 
+<p>
+The button called DLoad is for m3u8 sites (mpd not supported but is planned for). Both the "No Play" and
+the "Format Lookup" options must be checked. The m3u8 format (similar to m3u used for mp3) consists
+of multiple segments, each about 10 seconds long. In order to convert to another format like mp4, each of these segments
+must be downloaded. The DLoad button will open a new window with the list of segments. You can download them individually
+by clicking each link or copy the source (control-U) and pass the list to a download tool. Some tools won't accept this
+but some will. You can change the list format by changing the value of the variable called "plain_text" inside
+the Youtube Player code. This is still experimental. I might (or might not) find a better way. Not supported for Brighteon.
+<p>
+<b>Consumer alert</b>
+<p>
+The main obstacle to using the Youtube Player successfully is the page format employed by some sites. In particular, links
+may be hidden behind a Javascript tag. You will know this is the case when you see "javascript(void)" or something similar
+when you hover the mouse. You will need to find an alternate path through the site to get to the links. Also, some sites
+may embed a Youtube video rather than their own proprietary vid format. Since the Youtube Player (despite the name) is not
+actually searching for Youtube videos on these sites, such links will not get sniffed out. Other sources of errors are
+region locking, deleted videos, time-limited videos, playlists and a plethora of other situations which confuse even
+humans let alone a dumb piece of software. Aside from these issues, the Youtube Player is amazingly successful at rooting
+out video links.
+<p>
+Now go and have fun!
+
+<p><hr><p>
+<b>Youtube Player v6</b> (May 17, 2019) -- <a href="youtube-player-v6.htm">source</a>
+<p>
+New additions: DailyMotion, Facebook, TEDTalks and National Film Board of Canada. The NFB is region locked.
+It may or may not be the case that the Youtube Player breaks the region locking.
+<p>
+Note: Twitter support removed for being too unreliable. Should be available next version.
+<p>
+Note: CBS has been updated because some changes were made to the page formatting.
+<p>
+Note: Global now requires a proxy for ID lookup. Counterthink has changed from "https" to "http".
+<p>
+Note: CNBC updated because they changed the platform provider. Only the DIG option is valid now. On the plus side,
+a proxy is no longer needed.
+<p>
+Note: Fox has been updated to include "foxbusiness". The way it works is that YP checks "foxnews" first to see if the video
+ID is valid. If not, then YP checks "foxbusiness". There does not seem to be an issue with this method but time will tell.
+<p>
+Note: The DIG option for Brighteon now serves two purposes. The first purpose is to DIG through Counterthink pages to
+find the video on Brighteon. The second purpose has to do with the fact
+that Brighteon is a Brightcove client. I have no idea if the two are related in any way other than this. There are two
+other sites which are also Brightcove clients and thus employ a similar backend: TVO and Al Jazeera (Fox is Brightcove
+also but does not employ the same backend). Additionally, there are two sites in New Zealand which are
+Brightcove clients and both employ the exact same linking style in their pages. This is, I guess, a standard interface
+recommended by Brightcove. You can get the video links on these sites by using the Brighteon DIG option. There may be many
+others that are accessible in this way as well but I don't have a list. Anyway, these two sites are:
+"https://www.stuff.co.nz/" and "https://www.nzherald.co.nz/".
+<p>
+Note: Further on Brighteon, there are some videos which have both m3u8 and mp4
+formats. As if Brighteon is not already confusing enough with the separate audio and video tracks for m3u8. Anyway, if
+mp4 is available, Youtube Player will pull that out instead of m3u8. So don't be surprised when you find yourself jumping
+back and forth between the two formats. Hopefully, when Brighteon 2.0 goes online in June, mp4 will be available throughout.
+<p>
+Note: I only just now realized that Youtube Player is bypassing a lockout on full episodes on Fox. There is some
+frontline Javascript which requests a login via your cable or network provider. Other networks do the same thing. Dunno
+why they would want to limit access in
+this way. They're news networks not entertainment centres. Whatever. The lockout on Fox is not enforced at the backend so
+it does not impede YP at all. There may be ways to bypass lockouts on other sites but I haven't been able to find them.
+<p>
+Youtube Player bypasses a lot of different attempts to block or obstruct access to videos. Ads are bypassed.
+Weak lockouts like Fox uses are bypassed. Region locking is bypassed on PBS (I have not noticed
+any other instances). And, of course, mounds of Javascript and extraneous file loading can be bypassed if you avoid
+visiting the actual page that the video resides on (sometimes you need to use DIG for this). If you can disable Javascript
+selectively then do so. Firefox has NoScript for this. In most cases, only the top domain needs to be enabled and perhaps
+one or two subdomains. Without Javascript enabled, the external scripts can't load ads or clutter the page with promotional
+material. The result is significantly shorter loading times plus many annoyances removed.
+
+<p><hr><p>
+<b>Youtube Player v6a</b> (June 1, 2019) -- <a href="youtube-player-v6a.htm">source</a>
+<p>
+This is a minor update for the following items:
+<p>
+- New navigation links to easily switch between the viewers and the site list.
+<p>
+- New sites: 153News and Apple Podcast. The latter is not directly accessible so you can only reach a
+podcast from an external link.
+<p>
+- New keywords implemented for the DIG option on PBS and BBC.
+<p>
+- CNBC restored to previous state. New keyword search implemented because video links from the main page
+differ from links on the "/video/" page.
+<p>
+- It was previously indicated that Fox does not require a proxy. This is incorrect since a proxy is needed for the
+DIG option.
+<p>
+- ID numbers are processed by extracting a certain number of characters from the tail end of an input. For example, a
+Youtube link looks like this: "www.youtube.com/watch?v=xxxxxxxxxxx". The final 11 characters are assumed to be the ID.
+In some cases, the ID number is not an exact number of characters. Vimeo, for example, may have a 7-, 8- or
+9-digit ID. In the case of CBC, the ID is 13 digits EXCEPT for very old videos which are 10-digit. If you input
+a 10-digit ID for CBC, it will be rejected. A work-around has been implemented to cover such cases. Simply input the ID
+with an asterisk (*) in front of it to override the ID length test.
+
+<p><hr><p>
+<b>Youtube Player v6b</b> (June 6, 2019) -- <a href="youtube-player-v6b.htm">source</a>
+<p>
+Although I'm treating it as an incremental update for now, this new version is a big deal. Youtube Player now supports
+hls/m3u8 and dash/mpd playback natively. There is no longer any need for an extension to play these formats. It also
+works transparently. YP will automatically select the correct playback mode for the retrieved video links. This is
+fully tested with Firefox on Win10 but not on WinXP (system is down due to a bad power supply). Also tested briefly
+with Chrome, Brave and Edge (also on Win10). This update is made possible via these Javascript modules:
+<p>
+cdn.jsdelivr.net/npm/hls.js@latest<br>
+reference.dashif.org/dash.js/v2.5.0/dist/dash.all.min.js
+<p>
+These are industry-supported modules used by all of the big guys like Google, Brightcove, Akamai and many more.
+Implementation is really easy. This is the code that I wrote:
+<p>
+For hls/m3u8: { var stream = new Hls(); stream.loadSource (url); stream.attachMedia (win); }<br>
+For dash/mpd: { var stream = dashjs.MediaPlayer().create(); stream.initialize (win, url, true); }
+<p>
+This is just a basic implementation which does no more and no less than the native browser support for mp4/webm/ogv.
+There is not, nor will there ever be, any attempt to duplicate the advanced features of commercial players. It does the
+job of playing videos and does it very well. Note for Firefox users: don't forget to whitelist the sources if you are
+using NoScript.
+<p>
+Also, I have finally written up the code to access Youtube videos directly from Youtube instead of going through Invidious.
+Unfortunately, not all Youtube videos are playable. Some videos won't play and will result in an error message if
+embedding is disallowed. Other videos may simply not play. Invidious has issues as well for no reason that I can discern.
+However, between Youtube and Invidious there is only a small chance that any given video cannot be played. Of course,
+Youtube may implement restrictions to prevent third-party access altogether but there is nothing to be done about that.
+The checkbox formerly called Format Lookup is used to switch between the two sites.
+
+<p><hr><p>
+<b>Youtube Player v6c</b> (June 14, 2019) -- <a href="youtube-player-v6c.htm">source</a>
+<p>
+New sites: SoundCloud, PragerU and MRCTV (podcasts also).
+<p>
+Now delivering mp4 instead of m3u8: CNBC, CNN, MS/NBC and CBC. The reason why m3u8 was being culled from these sites
+in the first place is because m3u8 is the format played on those sites by the embedded players. Thus, the path to the
+mp4 files was hardly obvious. Fresh clues have arisen due to the fact that these four sites (and others) have some
+platform providers in common. The sites which still have m3u8 or mpd may eventually yield up their secrets.
+<p>
+There is a reliability problem with getting links from Invidious or directly from Youtube. Therefore, links can now be
+scraped from "genyoutube.net" which appears to be 99% reliable (assuming no third-party lockout by Youtube). Unfortunately,
+the genyoutube path is missing the webm format. No big deal because it looks like webm is dead anyway and many Youtube
+vids don't even have the webm option. Invidious will continue to be included as the default source because it is faster.
+Check or uncheck the Format box to switch between the two. Clarification: the Format option is only applicable to m3u8 vids
+to force the desired resolution rather than leaving it up to the video player. Non-functional for Brighteon or mpd.
+<p>
+Testing has indicated that the native support for m3u8 and mpd is working reliably. An examination of the memory map
+does not show evidence of a memory leak. Youtube Player takes about 4-5Meg memory when playing mp4 videos. This goes up
+by about 12-14Meg on the first invocation of either the HLS or DASH modules, for a total footprint of around 30Meg. The
+memory footprint drops back to 4Meg on reloading the Youtube Player. This was tested on Firefox and Chrome, with the
+latter using somewhat less memory.
+<p>
+A PBS stack has been included for testing hls/m3u8. This stack also contains one video which is region locked in order to
+test whether or not Youtube Player can break the lock for you. This requires activating the default proxy ("cors.io").
+Residents in the US do not need this. The BBC stack is for testing dash/mpd.
+
+<p><hr><p>
+<b>Youtube Player v7</b> (July 21, 2019) -- <a href="youtube-player-v7.htm">source</a>
+<p>
+A new section has been added for free movies and TV shows. Check it out.
+<p>
+Bad news: the "cors.io" proxy server has been shut down. This is bad because I was using it to break the
+region locking on PBS. There must be some way to break region locking in general but I haven't found it yet.
+<p>
+New sites added: LiveLeak and NDTV (India).
+<p>
+Note: Brighteon is going through a system upgrade which involves a total revamping of the file formats.
+Youtube Player will be updated as needed when the upgrades are done.
+<p>
+Note: CBS updated because of page format change.
+<p>
+Note: Fox DIG extended to cover "radio.foxnews.com".
+<p>
+Note: DailyMotion is now mp4. Reason for having m3u8 before: the mp4 URL fails with SMPlayer due to an errant
+character (#) in the redirection URL.
+<p>
+Note: InfoWars is now m3u8. The problem with extracting an mp4 is that there is only one resolution, which is usually
+720p but may sometimes be 1080p. The higher resolution is problematic for slower computers or Internet connections.
+The m3u8 format allows resolution throttling down to 360p. If you need the mp4 URL for download, it is available with
+the DLoad button.
+
+<p><hr><p>
+<b>Youtube Player v7a</b> (August 9, 2019) -- <a href="youtube-player-v7a.htm">source</a>
+<p>
+<ul><li>
+New features: Internet TV and Internet Radio.
+</li><li>
+Shutdown routine added to destroy video iframes so browser won't reload them on a page refresh. This seems to be
+relevant to Firefox only.
+</li><li>
+Invidious updated to handle m3u8 live streams.
+</li><li>
+Small fix to PBS DIG and a fix to CBS for live streams.
+</li><li>
+Brighteon is broken. Skipping a long explanation, the best way to access Brighteon is with the Sandbox
+mode. This will run an embedded Brighteon video. The native HLS/m3u8 player will not work.
+</li><li>
+Since Brighteon is no longer a Brightcove client, Brightcove is now a separate option.
+</li><li>
+PornHub does not work with a proxy.
+</li><li>
+Finally figured out how to turn off the browser console messages from the DASH module (in case it was bothering
+you as much as it bothers me). What a cryptic beast DASH is. I hate it.
+</li></ul>
+
+<p><hr><p>
+<b>Youtube Player v7b</b> (September 1, 2019) -- <a href="youtube-player-v7b.htm">source</a>
+<p>
+<ul><li>
+Small fix to Facebook/Instagram DIG.
+</li><li>
+BBC updated for mp4 videos (rare but happen sometimes).
+</li><li>
+Veoh removed. Not much there. RapidVideo added.
+</li><li>
+Press TV added.
+</li><li>
+Playing a video no longer adds to the browser history. Removing the video iframe from the document and
+putting it back resolves this issue. Navigating the page using the anchor tags still affects history.
+</li><li>
+Modified the CSS to limit the size of the viewers on widescreen monitors so that the stack buttons
+remain visible. This expands the width of the control panel. Not the most elegant solution though.
+</li><li>
+Internet TV expanded to 190 channels. Currently, "ABC News" is down. This is not a pirate link but an official
+ABC link. It is not transmitting but it is not a dead link either. I am retaining it with the expectation that
+it will eventually come back online.
+</li><li>
+Previous note: Brighteon is broken. Skipping a long explanation, the best way to access Brighteon is with the Sandbox
+mode. This will run an embedded Brighteon video. The native HLS/m3u8 player will not work.
+</li><li>
+Previous note: Since Brighteon is no longer a Brightcove client, Brightcove is now a separate option.
+</li></ul>
+
+<p><hr><p>
+<b>Youtube Player v7c</b> (September 14, 2019) -- <a href="youtube-player-v7c.htm">source</a>
+<p>
+<ul><li>
+Bloomberg and XHamster added.
+</li><li>
+TV links updated: Canal 4 Guadalajara, Orient TV, CPAC
+</li><li>
+TV links removed: WhoMag TV, CBS Reality, RTR Planeta, Arirang TV, ABC News, NBC News
+</li><li>
+Some CSS changes to improve appearance and address some browser issues.
+</li><li>
+Added option to play YouTube videos in audio-only mode in the Internet Radio.
+</li><li>
+YP is now working with a different Invidious instance for YouTube vids because "invidio.us" has become slow and unreliable.
+The new instance is "invidious.nixnet.xyz" which is in Germany but it has a fast connection to North America. Also, I
+found the reason why Invidious fails on some videos. The default behaviour of Invidious is to link the client directly
+to the Google servers but this does not work if the Google URL is encoded with the server IP address due to geo-restriction.
+There is an option ("local=true") to proxy the video stream through the Invidious server, thus avoiding the problem of the
+IP mismatch. YP will implement this option as needed.
+</li><li>
+Additionally, YP is now accessing Invidious via the official API rather than hitting the web page. This is an improvement
+because a CORS proxy or unblocker is no longer required. Also note that many YouTube download tools and sites have recently
+failed due to some API changes on the part of YouTube. I had to update my own code (though the code is not actually in
+service anyway). The Invidious code base has been updated. GenYoutube still has not updated and it is no longer
+supported in YP.
+</li></ul>
+
+<p><hr><p>
+<b>Youtube Player v8</b> (November 9, 2019) -- <a href="youtube-player-v8.htm">source</a>
+<p>
+This version of Youtube Player is a <b><i>major update</i></b>! The problems caused by browser restrictions on Javascript
+keep growing. The main issue is the inability to freely modify or access HTTP headers. This is otherwise known as the
+"CORS issue" which has haunted the developers of browser-based applications for years. I could write several paragraphs
+on the matter but I won't since it would inevitably degenerate into a rant. Suffice it to say that this project has seen a
+hodge-podge of attempts to address this problem and now the time has come to bury the hatchet.
+<p>
+Moving forward, the only solution to the CORS issue is a local proxy server application designed specifically for use with
+Youtube Player. I have resisted doing this till now since I did not want to task the user with installing an application
+outside of the web browser. It has become abundantly clear, however, that the reliance on finicky proxies and extensions
+is never going to work out well.
+<p>
+Note that you are <i>not required</i> to install the new application in order to use Youtube Player. This is not a case of
+upgrade or die. For the most part, what worked before is still working. However, there are a few things you need to be aware
+of. The previous version of Youtube Player has suffered the loss of numerous Internet TV channels. Some of these are
+simply due to the fact that IPTV streams are not forever. Most of those channels have been restored.
+<p>
+The biggest failure was caused by a change in the operating procedure of the sites which supply the stream links from
+"savitar.tv". Unlike most of the IPTV links, the ones from "savitar.tv" are not persistent. They need to be refreshed
+every few hours and the only way to do that is to access one of these sites: "ustv247.tv", "ustvgo.tv", "watchnewslive.tv".
+I don't know how those sites get the links in the first place nor do I know how any other site does it. I also have no
+idea of the legalities of any of this. Whatever.
+<p>
+The reason these sites became inaccessible is that they adopted a bot blocker. This actually is not a big problem insofar
+as updating the YP code. The big problem is cookies. Cookies cannot be transmitted at all through any of the available
+proxies and just one particular extension (which is exclusive to Firefox) has support for cookies. This is a major breakdown
+and it is the impetus for building the local proxy server. Note that the bot blocker is not always in place so it is
+possible that some of the channels may (occassionally) work as before.
+<p>
+All of that is simply meaning to say that you should install the local proxy server if you want to avoid pain. With the app
+installed and running, all of the problems melt away. Everything just works. Besides the convenience factor, there are
+a few IPTV links which can only work with the local proxy. Twitter is now a supported site but it requires the proxy (there
+is no workaround). Brighteon videos are now playable without embedding. You should expect to see Youtube Player
+relying more on the local proxy as more stuff gets added.
+<p><hr><p>
+<b>Installation</b> -- The local proxy server app is available
+<a href="https://archive.org/details/youtube-player" target=_blank>here</a>. Get the file called "kraker-1a.zip" and open
+the text file within for installation instructions.
+<p><hr><p>
+<b>Other new features</b> -- yep, there is more. I did say that this is a major update. The embedded viewers now have their
+very own brightness controls! Where have you ever seen that before? There are two controls, one for brightness and one for
+saturation. There is no contrast control (this is handled automatically) and there is no gamma because that is not a
+feature of CSS. I have gone to great lengths to make these controls as easy to use as possible. The controls apply while
+the video is playing. However, if you open the video in a window, the settings will transfer to the window but cannot be changed. Keep in mind that this is never going to be perfect. For better results, adjust your display settings.
+<p>
+This does not work with Microsoft Edge. Videos will play with sound only. Also, Edge will not allow access to the local
+host (which is where the local proxy server is located, natch). But who the heck uses Edge anyway?
+<p>
+Also, YouTube support has always been a bit of a thorn so now you can select the preferred server. In the previous version
+of YP, the preferred server was hard-wired in the code. That source died (ouch!). It was one of several Invidious servers
+which YouTube has locked out. There is a bit of a war going on there. I doubt that YouTube is going to dare to lock out
+the main instance (invidio.us) since that would piss off a lot of smart hackers (heh). Anyway, you can now choose from
+among "youtube.com", "genyoutube.net" or one of the still active Invidious sites. If a link is not accessible through one
+source then you can pick another. Unless a video has been locked down somehow, it ought to be reachable through one or
+more of these methods. Note that there are a few IPTV channels which come through YouTube and that there are currently just
+two Invidious instances which support live streaming.
+<p>
+A lot of other stuff has changed since the last update over a month ago. Too much to list so I won't bother. If you had an
+issue with something before, then go take another look to see if it got fixed. If not, well, what can I say?
+
+<p><hr><p>
+
+</div><div style="width: 90vw; height: 50vh"></div>
+
+</body></html>

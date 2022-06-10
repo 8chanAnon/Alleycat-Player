@@ -1,0 +1,237 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="https://8chananon.github.io/Alleycat-Player/archive/player/" target="_blank">
+<link rel="icon" href="favicon.ico">
+
+<title>Release Notes</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 15px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body>
+
+<h1 style="text-align:center"><r_>Alleycat Player</r_> <g_>Release Notes</g_> (v3a to v3e)</h1>
+
+<p><hr><p>
+<b>Release notes for v3a (March 19, 2020)</b> -- <a href="alleycat-player-v3a.htm">source</a>
+<p>
+Major update today. The new video controls are done. Slick if I do say so myself (and I do). The main feature is the seek
+function with 6 presets (5s, 15s, 1m, 2m, 5m, 10m) and a freeform input which can accept either h:m:s format or just a
+plain number of seconds. Fractional values work too. Precede the number with a "+" or a "-" to seek from the current
+play time. For example, "+0.1" will allow you to seek ahead one tenth of a second for those times when you need to find the
+perfect spot to take a snapshot (of course, you need to pause the video but I don't really have to point that out, do I?).
+<p>
+You'll also find your viewing experience a bit more pleasant without that spinning icon popping up in the middle
+of your video every time there is a hiccup in the network feed. Instead, the control bar will show itself to signal the
+status of the feed after two seconds so you don't need to put up with annoying and constant feedback. After all, you do
+know that the video is not working without being told. It might help you to know that hitting the 5s seek preset will
+usually get a stalled video going again.
+<p>
+You can also adjust the brightness and saturation but the implementation is very basic. Use the main controls unless you
+are in fullscreen mode or in a window. Lastly, you can rotate the video. Watch your vids upside down for a new experience.
+<p>
+Quick tip: The status bar in the middle of the viewer is now clickable (where you see the "No Video" message).
+It will pop up the current stack if one is active (the "Allow Multiple" option is ignored). The reason why the whole viewer space is not clickable has to do with
+the nature of an <i>iframe</i>. There is, of course, some sort of solution but I haven't figured it out yet and I am fed up
+of trying.
+<ul><li>
+Added Periscope. Not tested with live feeds. Weirdly, Periscope vids are rotated sideways. This is handled by the new video
+control.
+</li><li>
+The main source for most of the secondary US feeds (123tvnow.com) has changed the format of the video URLs. This is fixed.
+Besides that, very little has changed. A few Internet TV channels had to be replaced but nothing that anybody should care
+about. That's good because I'm tired of all the churn lately.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v3b (March 29, 2020)</b> -- <a href="alleycat-player-v3b.htm">source</a>
+<p>
+At some point, I will have to remove the old release notes. For now, I am leaving them since they contain some valuable
+information.
+<p>
+Mozilla Firefox 74.0 has broken the CORS bypass extensions. However, this is only true if Alleycat Player is loaded from
+the local drive. The extensions still work if Alleycat is loaded from "archive.org". This
+<a target=_blank href="https://www.mozilla.org/en-US/security/advisories/mfsa2020-08/#CVE-2020-6809">security advisory</a>
+appears to be the relevant justification (which I don't understand). Perhaps this will happen to Chrome as well or maybe
+Mozilla will wise up to a better solution. The developer of "CORS Everywhere" has stated that this breakage appears to be
+unfixable. That is unfortunate since I use that extension for testing Internet TV links.
+<p>
+I should write some words about how the Kraker Local Proxy Server deals with CORS blockage and other accessibility
+issues. Let's start with this working example of an Internet TV channel blocked by CORS:
+<p>
+<g_>http://localhost:8080/~http://hitmusic.hu/hitmusic.m3u8</g_>
+<p>
+The channel will work just fine without Kraker on VLC or SMPlayer or if you use a browser extension
+for m3u8 playback. The CORS issue appears ONLY if you try to run the channel in Alleycat Player. The browser will load
+the file alright but it will disallow access by Alleycat because the server has not set the HTTP header
+"access-control-allow-origin" to "*". Kraker will set the header to "*" so that the browser will allow access.
+The tilde (~) simply informs Kraker that it should handle the request in "passthrough" mode so that the console
+does not get clogged with messages. That is, a message is printed to the console only every 30 seconds rather than for
+every request.
+<p>
+Some channels do not work quite so easily. The segment URLs contained in the m3u8 will work just fine if they
+are relative URLs, meaning that the domain serving the video segments is the same as the one serving the m3u8. If absolute
+URLs are used in the m3u8 (whether or not they are in a different domain) then the video player will try to load the
+segments directly without going through Kraker. For this reason, Kraker has an option to "fix" the m3u8. The option is
+activated in this manner:
+<p>
+<g_>http://localhost:8080/~*,,*http://video.blivenyc.com/broadcast/prod/2061/22/desktop-playlist.m3u8</g_>
+<p>
+There is more to the double-comma syntax but that is not relevant here. The asterisks delineate a "referer" URL (see the
+release notes for v2d). Though this particular example is not referer-locked, the default referer string would be
+"http://video.blivenyc.com/". If a different referer is needed, then the URL would look like this:
+<p>
+<g_>http://localhost:8080/~*www.nasa.gov,,*https://nasa-i.akamaihd.net/hls/live/253565/NASA-NTV1-Public/master.m3u8</g_>
+<p>
+There is a shortcut if you want to play a channel without the need to type in the "localhost" part:
+<p>
+<g_>~7:*http://1music.hu/1music.m3u8</g_> or <g_>~8:*http://1music.hu/1music.m3u8</g_>
+<p>
+<b>Some really weird shit going on with HTML/CSS rendering</b>
+<p>
+You may have noticed this. Some versions of Alleycat Player or Youtube Player don't seem to have the problem but the
+problem does exist with Alleycat v3a. If you click between the Info Viewer and the News Viewer, the two viewers do not
+line up. The symptoms can vary. Buttons or text may appear to move up or down a pixel. The entire viewer may move. It is
+bizarre and has caused me a lot of frustration. I have finally nailed it down. First of all, the CSS for the buttons had
+to be revised to balance these four attributes: height, line-height, font-size and padding. There was nothing wrong with
+my CSS. The browsers have some bugs. I think what is happening is that browsers create the page in multiple layers:
+background, borders and text. The layers may not align exactly due to half-pixel errors so elements may be drawn out of
+alignment when the layers are combined.
+<p>
+This caused me much grief with the updated video controls. The text was not being drawn precisely between the borders but
+this error was occurring in only one or two of the viewers and never in all three. So the issue was impossible to resolve
+by just tweaking the CSS. To make a long story short, the solution involved introducing a half-pixel error in between
+the Info Viewer and the News Viewer. Don't believe me? Click the link below. The Javascript will revoke the half-pixel
+error and bring you to the Info Viewer. Switch between the viewers to see the result. In Firefox, the "Raw/Wrapper/Sandbox"
+text and the background for the "No Video" text will move. In the Chrome-based browsers, the entire viewer
+will move. Come back here and click the link again to see the problem get fixed.
+<p>
+<g_>Reverse the half-pixel error:</g_> <a href="javascript:testit()">click here</a>
+<p>
+I am testing this on Windows 10 with Firefox, Waterfox, Google Chrome, Brave and Opera. The fix works for all of them
+despite the fact that the symptoms are different. I do not have access to Linux or any other platform for testing so your
+mileage may vary. This is the HTML code containing the half-pixel error:
+<p>
+<g_>&lt;div id="test" style="width: 90vw; height: 250.5px"&gt;&lt;/div&gt;</g_>
+<p>
+I have written several paragraphs of text here and it has not affected the viewers. This is beyond my comprehension and
+it has given me a colossal headache.
+<ul><li>
+Added a speed control and made a few other improvements to the video control bar. Some sort of keyboard interface is on
+the list of things to do.
+</li><li>
+"153news.net" is gone as of March 22. Someone stole the server from the data centre. For details:
+<a href="http://abovetopsecret.is/153news-net-offline-raided/">article</a> and
+<a href="https://invidio.us/channel/UCJd3MyWFy4f3sIOeycp4UdA">Jason's Youtube channel</a>.
+</li><li>
+Nancy Web TV will be offline until the coronavirus panic is over. WTF?
+</li><li>
+TV Ontario is back up. The same source (www.arconaitv.us) is now the primary feed for CTV News.
+</li><li>
+Removed the secondary feed for OAN (still searching for more sources). All of the "ustv.to" sources are currently
+working with a remote proxy.
+</li><li>
+Updated Periscope. Some videos were found to need an m3u8 fixup. Also, the same videos were found to NOT be rotated.
+Don't know yet how to differentiate between rotated and non-rotated videos.
+</li><li>
+I don't know what is going on with VidNode. I'm not having issues with it but sometimes Alleycat gets an mp4 and other
+times it gets an m3u8. I prefer the latter because I can get the 360p resolution. My CPU is overworked at higher
+resolutions unless I use SMPlayer. Whatever. I'm getting m3u8 right now. Also, the download links often (usually?)
+don't work.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v3c (April 6, 2020)</b> -- <a href="alleycat-player-v3c.htm">source</a>
+<p>
+Previous iteration of v3c was revoked. This is the correct version.
+<p>
+The US Internet TV sources changed again. This fix will hopefully be stable for a while. A remote proxy will no longer
+work for these channels but a CORS unblocker will (see the v3b release notes regarding Firefox 74.0). At the time of this
+writing, OAN is down.
+<p>
+<b>Release notes for v3c (April 5, 2020)</b>
+<p>
+The sources for most of the Internet TV channels in the US (ustv247.tv, ustvgo.tv, watchnewslive.tv) have undergone
+another update after having been down for three days. The Local Proxy Server is required to access these channels due to
+the need to handle cookies and also a Referer Lock. The actual channel feed (new domain: ustv24h.live) is not restricted
+in any way.
+<p>
+My previous comments regarding pixel misalignment in the viewers might have struck some people as odd because it is likely
+that the "half-pixel error" test link did not work for you. Well, it turns out that the error factor varies depending on
+screen resolution and zoom factor. The test actually works but the correct error factor for your system can be anything
+from 0.1 to 0.9. At normal zoom and 1024x768 resolution, the error factor of 0.5 works perfectly for me across different
+browsers but does not work if I change either the zoom or the resolution. Weird. Very weird. I have no solution to this
+problem. On the bright side, I am no longer seeing any misalignment errors with the video controls. Knock on wood?
+<ul><li>
+Updated UniqueStream. Removed WillTV because the site now requires a login.
+</li><li>
+Updated the video controls to include a "flip horizontal" option.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v3d (April 11, 2020)</b> -- <a href="alleycat-player-v3d.htm">source</a>
+<p>
+Youtube fixed the bug with signed videos which was patched in v2f. The extra step 4 is no longer needed.
+<p>
+I am still not getting any feedback on Alleycat Player. Nobody is checking my home page on archive.org to find that I do
+have a place where you can offer feedback. The address is now available at the top of this page. As I have mentioned before,
+I only have a minimal Win10 system available to me for testing. No bad-ass video card. No widescreen monitor. Just a
+really basic system. I have been doing my best to guess how Alleycat Player will perform on other systems but I can only
+go so far without feedback.
+<p>
+On my list of things-to-do: keyboard video controls and ability to save m3u8 videos as mp4. The former is low
+priority. I really want to get that second feature working as soon as possible. I know it can be done but I'm not
+sure how yet. I am not planning to do the same for DASH videos.
+<p>
+It is important to use your browser's zoom feature to fit Alleycat Player to your browser window. This works pretty well
+(as far as I can tell) but the faux speaker grill on the right-hand side might still be visible because you don't have
+exact control over the zoom factor. I have added a feature to "snap" the grill out of view when it reaches a certain
+minimum width. Hope this works as intended.
+<ul><li>
+Added PagalMovies. This is a source for Bollywood and Hindi movies but many English films are there too.
+</li><li>
+Updated MixDrop to allow for a wider range of ID lengths. I have seen IDs of length 5 and all the way to 15. The default
+algorithm for separating ID numbers from a URL doesn't work for such a wide range.
+</li><li>
+Added a secondary feed for OAN.
+</li></ul>
+
+<p><hr><p>
+<b>Release notes for v3e (April 20, 2020)</b> -- <a href="alleycat-player-v3e.htm">source</a>
+<p>
+<ul><li>
+Fixed the primary and secondary feeds for the US Internet TV channels. The feeds from 123tvnow.com were previously
+hard-wired. It is now necessary to hit the site for the feeds. The "crypto.js" module supplied with kraker-1c is
+being used for this purpose.
+</li><li>
+Updated XHamster. Download links removed from VidNode because they don't work.
+</li><li>
+Removed TV Ontario because the source is broken.
+</li></ul>
+
+<p><hr><p>
+
+</div><div style="width: 90vw; height: 50vh"></div>
+
+</body></html>
