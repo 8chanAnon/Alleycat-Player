@@ -1,0 +1,209 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin">
+
+<title>Socks5 Proxy</title>
+
+<style type="text/css">
+
+body {
+  font-size: 16px; line-height: 19px;
+  font-family: 'times new roman', serif; 
+  color: maroon; background-color: peachpuff;
+}
+
+table {
+  margin-top: -8px;
+}
+
+td {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: seagreen; }
+b_ { color: blue; }
+w_ { color: green; font-weight: bold; }
+
+</style></head>
+
+<body>
+
+<h3 style="margin:0"><r_>Using and configuring the Socks5 Tunnel Proxy Server</r_></h3>
+<p><hr><p>
+<b>Addendum</b> (April 8, 2021) -- upgrade from version 2b to version 2c
+<p>
+Two major issues have been fixed. First, there was a memory leak due to the failure to destroy spent sockets (not a serious
+problem but up to 20 megabytes of memory was being wasted). Second, a custom DNS lookup procedure has been implemented. It
+turns out that Node.js performs an internal DNS lookup via the operating system. Thus, the DNS server settings in your
+settings file did not apply though they do apply to the "dnslookup" command. The new DNS lookup procedure applies the
+following policies:
+<ul><li>
+The IP address resulting from a DNS lookup is retained for a minimum period of 5 minutes.
+</li><li>
+Access to the DNS server is serialized. That is, only one lookup can be in progress at one time.
+</li><li>
+In the event of a DNS failure, the default Node.js DNS lookup via the operating system will be invoked.
+</li></ul>
+The process has been fine-tuned to maximize performance and to limit the need to access the DNS server. There are no
+user options and no option to disable. There is no reason to disable since the default DNS lookup procedure in Node.js
+is inefficient and prone to failure due to resource contention.
+<p>
+<b>The remainder of this document has not been modified.</b>
+
+<p><hr><p>
+It is called a "Tunnel Proxy" because all it does (or can do) is apply a custom DNS lookup and then route the
+connection to the required destination. It is not possible to sniff the connection to see or modify any part of the data
+stream (which is the purpose of the original proxy). Actually, HTTP streams can potentially be sniffed but not
+HTTPS because it is encrypted.
+<p>
+There are a few reasons for using this proxy. The default DNS service supplied by your ISP may be unreliable or
+it could be blocking certain domains. A site could also be blocked by taking down the DNS entry (to censor information
+that the powers-that-be don't want you to see). However, bypassing the DNS service won't help if a site has been
+deplatformed (banned by its ISP). There is only so much that we can do in the fight against censorship.
+<p>
+Of course, you could accomplish roughly the same thing by modifying your system DNS setting or the "hosts" file.
+That approach is cumbersome and prone to error. The new Kraker proxy makes your changes much easier to set up
+and modify on the fly. You will need to configure your web browser to work through the proxy. You can also do the same
+for other applications that you use (if they support this).
+<p>
+<b><b_>Instructions for configuring a proxy connection in your web browser</b_></b>
+<p>
+<b><r_>Firefox</r_></b> - To get to the settings: Options >> General >> Network Settings >> Settings
+<p><b>Check</b> "Manual proxy configuration"
+<br><b>Uncheck</b> "Also use this proxy for FTP and HTTPS"
+<br><b>Type</b> "localhost" in "SOCKS Host"
+<br><b>Type</b> "8088" in the next field and <b>Check</b> "SOCKS v5"
+<br><b>Check</b> "Proxy DNS when using SOCKS v5"
+<br><b>Ignore</b> "No proxy for" unless you have an issue
+<br>All other fields should be left blank or unchecked
+<br>Alternative: you can install the extension indicated for Chrome-based browsers below.
+<p>
+<b><r_>Waterfox</r_></b> - To get to the settings: Options >> Advanced >> Network >> Connection >> Settings
+<p><b>Check</b> "Manual proxy configuration"
+<br><b>Check</b> "Use this proxy server for all protocols"
+<br><b>Type</b> "localhost" in "SOCKS Host"
+<br><b>Type</b> "8088" in the next field and <b>Check</b> "SOCKS v5"
+<br><b>Check</b> "Use proxy to perform DNS queries"
+<br><b>Ignore</b> "No proxy for" unless you have an issue
+<br>All other fields should be left blank or unchecked
+<p>
+<b><r_>Pale Moon</r_></b> - To get to the settings: Preferences >> Preferences >> Advanced >> Network >> Connection >> Settings
+<p><b>Check</b> "Manual proxy configuration"
+<br><b>Check</b> "Use this proxy server for all protocols"
+<br><b>Type</b> "localhost" in "SOCKS Host"
+<br><b>Type</b> "8088" in the next field and <b>Check</b> "SOCKS v5"
+<br><b>Check</b> "Proxy DNS when using SOCKS v5"
+<br><b>Ignore</b> "No proxy for" unless you have an issue
+<br>All other fields should be left blank or unchecked
+<p>
+<b><r_>Chrome-based browsers</r_></b> - You will need to install this
+<a target="_blank" href="https://add0n.com/proxy-switcher.html">extension</a>.
+<p>
+There are versions of the extension for Chrome, Firefox, Opera and Edge. Even though you don't need it for Firefox,
+I recommend it because it is easier to manage. Select the "Manual" tab once you have installed the extension. Enter a
+profile name and fill all three proxy name fields with "localhost" and set the port number to "8088". Check "SOCKS v5"
+and check "Remote DNS" (for Firefox only). Press the green checkmark symbol and you are done.
+<p>
+<b>Notes on The Onion Relay (TOR) Network</b>
+<p>
+Kraker supports accessing the TOR Network either for specific domains or globally. Also, "onion" links will automatically
+be routed to a TOR server. There are two ways to get a TOR server running: open the Tor Browser or run the stand-alone
+TOR server. The two cannot run together and the port number differs. It is port 9150 with the Tor Browser and port 9050
+with the stand-alone. Go <a target="_blank" href="https://www.torproject.org/download/tor/">here</a> to download. The
+browser is available for Windows, Linux, Mac and Android but the stand-alone is only available for Windows.
+<p>
+Extract the zip file for the stand-alone TOR server. Find "tor.exe" in the "Tor" folder and run it. That's all. Personally,
+I don't like having another console alongside Kraker so I'll be looking for a way to run the TOR server invisibly. For now,
+this works fine.
+<p>
+You can set up TOR as your proxy if you like. Just use port "9050" or "9150" instead of "8088". Everything will then be
+routed directly through the TOR network. I'm not recommending this. While your IP address will be rendered anonymous,
+there are still potential privacy issues. If you want to roam the "Darknet" then use the Tor Browser. Also, your IP address
+will change routinely, usually every 15 minutes. This will mess up any login or verification credentials that may be based
+on your IP address. Certainly not good for online banking unless you can get it done swiftly.
+<p>
+<b><b_>Working with the proxy settings file</b_></b>
+<p>
+The file is named "_settings.txt" and you should have copied it to your Kraker folder. If not, go back and get it.
+<p>
+There are four data types: 1) Option Flag, 2) DNS Service, 3) Domain Lookup and 4) IP Address List.
+<p>
+<b><r_>Option Flag</r_></b> has the format <r_>$name=0$</r_> (change '0' to '1' to enable). There are five flags:
+<table>
+<tr><td><b>fmodify</b></td><td>If enabled then the other flags may be modified when the settings file is reloaded.
+The flags are initialized on startup.</td></tr>
+<tr><td><b>console</b></td><td>If enabled then each connection opened in the proxy will be reported in the console
+(name, port, IP address).</td></tr>
+<tr><td><b>altport</b></td><td>If enabled then the proxy will invoke the TOR server at port 9150 (Tor Browser)
+else 9050 (stand-alone).
+<tr><td><b>tor4all</b></td><td>If enabled then every connection will be proxied through the TOR server.</td></tr>
+<tr><td><b>$end$</b></td><td>Special flag that marks the end of your settings.</td></tr>
+</table>
+<p>
+<b><r_>DNS Service</r_></b> has the format <r_>[#name ipaddr1 ipaddr2]</r_> where "name" is any name you wish to use
+to select the service, "ipaddr1" is the primary server and "ipaddr2" is the backup server. The service named "default"
+will be selected automatically on startup.
+<p>
+<b><r_>Domain Lookup</r_></b> has the format <r_>[?name domain1|domain2 ipaddr ...]</r_> where "name" is any name you
+wish to use to group one or more entries. If the name is omitted then the entry will be assimilated on startup or a reload.
+Multiple domains may be specified with a separating vertical bar. If more than one IP address is specified then one will
+be selected randomly. The special form "+name" may be used to include an IP Address List. Mixing is allowed. That is,
+IP addresses and one or more groups may be included. The special value "TOR" invokes the TOR server. If no IP address
+is provided then a DNS lookup will be performed to get one (but not for a nameless entry).
+<p>
+<b><r_>IP Address List</r_></b> has the format <r_>[+name ipaddr ...]</r_> where "name" is any name you wish to use to
+include the list in a Domain Lookup. Any number of IP addresses may appear. They may be separated with spaces,
+tabs or new lines. Invalid IP addresses will be ignored.
+<p>
+<b><b_>The proxy server command interface</b_></b>
+<p>
+You can send commands to the proxy server on port 8080 as follows:
+<p>
+<g_>http://localhost:8080/?activate=X</g_> where "X" is the name of a Domain Lookup group. More than one group may be
+specified (separated with a comma). If no IP address has been specified for a domain then a DNS lookup will be performed.
+The list of the activated domains will appear on the console. Domains that have already been activated will be refreshed.
+If "X" is blank then the nameless group will be refreshed (already activated from startup or a reload). The DNS lookup
+does not apply to this group.
+<p>
+<g_>http://localhost:8080/?dnslookup=X</g_> where "X" is either a domain name (a full URL is permitted) or an IP address
+(for a reverse DNS lookup).
+<p>
+<g_>http://localhost:8080/?flags=X</g_> where "X" is a number in the range 0 to 7 to enable/disable the option flags:
+console = 1, altport = 2, tor4all = 4. Add up the numbers to combine the flags. The new flag settings will be shown.
+If "X" is blank then no flags will be changed.
+<p>
+<g_>http://localhost:8080/?reload=X</g_> where "X" is the name of a settings file or "_settings.txt" if blank. This is not
+exactly the same as loading the settings file on startup. The "default" DNS Service will not be invoked and Option Flags
+do not apply unless <r_>$fmodify=1$</r_> has been specified.
+<p>
+<g_>http://localhost:8080/?servers=X</g_> where "X" is the name of a DNS Service (optional) which will be used for all DNS
+lookups (this bypasses your system DNS setting). The special name "reset" is used to restore the system DNS setting.
+The output is a list of the activated domains. The "default" DNS Service is not invoked automatically on a settings file
+reload but you can do so with this command.
+<p>
+
+<b>Notes</b>
+<p>
+<ul><li>
+The DNS settings also apply to the proxy server at port 8080 except that the TOR network cannot be used.
+</li><li>
+The new version of the 8kun Bread Launcher has a convenient proxy control panel. It is pretty basic but cool.
+</li></ul>
+
+<p><hr><p>
+
+<div style="width: 90vw; height: 50vh"></div>
+
+</body></html>
