@@ -47,9 +47,9 @@ w_ { color: green; font-weight: bold; }
 
 <p><hr><p>
 
-<a href="socks-proxy-4a.htm" target=_blank>Instructions on how to use the Socks5 Tunnel Proxy Server</a>
+<a href="socks-proxy-4c.htm" target=_blank>Instructions on how to use the Socks5 Tunnel Proxy Server</a>
 <p>
-<b>Addendum</b> (May 15, 2022): This manual has been updated with full specifications for using the Kraker Local
+<b>Addendum</b> (August 1, 2022): This manual has been updated with full specifications for using the Kraker Local
 Proxy Server either in your Javascript programs or in your web browser's url bar. With the exception of the
 following section on the security model, these instructions and specifications are not things that you need to know
 in order to use Alleycat Player.
@@ -184,7 +184,8 @@ later in the advanced section of this document.
 </li></ul>
 Multiple headers or internal commands must be separated by a vertical bar ( | ) and the final header must end with a
 vertical bar and an asterisk ( |* ). The URL of the destination server follows. If no headers are specified than these
-special characters should not appear.
+special characters should not appear. If a header value needs to be URI decoded (due to the presence of special
+characters such as spaces) then prepend the value with an exclamation mark.
 <p>
 A special note about case: do not use uppercase characters in header names else unexpected behaviour
 will occur. The header "Accept" is not the same as "accept". This is a limitation in the way headers are handled in
@@ -211,30 +212,32 @@ Please refer to the section <g_>"Advanced hacking: shadow ports and website mimi
 The command syntax is as follows (using "shadow" as an alias for "localhost:8080"):
 <p>
 <ul><li>
-<b>Show list</b>: <g_>http://shadow/@</g_> -- Displays the list of shadow ports on the console.
+<b>Show list</b>: <g_>http://shadow/@</g_> -- Display the list of shadow ports on the console.
 </li><li>
-<b>Remove port</b>: <g_>http://shadow/@password@name:port</g_> -- Removes a shadow port. If the shadow name is dotted
+<b>Remove port</b>: <g_>http://shadow/@password@name:port</g_> -- Remove a shadow port. If the shadow name is dotted
 (like "www.bitchute.com") then your password is needed else the password field may be left blank. The port number
 (usually 80 or 443) must be specified.
 </li><li>
-<b>Create port</b>: <g_>http://shadow/@password@name:port@parameter</g_> -- Creates a new shadow port or modify
+<b>Create port</b>: <g_>http://shadow/@password@name:port@parameter</g_> -- Create a new shadow port or modify
 an existing one. Your password is needed if the shadow name is dotted. The port number does not need to be specified
 if the defaults of 80 or 443 are acceptable. The format of the parameter string is covered in the previous section
 called "Detailed structure of a proxy request". If the incoming connection (from the web browser) is HTTPS then the
 parameter string must be prepended with "$" so that the request will be routed to "localhost:8081" instead of
 "localhost:8080".
 </li><li>
-<b>File access</b>: <g_>+c:/music</g_> -- Makes a link to a local file or directory. The format of the command is the
+<b>File access</b>: <g_>+c:/music</g_> -- Make a link to a local file or directory. The format of the command is the
 same as "Create port" except that the parameter string (as shown here) is a path to a local storage device preceded
-by a plus sign. Your password is required. This shadow port may be used to bypass the normal file access restrictions.
-File writing is supported but existing files may not be deleted or modified.
+by a plus sign. Your password is required. This shadow port may be used to access files outside of the Kraker home
+directory. File writing is supported but existing files may not be deleted or modified.
 </li></ul>
-You can also create shadow ports in your Kraker settings file. For example:
-<p>
-<g_>[? search SHD:~https://www.startpage.com]</g_> or <g_>[? mymusic SHD:+c:/music]</g_>
+You can create shadow ports in your Kraker settings file. For example:
+<br><g_>[? search SHD:~https://www.startpage.com] [? mymusic SHD:+c:/music]</g_>
 <p>
 To play a music file, you could just type <g_>http://mymusic/song.mp3</g_> in your browser url bar.<br>
 Alternatively: <g_>http://localhost:8080/$mymusic$song.mp3</g_> (which bypasses the Socks5 proxy).
+<p>
+Use "SHD" by itself to delete a shadow port. Use named groups with the "activate" command:
+<br><g_>[?test test1 SHD:+c:/music] [?test test2 SHD:+c:/photos] [?done test1:80 SHD] [?done test2:80 SHD]</g_>
 
 <p><hr><p>
 
@@ -243,8 +246,8 @@ Alternatively: <g_>http://localhost:8080/$mymusic$song.mp3</g_> (which bypasses 
 Forking serves three purposes:
 <table>
 <tr><td><r_>Borrowing a shadow port</r_></td><td><g_>http://localhost:8080/$mymusic$song.mp3</g_></td></tr>
-<tr><td><r_>Loading a local file</r_></td><td><g_>https://www.bitchute.com/pathname?$password$test.html</g_></td></tr>
-<tr><td><r_>Stealing cookies</r_></td><td><g_>https://www.bitchute.com/pathname$password$</g_><br></td></tr>
+<tr><td><r_>Loading a local file</r_></td><td><g_>https://www.bitchute.com/pathname?$password$@test.html</g_></td></tr>
+<tr><td><r_>Stealing cookies</r_></td><td><g_>https://www.bitchute.com/pathname?$password$@</g_><br></td></tr>
 </table>
 <p>
 The first example was covered in the previous section. Only a dotless shadow name is permitted. This may be used to
@@ -254,13 +257,14 @@ proxy is not required.
 The second example may be used to force a web page to load locally instead of through a website (you will need to
 first create a shadow port called "www.bitchute.com" or whatever). Replace "pathname" with the original file path
 on the target server. The "window.location" should look normal to the Javascript inside the page (such as a bot
-challenge). Note that the "$password$test.html" part is inside of a query string ("password" is your password as defined
-in your settings file).
+challenge). The "$password$@test.html" part must be inside of a query string if a pathname is present.
+The "password" part is your "shadow_secret" as defined in your settings file. The "@" is optional.
+If present, the shadow port will be removed.
 <p>
-The third example is the same as the second except that a local file name is not present ("?" is not needed either).
-This command will return the cookie string sent to the server by the web browser. It is possible that a particular
-cookie may only apply on a particular server path but that functionality is rarely used. You generally just want to
-get the cookies at the server root.
+The third example is the same as the second except that a local file name is not present. This command will return the
+cookie string sent to the server by the web browser. It is possible that a particular cookie may only apply on a
+particular server path but that functionality is rarely used. You generally just want to get the cookies at the server
+root.
 <p>
 There is an additional method of forking a dotless shadow port without the Socks5 proxy but it seems to only work from
 a web browser. The trick lies in how a "localhost" subdomain resolves to an IP address. It seems that most (all?)
@@ -269,11 +273,11 @@ web browsers ignore the subdomain part. For example:
 <g_>https://mymusic.shadow.localhost:8081/song.mp3</g_>
 <p>
 This request appears at "localhost:8081" with the host name "mymusic.shadow.localhost" which the server can then resolve
-to a shadow port. If I try this from an external app like my favourite video player, SMPlayer, the request fails with a
-DNS error. SMPlayer tries to resolve through the system DNS which does not work. I tested Brave and Firefox and this
-works just fine. The interesting thing about this particular syntax is how it avoids the dreaded "invalid security
-certificate" problem. The Kraker server certificate covers subdomains on "shadow.localhost" (because subdomains on
-"localhost" are not allowed). Just something that I thought was fun to implement but I'm disappointed that the trick
+to a shadow port. If I try this from an external app like my favourite video player (SMPlayer) then the request will
+fail with a DNS error. SMPlayer tries to resolve through the system DNS which does not work. I tested Brave and Firefox
+and this works just fine. The interesting thing about this particular syntax is how it avoids the dreaded "invalid
+security certificate" problem. The Kraker server certificate covers subdomains on "shadow.localhost" (because subdomains
+on "localhost" are not allowed). Just something that I thought was fun to implement but I'm disappointed that the trick
 only works in a browser. Oh well.
 
 <p><hr><p>
@@ -331,11 +335,11 @@ the domain. The page was loaded as "proxy" so that is the address where all of t
 Use your Network Monitor tool to verify this. However, try clicking on a video link. Bitchute will tell you that an
 error occurred. Oops. The Bitchute server won't honour your request because the "referer" header is wrong (clicking
 the link generates a POST request and not a GET request; you can right-click the link and open it in a new tab).
-The proxy server strips off both "origin" and "referer" by default . Go back to the above command line and type "**"
+The proxy server strips off both "origin" and "referer" by default. Go back to the above command line and type "**"
 after the tilde. The tilde is important because it blocks excessive output in your server console and it allows all
 headers, such as cookies, to be returned in the server responses.
 <p>
-Now the video link will work without any problem. The proxy server is sending the correct "referer" header to
+The video link will now work without any problem. The proxy server is sending the correct "referer" header to
 satisfy the Bitchute server. Cautionary note: if the web browser has keep-alive sockets still open then you may need
 to wait a minute or two for the new setting to apply. Now let's take this to the next step. We want to mimic the Bitchute
 domain because any direct links to "www.bitchute.com" will bypass the shadow port and go directly to Bitchute. Also, the
@@ -401,9 +405,9 @@ replace both files and create a new certificate authority in <g_>_auth_cert.crt<
 window will show "Working" for a short time as the app computes a new RSA key. If you get a "Failed" message then you
 forgot to delete the file (there is no other possible reason for the failure).
 <p>
-Now you have a brand new RSA key. This is REALLY important because the original key is public and it can be abused
-to attack anyone who relies on a certificate authority based on that key. You're safe now (as long as no bad
-guys somehow manage to find your key). Next, set up the certificate authority under the "Subject" header. Fill in the four
+Now you have a brand new RSA key. This is important because the original key is public and it can be abused
+to attack anyone who relies on a certificate authority based on that key (I'm not actually sure of this but it doesn't
+hurt to play safe). Next, set up the certificate authority under the "Subject" header. Fill in the four
 fields with whatever you like and then press "Create authority". This should not take any time at all. Press the View
 button to verify that the certificate contains the correct info. The certificate is good for 10 years.
 <p>
@@ -427,8 +431,8 @@ load the new RSA key and certificate. Execute this command in your browser url b
 <p>
 <g_>http://localhost:8080/?restart=crt,key</g_>
 <p>
-You can specify the name of the certificate file followed by a comma and the name of the key file. Leave the name
-blank to use the default. This allows you to switch among multiple certificates (you can have multiple key files
+You can specify the name of the certificate file followed by a comma and the name of the key file. Leave blank to
+use the default. This allows you to switch among multiple certificates (you can have multiple key files
 as well but there's no good reason to do that).
 <p>
 <b>How to install the certificate authority in your web browser</b> (Windows 10)
@@ -449,14 +453,116 @@ to launch the certificate installer (the extension must be "crt").
 
 <p><hr><p>
 
-<b><b_>Ooops, this document is not quite finished!</b_></b>
+<b><b_>Advanced hacking:</b_> <r_>the</r_> !timeout <r_>and</r_> !vpx <r_>internal commands</r_></b>
 <p>
-I have a bunch of other stuff to document. In particular, the support for third-party proxies. I'll just mention one
-little thing for now. Kraker already supports Tor in the previous versions but support for I2P is new. If you already have
-the I2P server installed then you can use it from any browser as opposed to using a special browser configuration.
-This only works through the Socks5 proxy (like Tor). The proxy will detect the ".i2p" top-level domain and automatically
-route the connection to "localhost:4444" which is where the I2P server should be located. I'll have some things to say
-about IPFS and Loki when I get around to finishing this doc. Check my website for news of an update.
+The HTTP/HTTPS proxy employs a 30-second timeout for a connecting socket and a 3-minute timeout for an idle socket
+(there are no timeouts in the Socks5 proxy). The first timeout is employed to guard against an unreliable third-party
+proxy server which may connect but fail to respond promptly afterward (your computer's operating system allows
+21 seconds for a server to connect). The idle timeout will terminate a connection if no traffic has been detected for
+the time period. The default time is generally long enough to not interfere with normal operation though it is not
+unusual for a browser or other application to attempt to keep an idle socket open for a longer period.
+<p>
+The timeout internal command (format: <g_>!timeout:15</g_>) supports two modes of operation: a negative number of
+seconds for the connection timeout or a positive number of seconds for the idle timeout. There is no maximum and the
+minimum timeout period is 5 seconds.
+<p>
+Similar to the "VPN" option provided by the Socks5 proxy, the HTTP/HTTPS proxy supports the use of a third-party proxy
+at the level of an individual connection. This allows an application to use any number of proxies for web scraping or
+whatever purpose (format: <g_>!vpx:ip:port:username:password</g_>). By default, the Kraker proxy does not validate the
+security certificate for HTTPS connections. Certificate validation is not needed for targeted file downloads but might
+be useful in some instances. Use a terminating colon to enable validation (<g_>!vpx::</g_> if no proxy is specified).
+<p>
+The default behaviour is to delegate DNS lookups to the third-party proxy server. This is considered more secure since
+it prevents a potential attacker from deducing your location from your DNS access pattern (especially if you are using
+the DNS service provided by your ISP). It is what the "security experts" tell us so Kraker employs that policy. If
+you wish to enable local DNS for specific domains then you can do so in your settings file:
+<p>
+<g_>[? anyserver.com VPN:]</g_> or <g_>[? anyserver.com VPN:1.2.3.4]</g_> or <g_>[? anyserver.com 1.2.3.4]</g_>
+or maybe <g_>[? .com VPN:]</g_>
+<p>
+Setting the IP address directly is the best option since this totally avoids a DNS lookup. If you're using an untrusted
+proxy (which is probably what you're doing) then maybe trusting it with your DNS is a bad idea. I don't know
+because that depends on what sort of dastardly business you may be up to.
+<p>
+One word of caution: some proxy servers will try to hijack your HTTPS connection. The reason is probably to protect
+themselves from being complicit in the trafficking of, say, child porn. I have found that almost all servers located
+in the United States do this. If you want to use those servers then you have no choice but to disable certificate
+validation. Such servers won't work directly from the Socks5 proxy because the web browser will catch the forged
+certificates. This information may not apply if you are using a paid proxy service. I'm talking about the thousands
+of free servers that exist for whatever reason. Free servers tend to be horribly unreliable in any case.
+
+<p><hr><p>
+
+<b><b_>HTTP Toolkit --</b_></b> <r_>if you don't have it then get it <a href="https://httptoolkit.tech/">here</a></r_>
+<p>
+There must be some other (much simpler) tool like this out there but I haven't found it yet. This one has a lot of
+bells and whistles that I don't need. In any case, my problem is that some sites try to block me from hacking them by
+abusing the Javascript debug command to crap out the browser's inspector tools. That's when I immediately start up the
+HTTP Toolkit. For a while, I just used the Firefox browser patch but running a second browser is not what I want to do.
+HTTP Toolkit has an interception port available so I added a little trick to Kraker to take advantage of it. Problem
+is that the port is HTTP and not Socks5 (like Tor is). The "VPN" option won't work for this without an angle. The angle
+is to specify the IP address as "0.0.0.0" which will trigger output through the same process that Kraker uses for I2P.
+The port number is 8000 so try it out. Other thing you should do: change the certificate authority. Replace the
+authority and key with your own. In my version, the files (ca.pem and ca.key) are located here:
+<p>
+<g_>C:\Users\User\AppData\Local\httptoolkit\Config</g_>
+
+<p><hr><p>
+
+<b><b_>Performance notes and the Cloudflare Bot Fight Mode</b_></b>
+<p>
+The HTTP/HTTPS proxy employs a socket reuse policy to avoid the time cost of opening a new connection for every
+transaction. This behaviour is not linked to the status of the incoming connection. An idle socket will be kept open
+for 30 seconds (not configurable). A longer timeout would run the risk that the server might close the connection
+prematurely. It is possible that a server might time out in less than 30 seconds but I have not seen such a case. The
+TLS session can also be reused for another socket to the same server (there is no reuse after the sockets are closed).
+The performance improvement is somewhat noticeable with DNS-over-HTTPS but I have not attempted a detailed assessment.
+Your mileage may vary, I guess.
+<p>
+Additionally, the Socks5 proxy (which is used by the HTTP/HTTPS proxy) employs a connection retry policy which can
+sometimes help with a stubborn server. The policy is to retry the connection in 3 seconds if contact with the server
+fails within 12 seconds. That is, the server connects but then disconnects. This can happen if the server is refusing
+connections because it is too busy. Or the server could just be flaky. My observations indicate that the retry policy
+can rescue a failed connection attempt about 10% of the time. Your mileage, of course, may vary.
+<p>
+I hate (HATE!) the Cloudflare bot protection. In the case of an HTTP connection, it is no protection at all, really.
+I discovered that Cloudflare looks at certain header names for proper case usage. The affected headers are: Host,
+User-Agent, Accept, Accept-Encoding, Accept-Language and Connection. I wrote some code to correct these headers and
+put them at the beginning of the header stack.
+<p>
+Header names are converted to lower case by Node.js and this makes sense since the HTTP specifications state that
+case in header names is not significant. It also makes my code easier to write since case does not need to be
+considered. A server is not supposed to reject an HTTP transaction based on the case of header names but we're not
+talking about normality anymore. It is war out there and Cloudflare is determined to win no matter what sort of
+inconvenience that incurs. Ignore the specs? Sure, why not? I shouldn't be having to do this.
+<p>
+My main target is <g_>https://banned.video</g_>. This is an Infowars site and it gave me a problem a while back
+until I discovered an alternative domain (Infowars has a lot of them). Without fixing the headers, the HTTP
+version of the site simply returns a status 403 and no data. With the header fix, the site will relocate to the
+HTTPS version. That's progress since I can access another unrelated site that doesn't mind doing HTTP. However,
+I cannot get into the HTTPS version of that other site. I get stopped dead with not even a bot challenge to solve.
+<p>
+The problem with HTTPS is the negotiation (or TLS handshake) that is needed to establish an encrypted connection.
+The negotiation protocol is open-ended, meaning that there are a million ways to do it. This means that the
+specifics of the negotiation can be used to "fingerprint" the incoming connection. In much the same way, browsers
+can be fingerprinted based on the details of HTML rendering. So Cloudflare takes a fingerprint of the TLS handshake
+and will reject the connection if the handshake doesn't look like it is coming from a web browser. This is a big deal
+because it locks out Node.js and, really, any tool which is not based on browser code. It locks out non-transparent
+proxy servers so banned.video cannot be accessed through a corporate proxy and I don't know why Infowars
+doesn't care about that customer base. For that matter, I don't understand what the problem is in the first place.
+It's been like this for two years but I never heard of a bot attack on Infowars. I'm sure they get attacked from
+time to time but sheesh.
+<p>
+There are actually very few sites that do this. Most of the ones that I have seen are pirate video sites. That seems
+to be a pattern since Banned Video is also a video site. It suggests that web scraping might be the issue and not
+any kind of attack. Whatever. I can't figure out how to get into the site. There is no bot challenge, just a hard
+stop. There is currently no tool to modify the TLS handshake in Node.js and this seems to apply across the board
+though it apparently can be done with Golang (also known as Go). In any case, I'm not inclined to bother with trying
+to solve the Cloudflare bot challenge since I'm not even getting that far with the sites that I want to hack.
+Whatever. This is <b_>The End</b_> for now.
+<p>
+The HTTP Toolkit guy has more info <a href="https://httptoolkit.tech/blog/tls-fingerprinting-node-js/">here</a>.
+(Note: his advise on bypassing the fuckery is outdated. Unfortunately.)
 
 <p><hr><p>
 
