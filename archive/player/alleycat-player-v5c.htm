@@ -5471,7 +5471,7 @@ const req_vidnode = async (id, frame, fmt) =>
 
   var tag = "vidnode"; if (is_busy (frame)) return;
   document.getElementById ("id" + frame).value = tag + " (ID)";
-  var src = "https://vidembed.io"; var url = src + "/loadserver.php?id=" + id;
+  var src = "https://membed.net"; var url = src + "/loadserver.php?id=" + id;
 
 if (!document.getElementById ("mov" + frame + "b").checked) fmt = 0; else try
 {
