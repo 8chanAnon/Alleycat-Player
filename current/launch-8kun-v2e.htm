@@ -1416,7 +1416,7 @@ var createJSON = function (data)
       v.push (pullstring (t, "width:", "px")); v.push (pullstring (t, "height:", "px"));
     }
 
-    for (i = 5, t = []; i < v.length; i += 4)
+    for (i = 6, t = []; i < v.length; i += 4)
       t.push ({ filename: v[i], tim: v[i+1], tn_w: v[i+2], tn_h: v[i+3] });
 
     w = posts.length ? box[n] : doc; w = w.children;
