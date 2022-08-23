@@ -1399,7 +1399,7 @@ var createJSON = function (data)
     w = posts.length ? box[n] : doc;
     w = w.getElementsByClassName ("files");
     w = w && w[0] ? w[0].innerHTML : "";
-    v = [""]; w = w.split (">File: <a ");
+    v = ["", ""]; w = w.split (">File: <a ");
 
     for (i = 1; i < w.length; i++)
     {
@@ -1425,15 +1425,15 @@ var createJSON = function (data)
     {
       if (!(s = w[i].getAttribute ("class")) || s.substr (0,15) != "video-container") continue;
       s = w[i].outerHTML; t = pullstring (s, 'src="', '"');
-      v = [s, t, "", "255", "143"]; break;
+      v = [s, t, "", "", "255", "143"]; break;
     }
 
-    if (v.length == 1) v = ["", "", "", "", ""];
+    if (v.length == 1) v = ["", "", "", "", "", ""];
     s = box[n].getElementsByClassName ("body")[0].innerHTML;
 
     post = { no: pid, name: name, sub: subj, capcode: cap, trip: trip, id: uid, time: time,
-             com: s, files: "", embed: v[0], fsize: "", ext: "", embed_thumb: v[1],
-             tim: v[2], tn_w: v[3], tn_h: v[4], extra_files: t };
+             com: s, files: "", fsize: "", ext: "", embed: v[0], embed_thumb: v[1], filename: v[2],
+             tim: v[3], tn_w: v[4], tn_h: v[5], extra_files: t };
 
     posts.push (post);
   }
