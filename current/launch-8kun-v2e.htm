@@ -1424,10 +1424,7 @@ var createJSON = function (data)
     for (i = 0; i < w.length; i++)
     {
       if (!(s = w[i].getAttribute ("class")) || s.substr (0,15) != "video-container") continue;
-      s = s.substr (15); for (j = 0; j < t_embed.length; j++) if (s == t_embed [j]) break;
-      if (j < 3) t = ""; else t = s.substr (1); if (j >= t_embed.length) continue;
-
-      s = w[i].getAttribute ("data-video");
+      s = w[i].outerHTML; t = pullstring (s, 'src="', '"');
       v = [s, t, "", "255", "143"]; break;
     }
 
@@ -1435,7 +1432,7 @@ var createJSON = function (data)
     s = box[n].getElementsByClassName ("body")[0].innerHTML;
 
     post = { no: pid, name: name, sub: subj, capcode: cap, trip: trip, id: uid, time: time,
-             com: s, files: "", embed: "", fsize: "", ext: "", embed_thumb: v[0], filename: v[1],
+             com: s, files: "", embed: v[0], fsize: "", ext: "", embed_thumb: v[1],
              tim: v[2], tn_w: v[3], tn_h: v[4], extra_files: t };
 
     posts.push (post);
@@ -1527,7 +1524,7 @@ var newcrumb = function (post, target, bread)
   var pid = post.no, data = post.com ? post.com : "", str = "highlightReply('";
   var islive = target.substr (0,1) == "#"; if (islive) target = target.substr (1);
   var hidepost = target && pid != target && data.indexOf (str + target + "'") < 0;
-if (pid == 15897341 || pid == 15643052 || pid == 15760669 || pid == 17428937 || pid == 17429058) console.log(post);
+
   var url = bread.name + "#" + pid, catalog = "/catalog#";
   if (url.includes (catalog)) url = url.replace (catalog, "/res/"); else catalog = "";
 
@@ -1603,11 +1600,8 @@ if (pid == 15897341 || pid == 15643052 || pid == 15760669 || pid == 17428937 || 
     }
     else
     {
-      t = pullstring (p, 'src="', '"');
-      if (!t || t.includes ("media.8kun.top")) t = "https://8chananon.github.io/img/unknown.png";
-
+      if (t.includes ("media.8kun.top")) t = "https://8chananon.github.io/img/unknown.png";
       if (v [0] == "!") { v = v.substr (1); t = "https://8chananon.github.io/img/" + s + ".png"; }
-
       if (!v) v = s; s = pullstring (p, 'href="', '"');
     }
 
@@ -1806,7 +1800,7 @@ try
     textData = await response.text();
 
     if (textData.substr (0, 1000).includes ("vanwa.tech/browser-verification"))
-    {console.log('vanwa');
+    {
       var error = "DDoS Mitigation - puzzle not solved";
       if (!crypto.src) throw ("DDoS Mitigation - need Local Proxy Server");
       n = textData.indexOf ("<script>function"); if (n < 0) throw (error);
