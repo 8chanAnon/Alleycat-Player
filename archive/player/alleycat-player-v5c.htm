@@ -413,6 +413,8 @@ Pick a station and <b>play the radio</b>. Music soothes the heart and mind. You 
 <p><hr><p>
 <b>Release notes for v5c (August 7, 2022)</b>
 <p>
+<b>Update:</b> This version was revised on October 5 due to an error with the HLS/m3u8 (not working). It was trying
+to load a file which doesn't exist though it does exist on my system. Sorry about that but nobody complained (as usual).
 <ul><li>
 Removed: DarkMatter (geo US), LookMovie, HighStream and WolfStream (both broken for a long time)
 </li><li>
@@ -6955,7 +6957,7 @@ const load_stream = async (frame, is_local, insert, url, doc, filter, pmode) =>
   {
     var js = get_js ("HLS", !window.Hls);
     js.onload = function() { play_hls (frame, url, doc, win, fmt); }
-    if (window.Hls) js.onload(); else if (localhost) js.src = "~hls_player-12-0.js";
+    if (window.Hls) js.onload(); else if (localhost) js.src = "~hls_player.js";
       else js.src = "https://cdn.jsdelivr.net/npm/hls.js@0.12.0/dist/hls.min.js";
   }
 
