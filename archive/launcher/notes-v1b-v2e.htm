@@ -1,0 +1,257 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<base href="https://8chananon.github.io/Alleycat-Player/archive/launcher/" target="_blank">
+<link rel="icon" href="favicon.ico">
+
+<title>Release Notes</title>
+
+<style type="text/css">
+
+body {
+  color: brown; background-color: lemonchiffon; margin: 15px;
+}
+
+hr {
+  border-color: thistle; border-style: solid; margin: 20px -6px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+r_ { color: crimson; }
+g_ { color: green; }
+b_ { color: blue; }
+
+</style></head><body>
+
+<h1 style="text-align:center"><r_>8kun Bread Launcher</r_> <g_>Release Notes</g_> (v1b to v2e)</h1>
+
+<b>Release notes for v2e (August 23, 2022)</b> -- <a href="launch-8kun-v2e.htm">source</a>
+<p>
+The <g_>8kun captcha</g_> is now cookie-based, meaning that it is no longer possible to post without the Kraker Local
+Proxy Server (<b>note:</b> a CORS unblocking extension may work if it is implemented correctly). You will need
+the latest version of Kraker (version <b>4d</b>) and your browser must be configured to proxy through the Socks5 port.
+See <a href="https://8chananon.github.io/Alleycat-Player/current/socks-proxy-4c.htm">here</a> for setup instructions.
+On the plus side, it is now possible to post as moderator (board owner/volunteer).
+<p>
+Once you have Kraker running and your browser is configured to proxy through it then you will need to do one little thing.
+Open "_settings.txt" (your Kraker settings file) and add one of these lines exactly as shown:
+<p>
+<g_>[? sys.8kun.top SHD:$~https://sys.8kun.top]</g_> or <g_>[? sys.8kun.top SHD:$~!vpx::|*https://sys.8kun.top]</g_>
+<p>
+You can use either option depending on whether you wish to enable certificate authentication which is important to
+guard against a man-in-the-middle attack (the "!vpx" part in the second option enables authentication). This distinction
+will be important the next time the site security certificate expires (which happens every three months). Board moderators
+should enable authentication but the choice is yours.
+<p>
+Reload the settings file using the Kraker Control Panel to configure the "shadow port". When
+your browser attempts to access the posting server at <g_>sys.8kun.top</g_>, Kraker will intercept the request and do
+some fiddling with the response headers. You don't need to know the details but it is what needs to be done due to
+browser restrictions regarding cookies.
+<p>
+Use the link at the top of this page to open the new 8kun captcha. Your browser will complain that the security
+certificate is invalid. This is fine. It's the way a non-transparent proxy works (the shadow port creates an interface
+which is similar to the corporate proxy in an office environment). Just instruct the browser to accept the certificate
+(your browser should remember this from now on). You will be able to post after completing the captcha.
+<p>
+Note that the Bread Launcher is not configured to handle the per-post captcha (which you may encounter if the site
+comes under attack).
+<p>
+<b_>For board moderators:</b_>
+<p>
+Log in as you would normally. Everything will work as it always did. Check the box marked <g_>[Board Moderator]</g_>
+at the top of the page if you wish to post as moderator. This will also enable a new button on each post (situated
+right next to the Quick Reply button). The options are simple. You can edit or delete a post and/or ban a user IP address.
+More powerful features are not supported because I don't need the headache.
+<p>
+<b_>New catalog feature:</b_>
+<p>
+To open the catalog view, just enter the name of the board and press "Go". The catalog view is basically the same as
+a thread view. Click a link to open a thread. That's about it. I may or may not consider additional options. It's fine
+for my purposes.
+<p>
+<b_>About NoScript:</b_>
+<p>
+I have issues with NoScript on Firefox because it attaches Javascript to HTML page elements. It severely breaks the
+Bread Launcher, causing a tab to suddenly become unresponsive. This appears to be due to some security restriction
+on the part of Firefox but I can't say for sure that the same problem doesn't occur with other browsers. I've stopped
+using NoScript.
+<a href="https://github.com/gorhill/uMatrix">uMatrix</a> is much better because it doesn't rely on invasive Javascript
+to do its dirty work. You should try it out. I don't have any advice if your ad blocker is causing issues except to
+tell you to ditch it.
+<p>
+<b_>About Alleycat Player:</b_>
+<p>
+Occassionally, it may happen that a YouTube video won't play. If this happens then close the tab and try opening the
+video again. It should work after two or three tries. This issue will be rectified in the next version of the Launcher.
+
+<p><hr><p>
+
+<b>Release notes for v2d (November 13, 2021)</b> -- <a href="launch-8kun-v2d.htm">source</a>
+<ul><li>
+<b>Important New Feature:</b> Any Slice that is in a thread that is auto-updating will also be
+auto-updated. This allows you to follow a conversation or track the reponses to an important post in real time.
+Great feature for bakers.
+</li><li>
+The Post Office will now display the new post number after posting. The input fields will no longer be cleared by default.
+There is a checkbox at the lower right to enable auto-clear. Also, the number of posts is increased from 5 to 6.
+</li><li>
+Added an event handler to block double-clicks on the status bar. This allows for the rapid reactivation
+of the menu bar (useful in the Post Office).
+</li><li>
+Corrected the flawed truncation of long titles in the status bar. The new CSS will now truncate long titles
+correctly when the browser is resized.
+</li><li>
+I found another strange behaviour on Chrome-based browsers. Zooming is blocked if a new tab is opened without a URL.
+The fix is to open the tab with the URL "about:blank". This behaviour is totally unexpected. As I stated before,
+I use Firefox so funky Chrome issues often get missed.
+</li><li>
+Setting the proxy to "None" was causing an exception (internal Javascript crash). Sorry about that but who uses "None" anyway?
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2c (October 20, 2021)</b> -- <a href="launch-8kun-v2c.htm">source</a>
+<ul><li>
+Ooops. I just noticed that the page width setting wasn't working. Been like that for a while but it's fixed now.
+</li><li>
+Changed the media server from "images.128ducks.com" to "media.128ducks.com". The changeover occurred early Wednesday,
+October 20.
+</li><li>
+The Post Office feature is now fully implemented. It includes the ability to create new threads and to manage 5 posts
+per instance.
+</li><li>
+It is now possible to copy the text from the status bar without causing the menu bar to open.
+</li><li>
+I can't get the XMLHttpRequest module to give progress reports for file uploads. It does not work correctly on any
+browser. I searched the net for a possible solution but it appears that the module is just funky. It does not function
+correctly on the default 8kun client either.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2b (October 13, 2021)</b> -- <a href="launch-8kun-v2b.htm">source</a>
+<ul><li>
+Fixed wrong button appearance on Pale Moon and Waterfox. I used an outline rather than a border around the buttons
+in the status bar. The outline was being drawn square instead of rounded.
+</li><li>
+Fixed three issues on Chrome-based browsers (Google, Brave, Opera and others): 1) slow countdown timer,
+2) missing bread titles, 3) images appearing on the right when they should be on the left
+</li><li>
+Removed the dark border around the text area in the Quick Reply box. I missed this because I have a userContent CSS
+on my Firefox that does that. The fix is to specify "outline:none" in the CSS for the &lt;textarea&gt; element.
+</li><li>
+I am working on the Post Office feature. Give me a week or so.
+</li><li>
+Lastly, please don't hesitate to report issues with the Launcher, especially if you are not on Firefox or Windows.
+I can't fix issues that I don't know about and I can't spend the time to test on every browser. This is my hobby,
+not a profession. I also cannot test for Linux compatibility though that shouldn't really be necessary.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v2a (October 9, 2021)</b> -- <a href="launch-8kun-v2a.htm">source</a>
+<ul><li>
+This is a major upgrade. The Bread Launcher now supports auto-updating and posting. At present, only one image or file
+is allowed in a post (Quick Reply). The text input is unlimited but constrained to a small window. A more complete
+post editor will come soon (I will be calling it the Post Office). Instructions are below.
+</li><li>
+The Youtube embed links stopped working because YT doesn't like the blank "referer" HTTP header so I removed the
+"no-referrer" meta setting.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1e (September 15, 2021)</b> -- <a href="launch-8kun-v1e.htm">source</a>
+<ul><li>
+This version is being released due to the media server issues on the 8kun site. Media are currently being delivered
+from "images.128ducks.com". I will update when the situation changes.
+</li><li>
+Added support for BitChute/Twitter/Rumble/Vimeo embeds. For now, the images come from my GitHub Pages web server.
+</li><li>
+The Youtube player has been updated due to changes in the Youtube API. For this reason, the player will no longer
+work without the Kraker Local Proxy Server.
+</li><li>
+Added a new flag to the Kraker Control Panel. This flag is undocumented.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1d (March 11, 2021)</b> -- <a href="launch-8kun-v1d.htm">source</a>
+<p>
+<ul><li>
+A bunch of small fixes that aren't worth enumerating.
+</li><li>
+Added a control panel for the new Socks5 Proxy Server.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1c (December 13, 2020)</b> -- <a href="launch-8kun-v1c.htm">source</a>
+<p>
+<ul><li>
+Fixed the identifiers for "Board Owner" and "8kun Administrator".
+</li><li>
+Fixed browser security violation caused by opening a web page in a daughter tab.
+</li><li>
+Added option to adjust the displayed post time. The browser is supposed to display the time for the local time zone
+but, for some reason, this has never worked for me. The value is expressed in hours. Fractional and negative values are
+permitted. For example, I am using -5 to adjust to Eastern Time.
+</li><li>
+Added option to select either the HTML or the JSON format for downloading from the 8kun server. HTML is the default option
+since JSON has been unreliable (missing or truncated). It doesn't make any difference as far as functionality goes since
+the app converts HTML to JSON anyway. However, some recent fuckery on /qresearch/ has caused the HTML format to break while
+the JSON was working fine. That's why I decided to include the new option.
+</li><li>
+Adjusted the cache retention policy. Expiry is based on memory usage (capped at 6 megabytes) and the time of
+most recent access rather than the time of creation.
+</li><li>
+I have been having issues with mp4 and webm videos. Since I only use Firefox, the problem has not been verified to exist on
+other browsers. The problem is that the video will stop playing partway through due to the 8kun server apparently dropping
+the connection prematurely. This happens ONLY on 8kun so it is not necessarily a browser issue. Downloading is not affected.
+The problem is resolved by routing the video through the Kraker Local Proxy Server (if you have it, of course).
+</li><li>
+PLEASE NOTE: You can help improve this app by sending me feedback. While I will continue developing the app for the
+foreseeable future, I am only in a position to consider features that I personally want. Without feedback, YOUR needs
+cannot be addressed. Send feedback.
+</li></ul>
+
+<p><hr><p>
+
+<b>Release notes for v1b (October 5, 2020)</b> -- <a href="launch-8kun-v1b.htm">source</a>
+<p>
+<ul><li>
+Fixed some performance issues and a potential crash issue. Working fine with Google Chrome, Brave, Opera and Firefox
+(recommended). Waterfox, a fork of Firefox, still does not work even though I fixed some code that it complained about.
+</li><li>
+In general, web browsers do not like what this app is doing. That is unfortunate since I am doing what the browser makers
+have always wanted. I am using the browser as a development platform but I keep getting hammered by stupid design choices
+(their choices, not mine, since I follow the standards which they often do not).
+</li><li>
+Fixed a problem with extracting image links. This affects webm videos and some boards.
+</li><li>
+Added the ability to globally track reply links that have been visited and replies that have been seen. I'm not
+going to explain how it all works. Just watch for the colour codings and you'll understand as you go along. It works
+pretty good but I would like to have an ability to automatically track long or convoluted reply chains. In my experience,
+this might not be important. Reply chains have a tendency to degenerate into a series of pointless one-liners which are
+probably not worth reading anyway (amirite?).
+</li><li>
+Tweaked the CSS to improve the look and feel. If you don't like my colour choices then fix the damn CSS yourself.
+</li><li>
+Modified the retention strategy for thread caching. The retention period is now 4 hours (up from 2) but only a maximum of
+15 threads will be cached at one time. This strategy may or may not be ideal for you but the point (obviously) is to
+limit the memory usage.
+</li></ul>
+
+<p><hr><p>
+
+</div><div style="width: 90vw; height: 50vh"></div>
+
+</body></html>
