@@ -1,0 +1,2925 @@
+<!DOCTYPE html><html><head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Alleycat Player</title>
+
+<style type="text/css">
+
+body {
+  display: none; font-size: 16px; line-height: 19px;
+  text-align: center; font-family: 'times new roman', serif; 
+  color: maroon; background-color: navajowhite;
+}
+
+.widevid {
+  position: relative; width: 736px; height: 414px;
+  border: 2px solid red; background-color: navy; overflow: hidden;
+}
+
+.widevid:fullscreen {
+  border: none;
+}
+
+.widevid img {
+  position: absolute; width: 100%; height: auto;
+  margin: auto; border: none; top: 0; left: 0; right: 0; bottom: 0;
+}
+
+iframe {
+  position: absolute; width: 100%; height: 100%;
+  border: none; background-color: transparent; pointer-events: none;
+}
+
+.msgbox {
+  display: block; position: absolute; top: 38%; left: 40%; right: 40%;
+  text-align: center; border-radius: 14px; font-style: italic; padding: 1px 2px 2px 4px;
+  cursor: pointer; color: paleturquoise; background-color: slateblue;
+}
+
+.popbox {
+  position: absolute; width: 100%; height: 100%; z-index: -1; pointer-events: none;
+}
+
+.popbox table {
+  width: calc(100% - 5px); border: none; margin: 0 2px; table-layout: fixed;
+}
+
+.popbox td {
+  padding: 6px 4px 3px 5px;
+}
+
+.popbox button {
+  display: block; width: 100%; height: auto; padding: 2px 5px;
+  line-height: 14px; font-size: 12px; font-family: 'segoe ui', sans-serif;
+  text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  border-width: 1px; color: maroon; background-color: pink; pointer-events: auto;
+}
+
+.popbox button[checked] {
+  background-color: powderblue;
+}
+
+.popbox button:hover:active {
+  background-color: peachpuff;
+  border-color: peachpuff #acacac peachpuff #ececec;
+}
+
+.popbox button:hover {
+  background-color: lightgray;
+}
+.ranger button {
+  line-height: 16px; padding: 2px 4px 1px 3px;
+  font-size: 13px; color: maroon; background-color: peachpuff;
+  border-color: #f0f0f0 #b4b4b4 #b0b0b0 #f4f4f4;
+}
+
+.ranger input {
+  width: 60px;
+}
+
+input[type=text] {
+  height: 17px; padding: 3px 5px 1px; margin: 0; outline: none;
+  font-size: 13px; font-family: 'helvetica', sans-serif; caret-color: navy;
+  border: 2px solid; border-color: burlywood lemonchiffon lemonchiffon burlywood;
+}
+
+input[type=radio] {
+  height: 15px; vertical-align: bottom; margin: 0 0 2px 0;
+  outline: none; filter: contrast(1.0) brightness(1.2) opacity(90%);
+}
+
+input[type=checkbox] {
+  height: 15px; vertical-align: bottom; margin: 0 1px 2px 0;
+  outline: none; filter: contrast(1.0) brightness(1.2) opacity(90%);
+}
+
+input.idspec {
+  width: calc(100% - 28px); margin: -4px 0 0;
+  color: firebrick; background-color: oldlace;
+}
+
+input.urlspec {
+  width: 60%; padding: 4px 6px 3px; margin: -2px 4px 1px 2px;
+  color: slateblue; background-color: oldlace;
+}
+
+input.static {
+  padding: 4px 0 3px; text-align: center;
+  color: mediumvioletred; background-color: papayawhip;
+  border-radius: 3px; border: 1px solid darkorange;
+}
+
+.dropbox {
+  display: inline-block; text-align: left;
+  color: mediumvioletred; background-color: papayawhip;
+}
+
+.dropbox input {
+  box-sizing: border-box; height: 25px; width: calc(100% - 24px);
+  color: inherit; background-color: inherit;
+}
+
+.dropbox button, .dropbox button:hover:active {
+  vertical-align: top; width: 24px; height: 25px; padding: 0 0 4px;
+  font-size: 18px; font-family: 'segoe ui', sans-serif; font-weight: bold;
+  border: 2px solid; border-color: burlywood lemonchiffon lemonchiffon burlywood;
+  color: indianred; background-color: mistyrose;
+}
+
+.dropbox0 {
+  width: 160px; background-color: oldlace;
+}
+
+.dropbox1 {
+  margin-top: -4px; width: calc(100% - 14px); max-width: 320px;
+}
+
+.dropbox2 {
+  margin: -4px 0 1px; width: calc(100% - 14px); max-width: 270px; color: red;
+}
+
+.dropbox3 {
+  margin: 1px 0; width: 148px;
+}
+
+.dropdown {
+  display: none; position: absolute; max-height: 50vh; z-index: 2;
+  margin: 3px 0 0 1px; outline: 1px solid peru; border: 3px solid transparent;
+  font-size: 14px; font-family: 'consolas', monospace; cursor: default;
+  color: darkgreen; background-color: ivory;
+}
+
+.dropdown option, .dropdown span {
+  display: block; margin: 0; padding: 0 5px 0 4px; 
+  height: 15px; line-height: 15px; min-height: 0; white-space: pre;
+}
+
+.dropdown option[checked], .dropdown span[checked] {
+  background-color: lightgray;
+}
+
+.dropdown option:hover, .dropdown span:hover {
+  color: yellow; background-color: orchid;
+}
+
+.dropdown0 {
+}
+
+.dropdown1 {
+  max-height: calc(100vh - 155px);
+}
+
+.dropdown2 {
+  max-height: calc(100vh - 190px);
+}
+
+.dropdown3 {
+}
+
+.pickpanel {
+  display: inline-block; position: relative; z-index: 0;
+  width: 182px; margin: -1px 0 0; padding: 1px; border: 2px solid skyblue;
+  outline-color: thistle; color: crimson; background-color: oldlace;
+}
+
+.pickpanel span {
+  display: inline-block; margin: 1px 1px; padding: 0 6px 0 7px;
+  height: 19px; line-height: 19px; outline: none; border: 1px solid orange;
+}
+
+.pickpanel span[checked] {
+  background-color: gainsboro;
+}
+
+.pickpanel span:hover {
+  color: inherit; background-color: peachpuff;
+}
+
+table {
+  border: 3px solid green;
+}
+
+table.list, table.links {
+  border: 2px solid olivedrab;
+}
+
+table.radio {
+  width: 100%; padding-bottom: 2px; border: 2px solid olivedrab;
+}
+
+.radio input {
+  height: 16px; margin: 2px 4px -1px -1px;
+}
+
+.radio a {
+  color: crimson; text-decoration: none;
+}
+
+th {
+  border: 2px solid lightsalmon;
+  color:crimson; background-color: pink;
+}
+
+td {
+  font-size: 14px; line-height: 14px; padding: 0 4px;
+  text-align: left; vertical-align: top; color: saddlebrown;
+}
+
+td.textbox {
+  width: 30vw; min-width: 230px; padding: 0; text-align: center;
+  font-size: 14px; line-height: 17px; white-space: nowrap;
+}
+
+td.vidbox {
+  font-size: 15px; line-height: normal; padding: 0 0 0 2px;
+  vertical-align: middle; border-left: 1px solid firebrick;
+}
+
+td.grill {
+  width: 0; margin: 0; padding: 0;
+  vertical-align: middle; text-align: center;
+  background: radial-gradient(goldenrod 15%,transparent 40%);
+  background-size: 12px 6px; border-left: 1px solid firebrick;
+}
+
+button {
+  line-height: 18px; padding: 2px 6px 0; margin: 0;
+  font-size: 12px; font-family: 'helvetica', sans-serif; outline: none;
+  border: 2px solid; color: darkblue; background-color: powderblue;
+  border-color: #e8e8e8 #acacac #a8a8a8 #ececec;
+}
+
+button:hover:active {
+  border-color: #b4b4b4 #f4f4f4 #f8f8f8 #b8b8b8;
+}
+
+button.is_off {
+  background-color: pink;
+  border-color: #e8e8e8 #acacac #a8a8a8 #ececec;
+}
+
+button.is_on {
+  background-color: lightgreen;
+  border-color: #b4b4b4 #f4f4f4 #f8f8f8 #b8b8b8;
+}
+
+button.wrapper, button.wrapper:hover:active {
+  width: 56px; height: 18px; font-size: 13px; line-height: 17px;
+  margin: 0 3px 0 1px; padding: 0; border: 1px solid plum;
+  color: red; background-color: papayawhip;
+}
+
+.stack button {
+  font-size: 19px; line-height: 23px; padding: 3px 10px 1px;
+  color: mediumblue; background-color: pink;
+}
+
+.grill button {
+  background-color: pink;
+}
+
+.slider {
+  appearance: none; -moz-appearance: none; -webkit-appearance: none;
+  background: transparent; border-radius: 7px; border: 2px solid orange;
+  vertical-align: top; height: 12px; padding: 0; margin: 4px 0 0 0;
+}
+
+.slider::-moz-range-thumb {
+  -moz-appearance: none; width: 4px; height: 20px;
+  background: powderblue; border: 1px solid cadetblue; border-radius: 0;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 6px; height: 22px;
+  background: powderblue; border: 1px solid cadetblue; border-radius: 0;
+}
+
+.header {
+  padding: 2px 8px 4px 6px; margin-left: -1px;
+  font-size: 19px; line-height: 23px; font-weight: bold;
+  border: 1px solid lightsalmon; border-radius: 4px;
+  color: crimson; background-color: oldlace;
+}
+
+.header a {
+  color: green; text-decoration: none;
+}
+
+span.secret {
+  display: none; position: fixed; z-index: 2; text-align: center;
+  top: 55px; bottom: auto; left: 0; right: 0; height: auto; width: 600px;
+  margin: auto; padding: 5px 12px 7px; border: 2px solid hotpink; border-radius: 8px;
+  font-size: 17px; line-height: 24px; color: blue; background-color: mistyrose;
+}
+
+.secret input {
+  border: 1px solid tan; padding: 3px 5px;
+}
+
+.box {
+  padding: 4px 3px 2px 2px; outline: 1px solid lightsteelblue;
+}
+
+hr {
+  border-color: thistle; border-style: solid;
+}
+
+hr.skinny {
+  border: 0 solid indigo; border-width: 1px 0 0 0;
+  padding: 0; margin: 3px -3px;
+}
+
+h3 {
+  vertical-align: top; padding: 0; margin: 0 2px 11px 1px;
+}
+
+h3.skinny {
+  margin: 0 0 6px 1px; padding-top: 4px;
+}
+
+ul {
+  padding: 0 1em 0 1em; list-style: square;
+}
+
+li {
+  margin: 5px 0 5px 0;
+}
+
+::selection {
+  color: yellow; background-color: orchid;
+}
+
+.r { color: crimson; }
+.g { color: seagreen; }
+.b { color: blue; }
+.w { color: #A02000; }
+
+r_ { color: crimson; }
+g_ { color: seagreen; }
+b_ { color: blue; }
+w_ { color: #A02000; }
+z_ { color: royalblue; }
+
+</style></head>
+
+<body
+  onload="load_all()" onunload="dump_all()" onresize="resize_all()"
+  onfocusout="MEOW(event,0)" onclick="MEOW(event,1)" onkeydown="MEOW(event,2)">
+
+<div>
+
+<span class="secret">
+<big><r_>This video site is protected by a bot challenge.</r_></big><br>
+If you click the OK button, you will be sent to a new tab to handle this.<br>
+You may have to do this more than once since the cookie can expire.<p></p>
+<button onclick="javascript:cookiecutter(1)">OK</button> &nbsp;
+<button onclick="javascript:cookiecutter(0)">Cancel</button>
+</span>
+
+<h1><span style="float:left;font-size:22px;transform:scale(-1,1)">&#x1f408;</span>
+<g_>A</g_><r_>ll</r_><g_>ey</g_><r_>cat</r_> <g_>Pl</g_><r_>ay</r_><g_>er</g_> <r_>v6a</r_>
+<span style="float:right;font-size:22px">&#x1f408;</span></h1>
+
+<p><hr><p>
+<div><g_>Pick a Proxy:</g_>&nbsp;
+<div class="dropbox dropbox0" style="width:300px"><input type=text disabled
+  value="To use this app, you must enable Javascript."><button>+</button>
+<div id="proxy" class="dropdown dropdown0">
+  <option value="LOCAL" class="r">Kraker Local Proxy Server
+  <option value="!https://kraker-remote.vercel.app/?url=" class="b">kraker-remote.vercel.app
+  <option value="https://api.allorigins.win/raw?url=">api.allorigins.win
+  <option value="https://m3u8.justchill.workers.dev/?url=">m3u8.justchill.workers.dev
+  <option value="">None
+</div></div>
+&nbsp; &nbsp; &nbsp; &nbsp; <b>Go to&nbsp;
+  <a href="#sites">Sites List</a> - <a href="#movies">Movie Sites</a> - <a href="#notes">Special Notes</a></b>
+</div>
+
+<p><hr><p>
+CORS Unblockers:&nbsp;
+<g_>Allow CORS</g_> --
+<a href="https://addons.mozilla.org/en-US/firefox/addon/access-control-allow-origin/"
+  target=_blank>Firefox</a> or
+<a href="https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf"
+  target=_blank>Chrome-based</a> &nbsp;
+<g_>CORS Everywhere</g_> -- <a href="https://addons.mozilla.org/en-US/firefox/addon/cors-everywhere/"
+  target=_blank>Firefox only</a>
+
+<p><hr><p>
+<b>Instruction Manuals (<r_>GitHub Pages</r_>) -- </b>
+<a href="https://8chananon.github.io/Alleycat-Player/current/installation-v2.htm" target=_blank>Installation</a> --
+<a href="https://8chananon.github.io/Alleycat-Player/current/manual-alleycat-v2.htm" target=_blank>Alleycat Player</a> --
+<a href="https://8chananon.github.io/Alleycat-Player/current/manual-kraker-v3.htm" target=_blank>Local Proxy Server</a>
+&nbsp;|&nbsp; <a href="https://8chananon.github.io" target=_blank>Check for Updates</a>
+&nbsp;|&nbsp; <a href="javascript:void(window.open('alleycat-helper.htm'))">Helper</a>
+<p>
+If you have not installed the <b>Kraker Local Proxy Server</b> then please go read the Installation Manual.
+<br>
+Alleycat Player <u>does not auto-update</u>. Please check for an update every two to four weeks at the link shown above.
+<p>
+<b><b_>Your feedback is appreciated (suggestions or bug reports):</b_></b>&nbsp;
+<a target=_blank href="https://8kun.top/alleycat/catalog.html">Alleycat BBS</a>
+
+<p><hr><p>
+Press the "<b>End</b>" key to go to the bottom of the page. There you will find links to each of the video viewers.<br>
+Pick a station and <b>play the radio</b>. Music soothes the heart and mind. You need to relax in these difficult times.
+
+</div>
+
+<div id="blob1" style="text-align:left"></div>
+<div id="blob2" style="text-align:left"></div><div style="width:90vw;height:50vh"></div>
+
+<!--
+/////
+///// INFO / ENTERTAINMENT /////
+/////
+-->
+
+<div id="info" style="text-align:left;padding:6px 2px 8px 0">
+
+<span class="header">Info / Entertainment &nbsp;--&nbsp; <small>
+  <a href="#sites">Sites List</a> &nbsp;|&nbsp; <a href="#news">News</a> &nbsp;|&nbsp;
+  <a href="#free">Movies</a> &nbsp;|&nbsp; <a href="#info">snap</a></small></span>
+
+<span style="float:right">
+
+<div class="dropbox dropbox0"><input type=text disabled><button>+</button>
+<div id="ytx5" class="dropdown dropdown0">
+  <option value="1" class="r">YouTube MP4
+  <option value="9" class="b" checked>YouTube DASH
+
+</div></div> &nbsp; &nbsp;
+
+<span class="ranger">
+<button onclick="javascript:brightness(5,1)">&lt;</button>
+<input type=text value="Brt:  0" id="ctr5x" class="static" disabled>
+<button onclick="javascript:brightness(5,2)">&gt;</button>&nbsp;&nbsp;
+<button onclick="javascript:brightness(5,3)">&lt;</button>
+<input type=text value="Sat:  0" id="ctr5y" class="static" disabled>
+<button onclick="javascript:brightness(5,4)">&gt;</button> &nbsp;
+<button onclick="javascript:brightness(5,5)">&nbsp;Reset&nbsp;</button>
+
+</span></span></div><table><tr><td class="textbox">
+
+<a id="dload5" onclick="return false">
+<button onclick="javascript:btn_dload(5)">DLoad</button></a>
+<button onclick="javascript:frame_req(5,0)">Play ID</button>
+<button onclick="javascript:reset_frame(5)">Clear</button>
+<p></p>
+<input type=text id="id5" maxlength=256 class="idspec" onclick="javascript:nostack(5)">
+<p></p>
+
+<div class="dropbox dropbox1"><input type=text disabled><button>+</button>
+<div id="stk5" class="dropdown dropdown1">
+  <option value="" class="w">Select a channel stack
+</div></div><p></p>
+
+<div class="dropbox dropbox2"><input type=text disabled><button>+</button>
+<div id="src5" class="dropdown dropdown2">
+  <option value="0" class="w">YouTube / Invidious
+</div></div>
+
+<p><span class="box">
+<input type=checkbox id="mov5f" checked> Format (m3u8) &nbsp;
+<input type=checkbox id="mov5p" checked> Use Proxy
+</span></p>
+
+<div><div id="fmt5" class="dropdown pickpanel">
+  <span value="18">mp4<z_> 360</z_> *</span><span value="43">webm<z_> 360</z_> *</span><br>
+  <span value="19">^  <z_> 480</z_> *</span><span value="44">^   <z_> 480</z_> *</span><br>
+  <span value="22">^  <z_> 720</z_> *</span><span value="45">^   <z_> 720</z_> *</span><br>
+  <span value="37">^  <z_>1080</z_> *</span><span value="46">^   <z_>1080</z_> *</span><br>
+</div></div><p></p>
+
+<div class="dropbox dropbox3"><input type=text disabled><button>+</button>
+<div id="win5" class="dropdown dropdown3">
+  <span value="320:180" >[16:9]  320 x 180</span>
+  <span value="480:270" >[16:9]  480 x 270</span>
+  <span value="640:360" >[16:9]  640 x 360</span>
+  <span value="960:540" >[16:9]  960 x 540</span>
+  <span value="1280:720">[16:9] 1280 x 720</span>
+  <span value="240:180" > [4:3]  240 x 180</span>
+  <span value="360:270" > [4:3]  360 x 270</span>
+  <span value="480:360" > [4:3]  480 x 360</span>
+  <span value="720:540" > [4:3]  720 x 540</span>
+  <span value="960:720" > [4:3]  960 x 720</span>
+</div></div><p></p>
+
+<p style="margin-left:-2px">
+<button id="btn5a" class="is_off" onclick="javascript:btn_toggle(5,0)">New Window</button> &nbsp;
+<button id="btn5b" class="is_off" onclick="javascript:btn_toggle(5,1)">Popup Window</button>
+
+</p><p style="margin-top:-1px"></p>
+<input type=checkbox id="mov5m"> Allow Multiple &nbsp;&nbsp;
+<input type=checkbox id="mov5n"> No Play
+
+<p style="margin-top:-2px"></p>
+<input type=radio id="mov5a" name="chk5"> Raw&nbsp;
+<input type=radio id="mov5b" name="chk5" checked><button onclick="javascript:poke_hls(5)"
+  class="wrapper" id="hls5">Wrapper</button><input type=radio id="mov5c" name="chk5"> Sandbox
+
+</td><td class="vidbox">
+
+<!-- VIDEO -->
+<div class="widevid"><div class="popbox" id="pop5"></div>
+<h2 id="vid5" class="msgbox" onclick="javascript:popper(5,1)">No Video</h2>
+<iframe id="mov5" autoplay allowfullscreen controls></iframe>
+
+</div></td><td id="hood5" class="grill"></td></tr></table><p>
+
+<button onclick="javascript:frame_req(5,1)">Play URL</button>
+<button onclick="javascript:urlcopy(5,true)">Copy</button>
+<button onclick="javascript:frame_dig(5)">DIG</button>
+
+<input type=text id="line5" class="urlspec">
+<input type=text id="meta5" class="static" disabled style="width:82px">
+
+<span class="ranger" style="white-space:nowrap;margin-left:4px">
+<button onclick="javascript:scalingfactor(5,1)">&lt;</button>
+<input type=text id="ctr5z" value="100" class="static" style="width:40px" disabled>
+<button onclick="javascript:scalingfactor(5,2)">&gt;</button>
+</span>
+
+<p id="butt5" class="stack"></p><div style="width:90vw;height:50vh"></div>
+
+<!--
+/////
+///// NEWS & PROPAGANDA /////
+/////
+-->
+
+<div id="news" style="text-align:left;padding:6px 2px 8px 0">
+
+<span class="header">News & Propaganda &nbsp;--&nbsp; <small>
+  <a href="#sites">Sites List</a> &nbsp;|&nbsp; <a href="#info">Info</a> &nbsp;|&nbsp;
+  <a href="#free">Movies</a> &nbsp;|&nbsp; <a href="#news">snap</a></small></span>
+
+<span style="float:right">
+
+<div class="dropbox dropbox0"><input type=text disabled><button>+</button>
+<div id="ytx6" class="dropdown dropdown0">
+  <option value="1" class="r">YouTube MP4
+  <option value="9" class="b" checked>YouTube DASH
+
+</div></div> &nbsp; &nbsp;
+
+<span class="ranger">
+<button onclick="javascript:brightness(6,1)">&lt;</button>
+<input type=text value="Brt:  0" id="ctr6x" class="static" disabled>
+<button onclick="javascript:brightness(6,2)">&gt;</button>&nbsp;&nbsp;
+<button onclick="javascript:brightness(6,3)">&lt;</button>
+<input type=text value="Sat:  0" id="ctr6y" class="static" disabled>
+<button onclick="javascript:brightness(6,4)">&gt;</button> &nbsp;
+<button onclick="javascript:brightness(6,5)">&nbsp;Reset&nbsp;</button>
+
+</span></span></div><table><tr><td class="textbox">
+
+<a id="dload6" onclick="return false">
+<button onclick="javascript:btn_dload(6)">DLoad</button></a>
+<button onclick="javascript:frame_req(6,0)">Play ID</button>
+<button onclick="javascript:reset_frame(6)">Clear</button>
+<p></p>
+<input type=text id="id6" maxlength=256 class="idspec" onclick="javascript:nostack(6)">
+<p></p>
+
+<div class="dropbox dropbox1"><input type=text disabled><button>+</button>
+<div id="stk6" class="dropdown dropdown1">
+  <option value="" class="w">Select a channel stack
+</div></div><p></p>
+
+<div class="dropbox dropbox2"><input type=text disabled><button>+</button>
+<div id="src6" class="dropdown dropdown2">
+  <option value="0" class="w">YouTube / Invidious
+</div></div>
+
+<p><span class="box">
+<input type=checkbox id="mov6f" checked> Format (m3u8) &nbsp;
+<input type=checkbox id="mov6p" checked> Use Proxy
+</span></p>
+
+<div><div id="fmt6" class="dropdown pickpanel">
+  <span value="18">mp4<z_> 360</z_> *</span><span value="43">webm<z_> 360</z_> *</span><br>
+  <span value="19">^  <z_> 480</z_> *</span><span value="44">^   <z_> 480</z_> *</span><br>
+  <span value="22">^  <z_> 720</z_> *</span><span value="45">^   <z_> 720</z_> *</span><br>
+  <span value="37">^  <z_>1080</z_> *</span><span value="46">^   <z_>1080</z_> *</span><br>
+</div></div><p></p>
+
+<div class="dropbox dropbox3"><input type=text disabled><button>+</button>
+<div id="win6" class="dropdown dropdown3">
+  <span value="320:180" >[16:9]  320 x 180</span>
+  <span value="480:270" >[16:9]  480 x 270</span>
+  <span value="640:360" >[16:9]  640 x 360</span>
+  <span value="960:540" >[16:9]  960 x 540</span>
+  <span value="1280:720">[16:9] 1280 x 720</span>
+  <span value="240:180" > [4:3]  240 x 180</span>
+  <span value="360:270" > [4:3]  360 x 270</span>
+  <span value="480:360" > [4:3]  480 x 360</span>
+  <span value="720:540" > [4:3]  720 x 540</span>
+  <span value="960:720" > [4:3]  960 x 720</span>
+</div></div><p></p>
+
+<p style="margin-left:-2px">
+<button id="btn6a" class="is_off" onclick="javascript:btn_toggle(6,0)">New Window</button> &nbsp;
+<button id="btn6b" class="is_off" onclick="javascript:btn_toggle(6,1)">Popup Window</button>
+
+</p><p style="margin-top:-1px"></p>
+<input type=checkbox id="mov6m"> Allow Multiple &nbsp;&nbsp;
+<input type=checkbox id="mov6n"> No Play
+
+<p style="margin-top:-2px"></p>
+<input type=radio id="mov6a" name="chk6"> Raw&nbsp;
+<input type=radio id="mov6b" name="chk6" checked><button onclick="javascript:poke_hls(6)"
+  class="wrapper" id="hls6">Wrapper</button><input type=radio id="mov6c" name="chk6"> Sandbox
+
+</td><td class="vidbox">
+
+<!-- VIDEO -->
+<div class="widevid"><div class="popbox" id="pop6"></div>
+<h2 id="vid6" class="msgbox" onclick="javascript:popper(6,1)">No Video</h2>
+<iframe id="mov6" autoplay allowfullscreen controls></iframe>
+
+</div></td><td id="hood6" class="grill"></td></tr></table><p>
+
+<button onclick="javascript:frame_req(6,1)">Play URL</button>
+<button onclick="javascript:urlcopy(6,true)">Copy</button>
+<button onclick="javascript:frame_dig(6)">DIG</button>
+
+<input type=text id="line6" class="urlspec">
+<input type=text id="meta6" class="static" disabled style="width:82px">
+
+<span class="ranger" style="white-space:nowrap;margin-left:4px">
+<button onclick="javascript:scalingfactor(6,1)">&lt;</button>
+<input type=text id="ctr6z" value="100" class="static" style="width:40px" disabled>
+<button onclick="javascript:scalingfactor(6,2)">&gt;</button></span>
+
+<p id="butt6" class="stack"></p><div style="width:90vw;height:50vh"></div>
+
+<!--
+/////
+///// FREE MOVIES & TV /////
+/////
+-->
+
+<div id="free" style="text-align:left;padding:6px 2px 8px 0">
+
+<span class="header">FREE Movies & TV &nbsp;--&nbsp; <small>
+  <a href="#movies">Movie Sites</a> &nbsp;|&nbsp; <a href="#info">Info</a> &nbsp;|&nbsp;
+  <a href="#news">News</a> &nbsp;|&nbsp; <a href="#free">snap</a></small></span>
+
+<span style="float:right">
+
+<div class="dropbox dropbox0"><input type=text disabled><button>+</button>
+<div id="ytx7" class="dropdown dropdown0">
+  <option value="1" class="r">YouTube MP4
+  <option value="9" class="b" checked>YouTube DASH
+
+</div></div> &nbsp; &nbsp;
+
+<span class="ranger">
+<button onclick="javascript:brightness(7,1)">&lt;</button>
+<input type=text value="Brt:  0" id="ctr7x" class="static" disabled>
+<button onclick="javascript:brightness(7,2)">&gt;</button>&nbsp;&nbsp;
+<button onclick="javascript:brightness(7,3)">&lt;</button>
+<input type=text value="Sat:  0" id="ctr7y" class="static" disabled>
+<button onclick="javascript:brightness(7,4)">&gt;</button> &nbsp;
+<button onclick="javascript:brightness(7,5)">&nbsp;Reset&nbsp;</button>
+
+</span></span></div><table><tr><td class="textbox">
+
+<a id="dload7" onclick="return false">
+<button onclick="javascript:btn_dload()">DLoad</button></a>
+<button onclick="javascript:frame_req(7,0)">Play ID</button>
+<button onclick="javascript:reset_frame(7)">Clear</button>
+<p></p>
+<input type=text id="id7" maxlength=256 class="idspec" onclick="javascript:nostack(7)">
+<p></p>
+
+<div class="dropbox dropbox1"><input type=text disabled><button>+</button>
+<div id="stk7" class="dropdown dropdown1">
+  <option value="" class="w">Select a channel stack
+</div></div><p></p>
+
+<div class="dropbox dropbox2"><input type=text disabled><button>+</button>
+<div id="src7" class="dropdown dropdown2">
+  <option value="0" class="w">YouTube / Invidious
+</div></div>
+
+<p><span class="box">
+<input type=checkbox id="mov7f" checked> Format (m3u8) &nbsp;
+<input type=checkbox id="mov7p" checked> Use Proxy
+</span></p>
+
+<div><div id="fmt7" class="dropdown pickpanel">
+  <span value="18">mp4<z_> 360</z_> *</span><span value="43">webm<z_> 360</z_> *</span><br>
+  <span value="19">^  <z_> 480</z_> *</span><span value="44">^   <z_> 480</z_> *</span><br>
+  <span value="22">^  <z_> 720</z_> *</span><span value="45">^   <z_> 720</z_> *</span><br>
+  <span value="37">^  <z_>1080</z_> *</span><span value="46">^   <z_>1080</z_> *</span><br>
+</div></div><p></p>
+
+<div class="dropbox dropbox3"><input type=text disabled><button>+</button>
+<div id="win7" class="dropdown dropdown3">
+  <span value="320:180" >[16:9]  320 x 180</span>
+  <span value="480:270" >[16:9]  480 x 270</span>
+  <span value="640:360" >[16:9]  640 x 360</span>
+  <span value="960:540" >[16:9]  960 x 540</span>
+  <span value="1280:720">[16:9] 1280 x 720</span>
+  <span value="240:180" > [4:3]  240 x 180</span>
+  <span value="360:270" > [4:3]  360 x 270</span>
+  <span value="480:360" > [4:3]  480 x 360</span>
+  <span value="720:540" > [4:3]  720 x 540</span>
+  <span value="960:720" > [4:3]  960 x 720</span>
+</div></div><p></p>
+
+<p style="margin-left:-2px">
+<button id="btn7a" class="is_off" onclick="javascript:btn_toggle(7,0)">New Window</button> &nbsp;
+<button id="btn7b" class="is_off" onclick="javascript:btn_toggle(7,1)">Popup Window</button>
+
+</p><p style="margin-top:-1px"></p>
+<input type=checkbox id="mov7m"> Allow Multiple &nbsp;&nbsp;
+<input type=checkbox id="mov7n"> No Play
+
+<p style="margin-top:-2px"></p>
+<input type=radio id="mov7a" name="chk7"> Raw&nbsp;
+<input type=radio id="mov7b" name="chk7" checked><button onclick="javascript:poke_hls(7)"
+  class="wrapper" id="hls7">Wrapper</button><input type=radio id="mov7c" name="chk7"> Sandbox
+
+</td><td class="vidbox">
+
+<!-- VIDEO -->
+<div class="widevid"><div class="popbox" id="pop7"></div>
+<h2 id="vid7" class="msgbox" onclick="javascript:popper(7,1)">No Video</h2>
+<iframe id="mov7" autoplay allowfullscreen controls></iframe>
+
+</div></td><td id="hood7" class="grill"></td></tr></table><p>
+
+<button onclick="javascript:frame_req(7,1)">Play URL</button>
+<button onclick="javascript:urlcopy(7,true)">Copy</button>
+<button onclick="javascript:frame_dig(7)">DIG</button>
+
+<input type=text id="line7" class="urlspec">
+<input type=text id="meta7" class="static" disabled style="width:82px">
+
+<span class="ranger" style="white-space:nowrap;margin-left:4px">
+<button onclick="javascript:scalingfactor(7,1)">&lt;</button>
+<input type=text id="ctr7z" value="100" class="static" style="width:40px" disabled>
+<button onclick="javascript:scalingfactor(7,2)">&gt;</button></span>
+
+<p id="butt7" class="stack"></p><div style="width:90vw;height:50vh"></div>
+
+<!--
+/////
+///// INTERNET RADIO /////
+/////
+-->
+
+<div><h1><r_>Internet Radio</r_></h1>
+
+<p style="margin:-8px 0 10px 0">
+<button onclick="javascript:ir_action(0)">Stop</button>
+<button onclick="javascript:ir_action(1)">Pause</button>
+<button onclick="javascript:ir_action(2)">Play</button>&nbsp;
+<input type=text value="Stopped" class="static" id="ir_status" style="width:80px" disabled>&nbsp;
+<button onclick="javascript:ir_action(3)" class="is_off" id="ir_popup">Popup</button>
+
+<span class="ranger">&nbsp;&nbsp; <r_>Volume</r_> :&nbsp;
+<button onclick="javascript:ir_action(4)">&lt;</button>
+<input type=text value="50" class="static" id="ir_volume" style="width:40px" disabled>
+<button onclick="javascript:ir_action(5)">&gt;</button></span>
+
+</p><table id="ir" class="radio"></table>
+
+<audio id="internet_radio"
+  onerror="javascript:ir_action(-2)" ontimeupdate="javascript:ir_update(event)"></audio>
+
+<p style="margin:11px 0 -5px 0">
+<input type=text class="static" style="width:60px;border-radius:8px" disabled>&nbsp;
+
+<input type=range class="slider" onclick="javascript:ir_action(6)"
+  value=0.5 min=0 max=1 step=0.01 style="width:calc(100vw - 250px)">&nbsp;
+
+<input type=text class="static" style="width:60px;border-radius:8px" disabled>
+
+</p><p><input type=text class="urlspec" id="ir_url"></p><p style="margin:-4px 0 -5px 0">
+<a href="#info">Info</a>&nbsp; | &nbsp;<a href="#news">News</a>&nbsp; | &nbsp;<a href="#free">Movies</a>
+
+</p></div><div style="width:90vw;height:calc(100vh - 560px"></div>
+
+<!--
+/////
+///// SCRIPTS /////
+/////
+-->
+
+<script id="cryptojs"></script>
+
+<script>
+
+var localhost, cors_local, cors_bypass, cors_kraker, us_geo_bypass;
+var worker, client, last_client, vidwin, blank_page, download, helper;
+
+var last_h = last_w = last_raw = last_time = the_time = busy = 0;
+var response, textData, jsonData, dropdown, msg_timer, msg_result;
+
+var frame_5 = {}, frame_6 = {}, frame_7 = {};
+var table_5 = "", table_6 = "", table_7 = "", radio = [];
+var cookies = {}, streams = {}, poorkitty = { abort: () => {} };
+
+var HLS_PLAYER  = "https://cdn.jsdelivr.net/npm/hls.js@1.3.5/dist/hls.min.js";
+var DASH_PLAYER = "https://reference.dashif.org/dash.js/v3.2.0/dist/dash.all.min.js";
+var CRYPTO_SRC  = "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9/crypto-js.min.js";
+
+////////////////////
+
+var pullstring = function (s, t, u)
+{
+  if (!s) return ""; var m = t.length, n = s.indexOf (t) + m;
+  m = n < m ? -1 : (u ? s.indexOf (u, n) : s.length);
+  return (m < 0 ? "" : s.substr (n, m - n));
+}
+////////////////////
+
+var getmessage = function (msg)
+{
+  if (typeof (msg) == "number")
+  {
+    msg_timer = setTimeout (function() { getmessage ("@"); }, msg * 1000);
+    return new Promise (function (success, failure) { msg_result = success; });
+  }
+  else
+  {
+    if (msg_result) msg_result (msg ? msg.substr (1) : "");
+    clearTimeout (msg_timer); msg_timer = msg_result = null;
+  }
+}
+////////////////////
+
+var get_time = function ()
+{
+  var x = last_time; the_time = Date.now() / 500;
+  return ((last_time = the_time) < x + 2 ? 0 : the_time);
+}
+////////////////////
+
+var got_crypto = function ()
+{
+  if (window.CryptoJS) return true;
+  alert ("CryptoJS module is missing!"); return false;
+}
+////////////////////
+
+var say_worker = function (id, msg)
+{
+  if (!id) { id = ""; if (!msg) msg = "timeout"; }
+  worker.postMessage ({ id: id, app: "@alleycat", msg: msg });
+}
+////////////////////
+
+var msg_worker = function (id, msg)
+{
+  if (!id && !msg) say_worker(); else console.log ("Shared worker says", msg);
+
+  if (!id)
+  {
+    if (msg == "start")  say_worker ("", "hello");
+    if (msg == "hello")  say_worker ("", "master");
+    if (msg == "master") say_worker ("", "websock");
+    if (msg == "ready")  document.title = "***";
+    return;
+  }
+
+  if (msg == "abort") if (!busy || id != client) return; else
+  {
+    busy = 0; poorkitty.abort(); say_worker (id, "error"); client = ""; return;
+  }
+
+  if (busy || !get_time()) { say_worker (id, "retry"); return; }
+
+  client = id; msg = msg.split (" "); var fmt, frm = msg [0] * 1; id = msg [1];
+
+  if (!id || isNaN (frm) || frm < 1 || frm > 3) id = ""; else
+  {
+    frm += 4; clear_video (frm); setup_cors (frm);
+    fmt = document.getElementById ("fmt" + frm).value;
+  }
+
+  if (!id || !open_stream (id, frm, fmt)) { say_worker (client, "error"); client = ""; }
+}
+////////////////////
+
+var load_all = function ()
+{
+  localhost = location.hostname == "localhost" ? location.origin + "/" : "";
+  init_frames (localhost ? 0 : 1); var crypto = document.getElementById ("cryptojs");
+
+  worker = new SharedWorker (localhost + "worker.js").port;
+  worker.onmessage = function (e) { msg_worker (e.data.id, e.data.msg); }
+  window.onmessage = function (e) { if (e.data [0] == "@") getmessage (e.data); }
+
+  if (localhost)
+  {
+    HLS_PLAYER = "/hls_player.js"; DASH_PLAYER = "/dash_player.js";
+    blank_page = "/~widget.htm"; crypto.src = "/crypto.js"; return;
+  }
+
+  blank_page = ""; crypto.src = CRYPTO_SRC;
+
+  alert (
+    "The origin of this document is not the preferred origin (http://localhost).\n\n" +
+    "This app might not work as intended and some features may be unavailable.\n\n" +
+    "Trust the Plan -- WWG1WGA -- Where We Go On We Go All");
+}
+////////////////////
+
+var dump_all = function ()
+{
+  for (var m, n = 5; n <= 7; n++)
+  {
+    // remove iframes to prevent reloading on restart
+    m = document.getElementById ("mov" + n); m.parentNode.removeChild (m);
+  }
+  say_worker("", "goodbye"); ir_action (0);
+}
+////////////////////
+
+var resize_all = function (x)
+{
+  for (var n = 5; n <= 7; n++)
+  {
+    var hood = document.getElementById ("hood" + n);
+    var butt = document.getElementById ("butt" + n);
+
+    var a = hood.previousSibling.previousSibling.clientWidth;
+    var b = hood.clientWidth; hood.style.minWidth = "90px";
+    hood.style.width = (a < 300 && b < 60) ? "0" : "35vw";
+
+    if (a + b < 330)
+    {
+      butt.style.visibility = "visible";
+      hood.style.minWidth = hood.innerHTML = "";
+    }
+    else if (x && !hood.children.length)
+    {
+      for (b of butt.children) if (b.nodeName == "BUTTON")
+      {
+        hood.appendChild (b.cloneNode (true));
+        hood.appendChild (document.createElement ("P"));
+      }
+      butt.style.visibility = "hidden";
+    }
+  }
+  if (!x) resize_all (true);
+}
+////////////////////
+
+var init_frames = function (prx)
+{
+  var tab = document.querySelectorAll ("table.links");
+
+  tab [0].innerHTML = init_table (table_5) + init_table (table_6);
+  tab [1].innerHTML = init_table (table_7);
+
+  for (var n = 5; n <= 7; n++)
+  {
+    selectmake ("ytx" + n); selectmake ("fmt" + n);
+    selectmake ("stk" + n); selectmake ("src" + n); selectmake ("win" + n);
+  }
+
+  selectmake ("proxy", prx); init_radio();
+  document.body.style = "display:block"; resize_all();
+}
+////////////////////
+
+var init_table = function (tab)
+{
+  var m, n, p, q; if (!Array.isArray (tab)) return "";
+
+  function fixurl (x)
+  {
+    x = x.split ("|"); var z = x[0].split ("/").slice (2).join ("/");
+    if (z.substr (-1) == "/") z = z.substr (0, z.length - 1);
+
+    if (x[0]) z = "<a target=_blank href='" + x[0] + "'>" + z + "</a>";
+    if (x[1]) z += " " + x[1]; return ("<td>" + z + "</td>");
+  }
+
+  for (n = 0; n < tab.length; n++) if (typeof (p = tab [n]) != "string") tab [n] = ""; else
+  {
+    if (!p) { tab [n] = "<tr><td colspan=9><hr class=skinny></td></tr>"; continue; }
+    if ((p = p.trim().replace (/\t/g, "  ").replace (/\s{2,}/g, "\n").split ("\n")).length < 5) continue;
+
+    q = "<tr><td>" + p[0] + "</td><td>" + p[1] + "</td><td>&nbsp;" + (p[2][0] || "") +
+       "</td><td>" + p[3] + "</td><td>" + (p[2][1] || "") + "</td>";
+
+    for (m = 4; m < p.length; m++) q += fixurl (p[m]); tab [n] = q;
+  }
+
+  return tab.join ("\n");
+}
+
+var init_radio = function ()
+{
+  var m, n, p, q, r = radio, list = []; radio = "";
+  if (typeof r[0] != "string") r = ["Sum Ting Wong"];
+
+  for (n = 2; n < r.length; n += 2)
+  {
+    p = r[n]; q = r[n+1]; if (p[0] == "-") p = q = "";
+    if (p[0] == "+") p = list.pop(); list.push (p + "\0" + q);
+  }
+
+  var doc = document.getElementById ("ir"); m = doc.insertRow (0);
+  r = "<th>" + r[0].replace (/\|/g, "</th><th>") + "</th>";
+  m.innerHTML = r; n = list.length / m.children.length;
+  if ((m = Math.trunc (n)) != n) n = m + 1; r = "";
+
+  for (var i = 0, j = 0, k; i < list.length; i++, j = j || n)
+  {
+    m = list [i].split ("\0"); p = m[0]; q = m[1] || "";
+    if (m[2]) p = `<a href="${m[2]}" target=_blank>${p}</a>`;
+    q = `<input type=radio name=ir value="${q}">${p}<br>`;
+    if (i && !--j) q = "</td>\n\n<td>" + q; r += q;
+  }
+
+  doc.insertRow (1).innerHTML = "<td>" + r + "</td>";
+}
+////////////////////
+
+var selectmake = function (a, b)
+{
+  var v = document.getElementById (a);
+  var w = v.children, m = w [b || 0]; if (!m) return;
+
+  for (a of w) if (a.hasAttribute ("checked")) m = a;
+  m.setAttribute ("checked", ""); v.value = m.getAttribute ("value");
+  w = v.parentNode.firstElementChild; b = w.nodeName != "DIV";
+
+  if (b) w.value = m.innerText.trim();
+  if (b) w.nextSibling.onclick = function() { selectdrop (this, w); }
+  v.onclick = function (event) { selectpick (event.target, b ? w : 0); }
+}
+////////////////////
+
+var selectpick = function (a, b)
+{
+  var m = a.nodeName; if (m == "DIV") return;
+  if (m != "SPAN" && m != "OPTION") a = a.parentNode;
+
+  if (b) b.value = a.innerText.trim();
+  m = a.parentNode; for (b of m.children) b.removeAttribute ("checked");
+  a.setAttribute ("checked", ""); m.value = a.getAttribute ("value");
+}
+////////////////////
+
+var selectdrop = function (a, b)
+{
+  var m = a.nextElementSibling; if (m == dropdown) return;
+  if (dropdown) dropdown.style.display = "none"; dropdown = m;
+
+  m.style.minWidth = (a.clientWidth + b.clientWidth) + "px";
+  m.step = 0; m.style.overflowY = "scroll"; m.style.display = "block";
+  if (m.scrollHeight < m.clientHeight + 4) m.style.overflowY = "";
+}
+////////////////////
+
+var MEOW = function (e, type)
+{
+  var a = e.target, b = a.nodeName, d = dropdown, t = e.timeStamp;
+
+  if (type < 2 && b == "INPUT") if (a.type == "text" && !a.disabled)
+  {
+    b = !a.checked && type; a.checked = type;
+    if (b && a.selectionStart >= a.selectionEnd) a.select();
+  }
+  else if (type == 1 && a.name == "ir") ir_start (a.value);
+
+  if (!d || !type) return; b = d.step && b != t; d.step = t;
+  if (b) { d.style.display = "none"; dropdown = null; }
+} 
+////////////////////
+
+var nostack = function (frame)
+{
+  var doc = document.getElementById ("stk" + frame);
+  var box = doc.children[0]; doc.value = box.value;
+  doc.parentNode.firstElementChild.value = box.innerText;
+}
+////////////////////
+
+var urlcopy = function (frame, copy)
+{
+  var url = document.getElementById ("line" + frame);
+  var btn = document.getElementById ("dload" + frame);
+
+  if (copy && !document.getElementById ("mov" + frame + "m").checked)
+    { url.select(); document.execCommand ("copy"); }
+
+  url = url.value; if (copy) popper (frame, 2);
+  if (!url) btn.removeAttribute ("href"); else btn.href = url;
+}
+////////////////////
+
+var copylist = function (btn, frame, num)
+{
+  if (typeof (btn) == "string")
+  {
+    var n, p, q, r, s = btn.split ("\n"); btn = [];
+
+    for (n of s)
+    {
+      r = n.trim().replace (/\t/g, "  ").split ("  ");
+      p = r.shift(); q = (r.pop() || "").trim(); if (!p) continue;
+      btn.push (p, q.substr (-1) == ":" ? q + p : q);
+    }
+    return (btn);
+  }
+
+  var iptv = num < 0; if (iptv) num = -num;
+  var list = window ["stack_" + frame + "_" + num]; if (!list) return;
+
+  var box = document.getElementById ("stk" + frame);
+  var top = box.children [0]; box.innerHTML = ""; box.appendChild (top);
+
+  for (var i = 1, j = 100, k; i < list.length; i += 2)
+  {
+    k = "[" + (++j + "] ").substr (1) + list [i-1];
+    box.appendChild (new Option (k, (iptv ? "?" : "") + list [i]));
+  }
+
+  iptv = "Select a channel (" + ((btn && btn.innerText) || "") + ")";
+  top.innerText = box.parentNode.firstElementChild.value = iptv;
+  box.value = ""; popper (frame, 0);
+}
+////////////////////
+
+var btn_dload = function (frame)
+{
+  var a = "<!DOCTYPE html><html><head><meta charset='utf-8'>" +
+          "<title>Downloader</title></head><body><h2>Downloader</h2>" +
+          (download || "") + "</body></html>";
+
+  var b = window.open().document; b.write (a); b.close();
+}
+////////////////////
+
+var btn_toggle = function (frame, num)
+{
+  var id1, id2, doc1, doc2, chk, txt;
+
+  id1 = "btn" + frame + "a"; id2 = "btn" + frame + "b";
+
+  doc1 = document.getElementById (num ? id2 : id1);
+  doc2 = document.getElementById (num ? id1 : id2);
+
+  chk = doc1.checked; doc1.checked = !chk;
+  doc1.className = (chk ? "is_off" : "is_on");
+  doc2.checked = false; doc2.className = "is_off";
+}
+////////////////////
+
+var brightness = function (frame, mode)
+{
+  var LVL = document.getElementById ("ctr" + frame + "x");
+  var SAT = document.getElementById ("ctr" + frame + "y");
+
+  var lvl = LVL.value.substr (5) * 1;
+  var sat = SAT.value.substr (5) * 1;
+  var con, lo = -9, hi = 9;
+
+  if (mode == 1) if ((lvl -= 1) < lo) lvl = lo;
+  if (mode == 2) if ((lvl += 1) > hi) lvl = hi;
+  if (mode == 3) if ((sat -= 1) < lo) sat = lo;
+  if (mode == 4) if ((sat += 1) > hi) sat = hi;
+  if (mode == 5)
+  {
+    var x = LVL.step * 1, y = SAT.step * 1, z = lvl || sat;
+    if (z) { LVL.step = lvl; lvl = 0; } else lvl = x ? x : 0;
+    if (z) { SAT.step = sat; sat = 0; } else sat = y ? y : 0;
+  }
+
+  LVL.value = "Brt:  " + (lvl > 0 ? "+" : "") + lvl;
+  SAT.value = "Sat:  " + (sat > 0 ? "+" : "") + sat;
+
+  lvl = lvl * 0.05 + 1; sat = sat * 0.1 + 1;
+  sat = sat * (3 - lvl) / 2; con = (2 - lvl * (3 - lvl)) * (2 - sat) + 1;
+
+  lvl = lvl.toFixed (3); con = con.toFixed (3); sat = sat.toFixed (3);
+  lvl = "brightness(" + lvl + ") contrast(" + con + ") saturate(" + sat + ")";
+
+  var win = document.getElementById ("mov" + frame); vid = win.contentDocument;
+  if (vid) vid = vid.getElementById ("video"); if (!vid) vid = win;
+  vid.style.filter = win.value = lvl;
+}
+////////////////////
+
+var scalingfactor = function (frame, mode)
+{
+  var win = document.getElementById ("ctr" + frame + "z");
+  var vid = document.getElementById ("mov" + frame).contentDocument;
+  var scale = win.value * 1; if (vid) vid = vid.getElementById ("video");
+
+  if (mode == 1 && scale >  25) scale -= scale > 130 ? 10 : 5;
+  if (mode == 2 && scale < 200) scale += scale < 130 ? 5 : 10;
+
+  win.value = scale; if (vid) vid_scaler (vid, 0, scale);
+}
+////////////////////
+
+var reset_frame = function (frame)
+{
+  if (busy) { getmessage(); poorkitty.abort(); } else clear_video (frame); busy = 0;
+}
+////////////////////
+
+var clear_video = function (frame)
+{
+  loadwindow ("", frame, ""); vid_info (frame, 0, 0, 1); popper (frame, 3);
+}
+////////////////////
+
+var setup_cors = function (frame)
+{
+  cors_kraker = ""; cors_bypass = document.getElementById ("proxy").value;
+  if (cors_bypass [0] == "!") cors_bypass = cors_kraker = cors_bypass.substr (1);
+  if (cors_bypass == "LOCAL") cors_bypass = cors_kraker = localhost || "http://localhost:8080/";
+  if (!document.getElementById ("mov" + frame + "p").checked) cors_bypass = cors_kraker = "";
+
+  cors_local = localhost == cors_kraker ? localhost : "";
+  us_geo_bypass = cors_local + "https://kraker-remote.vercel.app/?url=";
+}
+////////////////////
+
+var poke_hls = function (frame, state)
+{
+  if (!state) state = 0; if (state < 0) return;
+
+  var doc = document.getElementById ("hls" + frame);
+  var hls = doc.checked * 1 || 0, txt = "Wrapper";
+
+  if (++hls > 2) hls = 0; if (state) hls = state - 1;
+  if (hls == 1) txt = "M3U8"; else if (hls == 2) txt = "DASH";
+
+  doc.checked = hls; doc.innerHTML = txt;
+  if (!state) doc.previousElementSibling.checked = true;
+}
+////////////////////
+
+var poke_site = function (frame, value)
+{
+  var doc = document.getElementById ("src" + frame);
+  var box = doc.parentNode.firstElementChild, a, b, d;
+  doc.value = value; doc = doc.children;
+
+  for (d of doc) if (d.value == value)
+  {
+    a = d; box.value = d.innerText; d.setAttribute ("checked", "");
+  }
+  else if (d.hasAttribute ("checked")) b = d;
+
+  if (a && b) b.removeAttribute ("checked");
+}
+////////////////////
+
+var is_busy = function (frame, msg, cors)
+{
+  if (busy) return true; busy = cors; cors = "";
+  if (busy == 1 && !cors_kraker) cors = "KRKR";
+  if (busy == 2 && !cors_local ) cors = "KRAK";
+
+  if (busy = cors ? 0 : 1) cors = "Busy"; else
+  {
+    if (client) say_worker (client, "error");
+    last_client = client = msg = "";
+  }
+
+  if (msg) document.getElementById ("id" + frame).value = msg;
+  document.getElementById ("vid" + frame).innerHTML = cors;
+  fixformat ("", frame); return (!busy);
+}
+////////////////////
+
+var no_fail = function (frame, err, msg)
+{
+  if (busy) poke_hls (frame, busy); else
+  {
+    fixformat ("", frame); if (err) msg = "err: " + err;
+    document.getElementById ("vid" + frame).innerHTML = "Error";
+    if (msg) document.getElementById ("id" + frame).value = msg;
+  }
+  if (client && busy >= 0)
+  {
+    say_worker (client, busy ? "okay" : "error");
+    last_client = busy ? client : ""; client = "";
+  }
+  frame = busy; busy = 0; return (frame);
+}
+////////////////////
+
+var stream_all = function (frame, type)
+{
+  frame = document.getElementById ("mov" + frame + (type ? "f" : "c")).checked;
+  if (type && busy) busy = type + 1; return (type ? (type == 2 || !frame) : frame);
+}
+////////////////////
+
+var stream_cache = function (name, url, timeout)
+{
+  if (!url) if (!(url = streams [name])) return (""); else
+  {
+    url = url.split (" "); return (url [0] * 1 > the_time ? url [1] : "");
+  }
+  else
+  {
+    // default timeout = 14280 = 119 minutes x 120 half-seconds
+    return (streams [name] = (the_time + (timeout || 14280)) + " " + url);
+  }
+}
+////////////////////
+
+var stream_player = function (frame)
+{
+  return (document.getElementById ("mov" + frame));
+}
+////////////////////
+
+var allow_cookie = function (source, cookie)
+{
+  if (!cors_kraker) return ({});
+  if (source) if (cookie) cookies [source] = cookie; else cookie = cookies [source];
+  if (!cookie) cookie = "null"; if (cookie.indexOf ("**")) cookie = "**" + cookie;
+  return ({ headers: { accept: cookie } });
+}
+////////////////////
+
+var cookiecutter = function (name, cookie)
+{
+  var box = document.querySelector (".secret");
+
+  if (cookie) cookies [name] = cookie; else
+    if (typeof (name) == "string") { box.style.display = "block"; box.value = name; } else
+      { box.style.display = "none"; if (name) window.open ("/~webbotpass.htm?" + box.value); }
+}
+////////////////////
+
+var kitty = async (url, arg) =>
+{
+  if (!busy) throw ("@@@"); var d = url [0] == "^" ? -6500000 : 0;
+  var e = poorkitty = new AbortController(); if (d) url = url.substr (1);
+  if (!arg) arg = {}; arg.signal = e.signal; var f = await fetch (url, arg);
+  var r = f.body; try { r = r.getReader() } catch { return (f) }
+
+  function a (c)
+  {
+    return r.read().then ((x) => b (c, x));
+  }
+
+  function b (c, x)
+  {
+    if (x.done) return c.close(); d += x.value.length;
+    if (d > 3500000) e.abort(); c.enqueue (x.value); return a (c);
+  }
+
+  var s = new ReadableStream ({ start (c) { return a (c) }});
+  s = new Response (s, { statusText: f.statusText, headers: f.headers });
+
+  Object.defineProperty (s, "status", { value: f.status });
+  Object.defineProperty (s, "url", { value: f.url }); return (s);
+}
+////////////////////
+
+</script><script>
+
+var frame_req = function (frame, mode, url)
+{
+  var sub, src, fmt = document.getElementById ("fmt" + frame).value;
+
+  if (busy || !get_time()) return; clear_video (frame); setup_cors (frame);
+
+  if (mode == 0)
+  {
+    url = document.getElementById ("stk" + frame).value;
+    if (!url) url = document.getElementById ("id" + frame).value.trim();
+  }
+  else if (mode == 1)
+  {
+    url = document.getElementById ("line" + frame).value.trim();
+    url = url.replace (/\\u0025/g, "%").replace (/\\u0026/g, "&").replace (/&amp;/g, "&");
+    url = url.replace (/\\u002F/g, "/").replace (/\\\//g, "/");
+  }
+
+  if (url [0] == "?") { open_stream (url.substr (1), frame, fmt); return; }
+
+  if (!url) return; if (mode == 1) { loadwindow (url, frame, ""); return; }
+
+  var target = "req_"; url = url.split (" ").pop();
+  src = document.getElementById ("src" + frame).value;
+
+  if ((sub = url.split (":")).length > 1 && sub [0].length < 3)
+  {
+    src = window ["frame_" + frame][sub.shift()];
+    url = sub.join (":"); if (url.includes ("://")) target = "dig_";
+    if (src && url) poke_site (frame, src); else return;
+  }
+
+  if (src = window ["frame_" + frame][target + src])
+    src (url, frame, fmt); else no_fail (frame, "", "Not supported");
+}
+////////////////////
+
+var frame_dig = function (frame)
+{
+  if (busy || !get_time()) return; clear_video (frame); setup_cors (frame);
+
+  var fmt = document.getElementById ("fmt" + frame).value;
+  var src = document.getElementById ("src" + frame).value;
+  var url = document.getElementById ("line" + frame).value.trim();
+
+  nostack (frame); if (!url) return;
+
+  if (src = window ["frame_" + frame]["dig_" + src])
+    src (url, frame, fmt); else no_fail (frame, "", "Not supported");
+}
+////////////////////
+
+var open_stream = function (url, frame, fmt)
+{
+  if (url [0] == "<") { open_dloader (url, frame, fmt); return; }
+
+  var sub = url.split (":"), src = sub.shift();
+  url = sub.join (":"); if (!url || !src) return;
+
+  if (url [0] == "^")  // string is reversed to hide from DMCA scans
+  {
+    var i = url.indexOf ("//") + 2, j = url.lastIndexOf ("/");
+    var k = url.substr (i, j - i).split("").reverse().join("");
+    url = url.substr (1, i - 1) + k + url.substr (j);
+  }
+
+  sub = document.getElementById ("stk" + frame);
+  sub.parentNode.firstElementChild.value = sub.value = "?" + src + ":" + url;
+
+  if (src.length > 2)
+  {
+    src = (url.includes ("://") ? "dig_" : "req_") + src;
+    sub = frame_5 [src] || frame_6 [src] || frame_7 [src];
+    if (!sub) return; sub (url, frame, fmt);
+  }
+  else
+  {
+    document.getElementById ("id" + frame).value = "Tuning...";
+    request_iptv (src, url, frame, fmt);
+  }
+
+  return (busy || !client);
+}
+////////////////////
+
+var open_dloader = async (url, frame, fmt) =>
+{
+  var n, name, resp, data;
+
+  if (is_busy (frame)) return; else try
+  {
+    if ((n = url.indexOf (">")) < 2) throw ("???");
+    name = url.substr (1, n - 1); url = url.substr (n + 1);
+    resp = await kitty (url); data = await resp.text();
+  }
+  catch (err) { console.log (err); busy = 0; }
+
+  busy = -busy; if (!no_fail (frame)) return;
+  document.getElementById ("vid" + frame).innerHTML = "Download";
+  crack_m3u8 (url, data, frame, fmt, name);
+}
+////////////////////
+
+var ir_start = function (url)
+{
+  if (!url) return; radio = url;
+  setTimeout (() => ir_action (url), 1000);
+}
+////////////////////
+
+var ir_action = function (mode)
+{
+  var vid = document.getElementById ("internet_radio");
+  var pop = document.getElementById ("ir_popup");
+  var sts = document.getElementById ("ir_status");
+  var vol = document.getElementById ("ir_volume");
+  var url = document.getElementById ("ir_url").value;
+  var sib = vid.nextElementSibling.children;
+
+  var src_ok = (vid.src && vid.src != "file:///"), volume = vol.value * 1;
+
+  if (typeof (mode) == "string")
+  {
+    url = radio; if (mode != url || mode == vid.src) return;
+    document.getElementById ("ir_url").value = url; mode = 2; src_ok = false;
+  }
+
+  if (mode == 2 && url.length == 11 && !url.includes (":"))
+  {
+    var src = document.getElementById ("ytx7").value; if (src < 10) src = 0;
+    url = invidious_site [src] + "/latest_version?local=true&itag=251&id=" + url;
+    document.getElementById ("ir_url").value = url;
+  }
+
+  if (mode == 2) if (!url)
+  {
+    vid = document.getElementsByName ("ir");
+    for (sib of vid) if (sib.checked) ir_start (sib.value); return;
+  }
+  else if (pop.checked)
+  {
+    popup_radio (volume, 440, 120, url); mode = 0;
+  }
+  else if (!src_ok)
+  {
+    vid.src = url; vid.curtime = vid.durtime = 0;
+  }
+
+  if (mode == 0 || (mode == -2 && src_ok))
+  {
+    sts.value = (mode ? "ERROR" : "Stopped");
+    sib [1].style.background = "transparent"; sib [1].value = 0.5;
+    sib [0].value = sib [2].value = ""; vid.src = "file:///"; vid.pause();
+  }
+
+  if (mode == 1 && src_ok)
+  {
+    sts.value = "Paused"; vid.pause();
+  }
+
+  if (mode == 2 || (mode == -1 && src_ok))
+  {
+    sts.value = "Playing"; vid.play();
+  }
+
+  if (mode == 3)
+  {
+    sts = pop.checked; pop.checked = !sts; pop.className = (sts ? "is_off" : "is_on");
+  }
+
+  if (mode == 4 && volume > 0) volume -= volume > 40 ? 10 : 5;
+  if (mode == 5 && volume < 100) volume += volume < 40 ? 5 : 10;
+  if (mode == 6) vid.currentTime = vid.durtime * sib [1].value;
+
+  vid.muted = true; vid.volume = volume / 100;
+  vid.muted = false; vol.value = volume;
+}
+////////////////////
+
+var ir_update = function (event)
+{
+  var vid = document.getElementById ("internet_radio");
+  var sib = vid.nextElementSibling.children; if (vid.paused) return;
+
+  var e = event.timeStamp / 1000, c = vid.curtime || e, d = vid.durtime;
+  var t = vid.currentTime; vid.curtime = e; d += e - c; if (t > d) d = t;
+  vid.durtime = d = (c = vid.duration) < 72000 ? c : d;
+
+  var ts = Math.round (t), ds = Math.round (d);
+  var th = Math.trunc (ts / 3600), dh = Math.trunc (ds / 3600); ts -= th * 3600; ds -= dh * 3600;
+  var tm = Math.trunc (ts / 60), dm = Math.trunc (ds / 60); ts -= tm * 60; ds -= dm * 60;
+  var z = (t && d) ? 400 * t / d : 0; z = Math.round (z) * 0.25;
+
+  sib [1].style.background = "linear-gradient(90deg, lightpink " + z + "%, mistyrose 0%)";
+  sib [0].value = th + ":" + (tm < 10 ? "0" : "") + tm + ":" + (ts < 10 ? "0" : "") + ts;
+  sib [2].value = dh + ":" + (dm < 10 ? "0" : "") + dm + ":" + (ds < 10 ? "0" : "") + ds;
+}
+////////////////////
+
+var popper = function (frame, mode, btn)
+{
+  if (busy) return; var win = document.getElementById ("pop" + frame);
+  var popup = document.getElementById ("mov" + frame + "m").checked;
+  var index = win.style.zIndex; if (!index) index = -1;
+
+  if (mode)
+  {
+    if (mode == 1) win.style.zIndex = -index;
+    if (mode == 2) win.style.zIndex = popup ? -index : index;
+    if (mode == 3) win.style.zIndex = -1;
+    if (mode == 4) win.style.zIndex = popup ? 1 : -1;
+    return;
+  }
+
+  var m, n, val, txt, doc, box = document.getElementById ("stk" + frame);
+
+  if (win.children.length) doc = win.children [0]; else
+  {
+    doc = win.appendChild (document.createElement ("TABLE"));
+    doc.onclick = function (event) { popper (frame, 0, event.target); }
+    doc.insertRow (0); doc.insertRow (1);
+  }
+
+  if (btn) if (btn.nodeName != "BUTTON") return; else
+  {
+    txt = btn.innerText; val = btn.value; if (!val) { popper (frame, 1); return; }
+    if (txt [0] == "[" && (n = txt.indexOf ("] ")) > 0) txt = txt.substr (n + 2);
+    m = doc.rows [1].getElementsByTagName ("button");
+
+    for (n = 0; n < m.length - 1; n++)
+      if (txt == m[n].innerText && val == m[n].value) break;
+
+    for (; n > 0; n--)
+    {    
+      m[n].value = m[n-1].value; m[n].innerText = m[n-1].innerText;
+    }
+    m[0].value = val; m[0].innerText = txt;
+
+    box.parentNode.firstElementChild.value = "@ " + txt;
+    box.value = val; frame_req (frame, 2, val); return;
+  }
+
+  btn = function (check, x = check ? ' checked' : '')
+  {
+    return ("<button" + x + " value='" + val + "'>" + txt + "</button>");
+  }
+
+  var i, j, k, pop = ""; box = box.children; i = box.length;
+  n = Math.floor ((i + 2) / 3); i -= 44; if (i > 0) n = 15; else i = 1;
+
+  for (j = k = 0; k < 3; i++)
+  {
+    m = box [i]; val = m ? m.value : ""; txt = m ? m.innerText : "-";
+    pop += btn (0); if (++j >= n) { j = 0; if (++k < 3) pop += "</td><td>"; }
+  }
+  doc.rows [0].innerHTML = "<td>" + pop + "</td>"; pop = val = "", txt = "-";
+
+  if (!doc.rows [1].children.length)
+  {
+    for (i = j = k = 0; k < 3; i++)
+    {
+      pop += btn (1); if (++j > 3) { j = 0; if (++k < 3) pop += "</td><td>"; }
+    }
+    doc.rows [1].innerHTML = "<td>" + pop + "</td>";
+  }
+
+  win.style.zIndex = 1;
+}
+////////////////////
+
+var popup_radio = function (volume, width, height, url)
+{
+  var win, title = "Internet Radio";
+
+  var audio = "controls style='position:absolute;left:0;bottom:0;width:100%;height:32px'";
+  var specs = "width=" + width + ",height=" + height + ",top=100,left=100";
+
+  var insert = "<body style='margin:0;padding:0;font-size:42px;line-height:80px;text-align:center;" +
+    "background-color:cornflowerblue;color:turquoise'><div style='height:100vh'>" +
+    "<i><b>" + title + "</b></i></div><audio " + audio + "></audio></body>";
+
+  var iframe = "<body style='margin:0;padding:0;overflow:hidden'>" +
+    "<iframe style='width:100vw;height:100vh;margin:0;padding:0;border:none'></iframe></body>";
+
+  win = window.open (blank_page, "radiobox", specs);
+  win.focus(); if (volume < 0) insert = iframe;
+
+  load_window (win, null, title, insert, width + " " + height, function (doc)
+  {
+    if (volume < 0) doc.getElementsByTagName ("iframe")[0].src = url; else
+    {
+      win = doc.getElementsByTagName ("audio")[0]; win.src = url;
+      win.volume = volume / 100; win.play();
+    }
+  });
+}
+////////////////////
+
+</script><script>
+
+var loadwindow = function (url, frame, site, id, fmt)
+{
+  var h, w, raw, win, title, insert, specs;
+  var sandbox = "allow-scripts allow-same-origin allow-forms";
+
+  var client = last_client; last_client = "";
+  if (helper && helper.closed !== false) helper = "";
+
+  var bstyle = "<body style='margin:0;padding:0;overflow:hidden;background-color:";
+  var istyle = " style='position:absolute;border:none;outline:none;width:100%;height:100%'";
+  var vstyle = " autoplay allowfullscreen ";
+
+  var frm = document.getElementById ("mov" + frame);
+  var msg = document.getElementById ("vid" + frame);
+
+  if (!url)
+  {
+    // remove and append <iframe> to block history
+    frm.src = "about:blank"; frm.removeAttribute ("sandbox");
+//    win = frm.parentNode; win.removeChild (frm); win.appendChild (frm);
+    if (site) document.getElementById ("id" + frame).value = site;
+    frm.style = ""; msg.innerHTML = "No Video"; return;
+  }
+
+  var btn_a = document.getElementById ("btn" + frame + "a").checked;
+  var btn_b = document.getElementById ("btn" + frame + "b").checked;
+  var multi = document.getElementById ("mov" + frame + "m").checked;
+  var nplay = document.getElementById ("mov" + frame + "n").checked;
+  var scale = document.getElementById ("ctr" + frame + "z").value * 10;
+
+  if (site)
+  {
+    if (site == "@") site = "Internet TV"; else if (site [0] != "@")
+      if (url.indexOf ("http")) { msg.innerHTML = "Bad URL"; return; }
+
+    if (id == "?") id = "id-none"; id = id ? ": " + id : "";
+    fmt = site + (fmt != undefined ? " [" + (fmt || 0) + "]" : "");
+    document.getElementById ("id" + frame).value = fmt + id;
+
+    document.getElementById ("line" + frame).value = url; urlcopy (frame, false);
+
+    if (nplay) if (client && (btn_a || btn_b)) client = ""; else
+    {
+      msg.innerHTML = "No Play"; return;
+    }
+  }
+
+  raw = 0; var filter = frm.value; if (!filter) filter = "initial";
+  if (document.getElementById ("mov" + frame + "b").checked) raw = 1;
+  if (document.getElementById ("mov" + frame + "c").checked) raw = 2;
+
+  if (raw == 0)
+  {
+    title = "Raw Mouse (squeak)";
+    insert = "'><iframe" + istyle + vstyle + "src='" + url + "'></iframe></body>";
+  }
+  if (raw == 1)
+  {
+    title = "Cat Wrapper (meow)";
+    insert = "'><video" + istyle + vstyle + "id='video'></video></body>";
+  }
+  if (raw == 2)
+  {
+    title = "Cat Sandbox (screech)";
+    insert = "'><iframe" + istyle + vstyle +
+      "src='" + url + "' sandbox='" + sandbox + "'></iframe></body>";
+  }
+
+  if (btn_a) { h = w = 0; specs = ""; } else if (btn_b)
+  {
+    win = document.getElementById ("win" + frame); specs = win.value;
+    h = specs.indexOf (":"); w = specs.substr (0, h); h = specs.substr (h + 1);
+    var lft = (window.screen.width - w) / 2 - 4, top = (window.screen.height - h) / 3;
+    specs = "width=" + w + ",height=" + h + ",top=" + top + ",left=" + lft;
+  }
+  else
+  {
+    if (client && helper && (win = helper.helper))
+      if (win.nodeName == "IFRAME") { frm = win; msg.innerHTML = "Helper"; }
+
+    if (raw == 1)
+    {
+      win = frm.contentDocument; win.open();
+      win.write ("<!DOCTYPE html>" + bstyle + "black" + insert);
+      win.close(); load_stream (frame, !client, url, win, filter, scale);
+    }
+    else
+    {
+      if (raw == 2) frm.sandbox = sandbox; frm.src = url;
+      frm.style.filter = filter; frm.style.backgroundColor = "lemonchiffon";
+    }
+    frm.style.pointerEvents = "auto"; return;
+  }
+
+  if (multi) vidwin = null; else if (client || h != last_h || w != last_w || raw != last_raw)
+  {
+    if (vidwin) vidwin.close(); vidwin = null;
+  }
+  last_h = h; last_w = w; last_raw = raw;
+
+  win = null; raw = raw == 1 ? "black" : "lemonchiffon"; insert = bstyle + raw + insert;
+
+  if (!vidwin || vidwin.closed) win = vidwin = window.open (blank_page + "#" + raw, "", specs);
+  if (!vidwin) { msg.innerHTML = "Blocked"; return; }
+
+  win = (win && blank_page) ? null : vidwin.document;
+  msg.innerHTML = "Popup"; (raw = vidwin).focus(); if (multi) vidwin = null;
+
+  load_window (raw, win, title, insert, w + " " + h,
+    function (doc) { load_stream (frame, false, url, doc, filter, scale); });
+}
+////////////////////
+
+var load_window = async (win, doc, title, insert, resize, func) =>
+{
+  if (!doc) { await getmessage (5); doc = win.document; }
+
+  if (doc.doctype)
+  {
+    var dom = new DOMParser();
+    dom = dom.parseFromString (insert, "text/html");
+    doc.body.replaceWith (dom.body);
+  }
+  else { doc.open(); doc.write ("<!DOCTYPE html>" + insert); doc.close(); }
+
+  doc.title = title; resize = resize.split (" ");
+  var width = resize [0] * 1 || 0, height = resize [1] * 1 || 0;
+  if (width <= 0 || height <= 0) { if (func) func (doc); return; }
+  var bdy = doc.body, count = 0;
+
+  bdy.onresize = function()
+  {
+    var w = bdy.clientWidth, h = bdy.firstChild.clientHeight;
+    if (w <= 0 || h <= 0) return; w = width - w; h = height - h;
+    if (count++ < 3) if (w || h) { win.resizeBy (w, h); return; }
+    bdy.onresize = null; if (func) func (doc);
+  }
+  bdy.onresize();
+}
+////////////////////
+
+var vid_oops = function (frame, vid, fatal)
+{
+  if (fatal) setTimeout (function() { vid_error (vid); }, 500);
+}
+////////////////////
+
+var vid_info = function (frame, w, h, reset)
+{
+  if (!frame) return; var msg = w + " x " + h;
+  if (w <= 0 || h <= 0) if (reset) msg = ""; else return;
+  document.getElementById ("meta" + frame).value = msg;
+}
+////////////////////
+
+var vid_status = function (action, message)
+{
+  if (action) ir_action (action); if (message) console.log (message);
+}
+////////////////////
+
+var load_stream = function (frame, is_local, url, doc, filter, scale)
+{
+  var win = doc.getElementById ("video");
+  var fmt = document.getElementById ("fmt" + frame).value;
+  var hls = document.getElementById ("hls" + frame).checked;
+
+  if (hls && !document.getElementById ("mov" + frame + "f").checked) fmt = 0;
+
+  if (!win)
+  {
+    win = doc.getElementsByTagName ("iframe")[0];
+    if (win) win.style.filter = filter; return;
+  }
+
+  doc = doc.body; if (!is_local) frame = 0; win.value = frame;
+  win.step = scale; win.style.filter = filter; create_controls (win);
+
+  win.onloadedmetadata = function()
+  {
+    var w = this.videoWidth, h = this.videoHeight; vid_info (frame, w, h, 0);
+    vid_status (1); if (localhost && (w <= 0 || h <= 0)) vid_poster (this, "/~poster.jpg");
+  }
+
+  if (!hls)
+  {
+    doc.onbeforeunload = function() { vid_status (-1); }
+    win.src = url; win.onerror = function() { vid_oops (frame, win, true); }
+  }
+
+  if (hls == 1)
+  {
+    var js = get_js ("HLS", !window.Hls);
+    js.onload = function() { play_hls (frame, url, doc, win, fmt); }
+    if (window.Hls) js.onload(); else js.src = HLS_PLAYER;
+  }
+
+  if (hls == 2)
+  {
+    var js = get_js ("DASH", !window.dashjs);
+    js.onload = function() { play_dash (frame, url, doc, win, fmt); }
+    if (window.dashjs) js.onload(); else js.src = DASH_PLAYER;
+  }
+}
+////////////////////
+
+var get_js = function (type, replace)
+{
+  var name = type + "_player", js = document.getElementById (name);
+  if (js) if (!replace) return js; else js.parentNode.removeChild (js);
+  js = document.createElement ("SCRIPT"); js.onerror = function() { err_play (type); }
+  js.id = name; document.body.appendChild (js); return js;
+}
+////////////////////
+
+var err_play = function (error)
+{
+  alert (error + " player seems to be missing! Server not serving.\n\n" +
+    " (o o)  ((( Could be that THEY are watching you ! )))  (o o)\n \n");
+}
+////////////////////
+
+var hls_quality = function (levels, fmt)
+{
+  if (!fmt) return (-1); var f = formats_list (levels);
+  if ((fmt = gotformat (f, fmt)) >= 0) fmt = f [fmt] - 1; return (fmt);
+}
+////////////////////
+
+var play_hls = async (frame, url, doc, win, fmt, js) =>
+{
+  if (!frame)
+  {
+    js = document.createElement ("SCRIPT");
+    js.src = document.getElementById ("HLS_player").src;
+    js.onload = function() { window.postMessage ("@video", "*"); }
+
+    doc.appendChild (js); await getmessage (3);
+    js = doc.parentNode.parentNode.defaultView.Hls;
+  }
+
+  var hls_cfg = {
+    debug: false,
+    startLevel: 2,
+    autoStartLoad: false,
+    capLevelOnFPSDrop: true,
+    capLevelToPlayerSize: true,
+    defaultAudioCodec: "mp4a.40.5",
+    fpsDroppedMonitoringPeriod: 3000,
+    fpsDroppedMonitoringThreshold: 0.1,
+    minAutoBitrate: 350000,
+    enableWebVTT: false,
+    enableCEA708Captions: false
+  };
+
+  if ((url = url.split ("##"))[1])
+  {
+    hls_cfg.emeEnabled = true; hls_cfg.widevineLicenseUrl = url [1];
+    hls_cfg.drmSystems = { 'com.widevine.alpha': {licenseUrl: url [1]} };
+  }
+
+  var vid = new (js || Hls) (hls_cfg); vid.loadSource (url [0]); vid.attachMedia (win);
+
+  vid.on (Hls.Events.ERROR, function (event,data) { vid_oops (frame, win, data.fatal); });
+
+  vid.on (Hls.Events.MANIFEST_LOADED, function (event,data)
+    { vid.loadLevel = hls_quality (vid.levels, fmt); vid.startLoad(); });
+
+  vid.on (Hls.Events.BUFFER_CODECS, function (event,data) {
+    var x = data.video; if (x) vid_info (frame, x.metadata.width, x.metadata.height, 0); });
+
+  doc.onbeforeunload = function() { vid.destroy(); vid_status (-1); }
+}
+////////////////////
+
+var play_dash = async (frame, url, doc, win, fmt, js) =>
+{
+  if (!frame)
+  {
+    // Firefox (but not Brave) strangely stalls in a new tab
+    // popup works fine if opened from Alleycat but not from external app
+    // stalling does not occur with the hls player
+
+    js = document.createElement ("SCRIPT");
+    js.src = document.getElementById ("DASH_player").src;
+    js.onload = function() { window.postMessage ("@video", "*"); }
+
+    doc.appendChild (js); await getmessage (3);
+    js = doc.parentNode.parentNode.defaultView.dashjs;
+  }
+
+  var dash_cfg = {
+    streaming: { text: {defaultEnabled: false}, abr: {autoSwitchBitrate: {video: false}} }
+  };
+
+  url = url.split ("##"); var vid = (js || dashjs).MediaPlayer().create();
+
+  vid.initialize (win, url [0], true); vid.updateSettings (dash_cfg);
+  if (url [1]) vid.setProtectionData ({ 'com.widevine.alpha': {serverURL: url [1]} });
+
+  vid.on (dashjs.MediaPlayer.events ["ERROR"], function() { vid_oops (frame, win, true); });
+
+  vid.on (dashjs.MediaPlayer.events ["PLAYBACK_METADATA_LOADED"], function()
+  {
+    var m, n, levels = [], rates = vid.getBitrateInfoListFor ("video");
+    for (n = 0; n < rates.length; n++)
+    {
+      m = rates [n]; levels [n] = { width: m.width, height: m.height, bitrate: m.bitrate };
+    }
+    vid.setQualityFor ("video", hls_quality (levels, fmt));
+  });
+
+  vid.on (dashjs.MediaPlayer.events ["QUALITY_CHANGE_RENDERED"], function()
+  {
+    var x = vid.getCurrentTrackFor ('video'); if (!x) return;
+    var y = x.bitrateList [vid.getQualityFor ('video')];
+    vid_info (frame, y.width, y.height, 0);
+  });
+
+  doc.onbeforeunload = function() { vid.reset(); vid_status (-1); }
+}
+////////////////////
+
+/*
+DASH settings: http://cdn.dashjs.org/latest/jsdoc/module-Settings.html
+
+HLS settings: https://github.com/video-dev/hls.js/blob/master/docs/API.md#fine-tuning
+
+var config = {
+      autoStartLoad: true,
+      startPosition: -1,
+      debug: false,
+      capLevelOnFPSDrop: false,
+      capLevelToPlayerSize: false,
+      defaultAudioCodec: undefined,
+      initialLiveManifestSize: 1,
+      maxBufferLength: 30,
+      maxMaxBufferLength: 600,
+      maxBufferSize: 60*1000*1000,
+      maxBufferHole: 0.5,
+      lowBufferWatchdogPeriod: 0.5,
+      highBufferWatchdogPeriod: 3,
+      nudgeOffset: 0.1,
+      nudgeMaxRetry: 3,
+      maxFragLookUpTolerance: 0.25,
+      liveSyncDurationCount: 3,
+      liveMaxLatencyDurationCount: Infinity,
+      enableWorker: true,
+      enableSoftwareAES: true,
+      manifestLoadingTimeOut: 10000,
+      manifestLoadingMaxRetry: 1,
+      manifestLoadingRetryDelay: 1000,
+      manifestLoadingMaxRetryTimeout: 64000,
+      startLevel: undefined,
+      levelLoadingTimeOut: 10000,
+      levelLoadingMaxRetry: 4,
+      levelLoadingRetryDelay: 1000,
+      levelLoadingMaxRetryTimeout: 64000,
+      fragLoadingTimeOut: 20000,
+      fragLoadingMaxRetry: 6,
+      fragLoadingRetryDelay: 1000,
+      fragLoadingMaxRetryTimeout: 64000,
+      startFragPrefetch: false,
+      fpsDroppedMonitoringPeriod: 5000,
+      fpsDroppedMonitoringThreshold: 0.2,
+      appendErrorMaxRetry: 3,
+      loader: customLoader,
+      fLoader: customFragmentLoader,
+      pLoader: customPlaylistLoader,
+      xhrSetup: XMLHttpRequestSetupCallback,
+      fetchSetup: FetchSetupCallback,
+      abrController: AbrController,
+      bufferController: BufferController,
+      capLevelController: CapLevelController,
+      fpsController: FPSController,
+      timelineController: TimelineController,
+      enableWebVTT: true,
+      enableCEA708Captions: true,
+      stretchShortVideoTrack: false,
+      maxAudioFramesDrift: 1,
+      forceKeyFrameOnDiscontinuity: true,
+      abrEwmaFastLive: 3.0,
+      abrEwmaSlowLive: 9.0,
+      abrEwmaFastVoD: 3.0,
+      abrEwmaSlowVoD: 9.0,
+      abrEwmaDefaultEstimate: 500000,
+      abrBandWidthFactor: 0.95,
+      abrBandWidthUpFactor: 0.7,
+      abrMaxWithRealBitrate: false,
+      maxStarvationDelay: 4,
+      maxLoadingDelay: 4,
+      minAutoBitrate: 0,
+      emeEnabled: false,
+      widevineLicenseUrl: undefined,
+      requestMediaKeySystemAccessFunc: requestMediaKeySystemAccess
+  };
+*/
+
+</script><script>
+
+var crack_m3u8 = function (path, data, frame, fmt, dload)
+{
+  var i, j, k, b, h, w, sub, str, url, audio, levels = [];
+
+  audio = data.replace (/\r\n|\r/gm, "\n"); sub = audio.split ("#EXT-X-STREAM-INF");
+
+  if (sub.length < 2)
+  {
+    if (dload) make_downloader (dload, "", path); return ([path, ""]);
+  }
+
+  for (i = 1; i < sub.length; i++)
+  {
+    w = h = b = 0; k = sub[i].split ("\n"); url = k[0] + ",";
+
+    if (str = pullstring (url, "RESOLUTION=", ","))
+    {
+      j = (str + "x").split ("x"); w = j[0] * 1; h = j[1] * 1;
+    }
+    if (str = pullstring (url, "BANDWIDTH=", ",")) b = str * 1;
+
+    levels [i-1] = { width: w, height: h, bitrate: b, url: k[1], dat: url }
+  }
+
+  k = formats_list (levels); fixformat (k, frame);
+
+  if ((j = gotformat (k, fmt)) < 0 || (i = k[j] - 1) < 0)
+  {
+    if (dload) make_downloader (dload, "", ""); return ([path, ""]);
+  }
+
+  k = levels [i]; url = k.url.trim(); fmt = k.height;
+  url = merge_url (path, url) + url; if (!fmt) fmt = pixformat (j);
+  sub = audio.split ("#EXT-X-MEDIA"); k = k.dat.includes ("AUDIO=");
+
+  for (i = sub.length - 1, j = ""; i > 0; i--)
+  {
+    audio = pullstring (sub [i], "", "\n");
+    if (!audio.includes ("TYPE=AUDIO")) continue;
+    if (!audio.includes ("DEFAULT=YES") && !k) continue;
+    if (j = pullstring (audio, 'URI="', '"')) break;
+  }
+  audio = j ? merge_url (path, j) + j : "";
+
+  if (dload) make_downloader (dload, audio, url);
+  if (audio) return ([path, 0]); else return ([url, fmt]);
+}
+////////////////////
+
+var formats_list = function (levels)
+{
+  var i, j, k, w, h, b, f = [0,0,0,0], p = [0,0,0,0], r = [0,0,0,0];
+
+  if (!levels || !levels.length) return (f);
+
+  for (i = 0; i < levels.length; i++) if (k = levels [i])
+  {
+    w = k.width * 1 || 0; h = k.height * 1 || 0; b = k.bitrate * 1 || 0;
+
+    if (!h) if ((b -= 175000) < 0) continue; else
+      { h = Math.trunc (Math.sqrt (b * 0.2)); b = -1; } else
+        { if (b) b -= w * h * 2 + 250000; b *= b > 0 ? 3 : -2; }
+
+    if ((j = chkformat (h)) < 0 || (b < 0 && r[j])) continue;
+
+    w = ((b >= 0 && !r[j]) || (p[j] == h && b < r[j]));
+    if (w || p[j] < h) { f[j] = i + 1; p[j] = h; r[j] = b + 1; }
+  }
+
+  if (f[1] && p[0] < 240) f[0] = 0; return (f);
+}
+////////////////////
+
+var merge_url = function (path1, path2)
+{
+  var sub, str, m, n; if (!path2.indexOf ("http")) return "";
+
+  sub = path1.split ("?")[0].split ("/"); str = path2.split ("/");
+  n = str [0] ? 1 : str.length; if ((m = sub.length - n) < 3) m = 3;
+
+  str = sub.slice (0, m).join ("/"); return (n > 1 ? str : str + "/");
+}
+////////////////////
+
+var make_downloader = function (url, aud, vid)
+{
+  var bstyle = "<body style='margin:0;padding:0;text-align:center;" +
+    "background-color:cornflowerblue;color:yellow;font-size:20px'" +
+    " onunload=document.value=''>";
+
+  var istyle = "<input type=text size=10 disabled style='" +
+    "background-color:transparent;color:white;font-size:18px;" +
+    "font-family:inherit;text-align:right;border:none'>";
+
+  var insert = bstyle +
+    "<div style='width:0;height:100%;position:absolute'></div>" +
+    "<h1 style='color:sandybrown;margin:12px 0 28px'>" + url + "</h1>" +
+    "Audio Progress : &nbsp;&nbsp; " + istyle + "<p></p>" +
+    "Video Progress : &nbsp;&nbsp; " + istyle + "<p></p><br>" +
+    "<button onclick=document.value=''>Cancel</button></body>";
+
+  var specs = "width=400,height=240,top=100,left=100";
+  var win = window.open (blank_page, "", specs); win.focus();
+
+  load_window (win, null, "Download", insert, "400 240",
+    function (doc) { doc.value = url; download_m3u8 (doc, aud, vid); });
+}
+////////////////////
+
+var download_m3u8 = async (doc, aud, vid) =>
+{
+  var i, j, k, m, p, q, resp, data, str, url, header, range;
+  var src, sub, name, key, iv, count, total, errors, msg = "DONE";
+  var crypt_error = "AES decryption error";
+
+  var button = doc.getElementsByTagName ("button")[0];
+  var status = doc.getElementsByTagName ("input");
+  status [0].value = aud ? "Pending" : "No Track";
+  status [1].value = vid ? "Pending" : "No Track";
+
+  var fname = "/" + doc.value; if (!(m = cookies [fname])) cookies [fname] = "ok";
+  if (m || (!aud && !vid)) { button.innerText = m ? "GO AWAY" : "NO DATA"; return; }
+
+for (i = 0; i < 2; i++) try
+{ 
+  name = fname + (i ? "@vid.ts" : "@aud.ts");
+
+  try { resp = await fetch (name, { method: 'PUT' } ); } catch { resp = ""; }
+  if (!resp || resp.status != 200) throw ("Error writing file");
+
+  name = "/~" + name.substr (1) + "+"; src = i ? vid : aud; if (!src) continue;
+
+  for (j = 1; j < 5; j++)
+  {
+    try { resp = await fetch (src);
+          data = await resp.text(); } catch { resp = ""; }
+
+    if (resp && resp.status == 200) break; if (j > 3) throw ("Error loading m3u8");
+  }
+  data = data.replace (/\r\n|\r/gm, "\n"); sub = data.split ("\n"); total = 0;
+
+  for (j = k = 0; j < sub.length; j++) if (m = sub [j].trim())
+  {
+    if (!m.indexOf ("#EXT-X-ENDLIST")) break; sub [k++] = m;
+    if (!m.indexOf ("#EXT-X-BYTERANGE:") || !m.indexOf ("#EXT-X-KEY:")) continue;
+    if (m [0] == "#") k--; else total++; if (m.indexOf ("#EXT-X-MAP:")) continue;
+
+    p = pullstring (m, 'URI="', '"'); q = pullstring (m, 'BYTERANGE="', '"');
+    if (!p) continue; if (q) sub [k++] = "#EXT-X-BYTERANGE:" + q; sub [k++] = p; total++;
+  }
+
+  sub.splice (k); header = {}; count = errors = range = 0;
+
+  for (j = 0; j < sub.length; j++) if ((str = sub [j])[0] == "#")
+  {
+    if (!str.indexOf ("#EXT-X-KEY"))
+    {
+      m = pullstring (str, "METHOD=", ""); m = (m + ",,").split (",");
+      iv = pullstring (m[1], '"', '"'); data = merge_url (src, iv) + iv;
+
+      if (m[0] == "NONE") key = ""; else
+      {
+        try { resp = await fetch (data);
+              data = await resp.arrayBuffer(); } catch { data = ""; }
+  
+        if (m[0] != "AES-128" || !got_crypto() || !data) throw (crypt_error);
+        iv = pullstring (m[2], "=0x", "") || "00000000000000000000000000000000";
+        iv = CryptoJS.enc.Hex.parse (iv); key = CryptoJS.lib.WordArray.create (data);
+      }
+    }
+
+    if (!str.indexOf ("#EXT-X-BYTERANGE"))
+    {
+      m = str.substr (17).split ("@"); q = m[0] * 1; if (!q) continue;
+      p = m[1] * 1 || range; range = q += p; q = p + "-" + (q - 1);
+      header = { headers: { range: "bytes=" + q }};
+    }
+  }
+  else
+  {
+    url = merge_url (src, str) + str; str = header; header = {};
+
+    for (k = 1; k < 5; k++) if (!doc.value) throw ("STOPPED"); else
+    {
+      try { resp = await fetch (url, str);
+            data = await resp.arrayBuffer(); } catch { resp = ""; }
+
+      if (resp && (resp.status == 200 || resp.status == 206))
+      {
+        if (key)
+        {
+          data = CryptoJS.lib.WordArray.create (data);
+          data = CryptoJS.lib.CipherParams.create ({ ciphertext: data });
+          data = CryptoJS.AES.decrypt (data, key, { iv:iv });
+
+          var x1 = 0, x2 = 0, x3 = data.sigBytes; if (!x3 || x3 < 0) throw (crypt_error);
+          p = data.words; data = new ArrayBuffer (x3); q = new DataView (data);
+
+          for (; x2 < x3 - 3; x1++, x2 += 4) q.setUint32 (x2, p[x1], false);
+
+          if (x2 < x3) q.setUint8 (x2++, (p = p[x1]) >> 24);
+          if (x2 < x3) q.setUint8 (x2++, (p >> 16) & 255);
+          if (x2 < x3) q.setUint8 (x2++, (p >> 8) & 255);
+        }
+        await fetch (name, { method: 'PUT', body: data } );
+        status [i].value = ++count + " of " + total;
+        if (errors > 0) errors--; break;
+      }
+
+      if (k > 3)
+      {
+        console.log ("Error loading segment " + j + " in " + name);
+        if (++errors > 2) throw ("Server not responding");
+      }
+    }
+  }
+
+} catch (err) { msg = err; break; }
+
+  delete cookies [fname]; button.innerText = msg;
+}
+////////////////////
+
+var chkformat = function (n)
+{
+  n = Number (n);
+  if (n > 100 && n <= 432)  return 0;
+  if (n > 432 && n <= 580)  return 1;
+  if (n > 580 && n <= 800)  return 2;
+  if (n > 800 && n <= 1200) return 3; return -1;
+}
+////////////////////
+
+var pixformat = function (n)
+{
+  n = Number (n);
+  if (n == 0 || n == 4) return 360;
+  if (n == 1 || n == 5) return 480;
+  if (n == 2 || n == 6) return 720;
+  if (n == 3 || n == 7) return 1080; return -1;
+}
+////////////////////
+
+var isdashfmt = function (fmt)
+{
+  return ([134,135,136,137,243,244,247,248,140,251].indexOf (fmt * 1));
+}
+////////////////////
+
+var argformat = function (fmt)
+{
+  return ([18,19,22,37,43,44,45,46].indexOf (fmt * 1));
+}
+////////////////////
+
+var getformat = function (f, fmt)
+{
+  var m, n = 0, r = [], itag = [18,19,22,37,43,44,45,46];
+
+  for (; n < 8; n++) r.push ((!f || isNaN (f[n])) ? -1 : f[n]);
+
+  n = itag.indexOf (fmt * 1); if (n < 0) n = 0;
+
+  if (r[0] <= 0 && r[1] <= 0 && r[2] <= 0 && r[3] <= 0) n = n | 4;
+  if (r[4] <= 0 && r[5] <= 0 && r[6] <= 0 && r[7] <= 0) n = n & ~4;
+
+  for (m = n; m >= (n & ~3); m--) if (r[m] > 0) { n = m; break; }
+  for (m = n; m <= (n | 3);  m++) if (r[m] > 0) { n = m; break; }
+
+  return (r[n] <= 0 ? 0 : itag [n]);
+}
+////////////////////
+
+var gotformat = function (f, fmt)
+{
+  return (argformat (getformat (f, fmt)));
+}
+////////////////////
+
+var fixformat = function (f, frame)
+{
+  var m, n, p, q, r = [0,3,6,9,1,4,7,10];
+  var doc = document.getElementById ("fmt" + frame).children;
+
+  for (n = 0; n < 8; n++)
+  {
+    m = r[n]; p = f ? f[n] : -1; if (isNaN (p)) p = -1;
+    if (p < 0) p = "*"; else if (p > 0) p = "+"; else p = "-";
+    q = doc [m]; q.innerHTML = q.innerHTML.slice (0, -1) + p;
+  }
+}
+////////////////////
+
+</script>
+
+<!--
+/////
+///// CUSTOM VIDEO CONTROL /////
+/////
+-->
+
+<!-- This element must be cloned and inserted into a video frame. -->
+
+<div id="video_control" style="display:none">
+
+<div class="v-control">
+  <input type=range value=1 min=0 max=1 step=0.01 style="width:490px;margin:2px 2px 4px 2px">
+  <button class="v-ctrl" style="width:48px;margin-right:3px">1.0</button>
+  <input type=text style="width:72px;color:azure;background-color:transparent" disabled>
+  <input type=text style="width:72px;color:azure;background-color:transparent" disabled>
+  <br>
+    <span class="play-lft"></span><span></span><span class="play-rgt"></span>
+    <span class="v-span v-span2" style="width:auto">Mute</span>
+  <input type=range value=1 min=0 max=1 step=0.05 style="min-width:40px;max-width:192px">
+    <span class="v-span v-span2" style="width:auto">Seek</span>
+  <input type=text value="0:0:0" style="width:78px">
+  <button class="v-seek" style="width:36px">5s</button>
+  <button class="v-seek" style="width:42px">15s</button>
+  <button class="v-seek" style="width:36px">1m</button>
+  <button class="v-seek" style="width:36px">2m</button>
+  <button class="v-seek" style="width:36px">5m</button>
+  <button class="v-seek" style="width:42px">10m</button>
+  <button class="v-ctrl" style="width:30px">B</button>
+  <button class="v-ctrl" style="width:30px">S</button>
+  <button class="v-ctrl" style="width:30px">Z</button>
+    <span class="v-span" style="width:8px;margin-left:1px">F</span>
+    <span class="v-span" style="width:8px">R</span>
+    <span class="v-span" style="width:14px">FS</span>
+</div>
+<span class="v-poster"></span>
+
+<style type="text/css">
+
+.v-poster {
+  display: block; position: absolute; top: 0; width: 100%; height: 100%;
+  background-position: center; background-size: contain; background-repeat: no-repeat;
+  z-index: -1; pointer-events: auto;
+}
+
+.v-control {
+  position: absolute; bottom: 0; width: 100%; margin: 0; padding: 4px 0;
+  font-family: 'segoe ui', sans-serif; font-size: 14px; line-height: 19px;
+  text-align: center; background-color: steelblue; cursor: default; user-select: none;
+}
+
+.v-control span {
+  display: inline-block; vertical-align: top; cursor: pointer;
+}
+
+.v-control input {
+  vertical-align: top; height: 13px; padding: 1px 3px; margin: 2px 1px;
+  line-height: 12px; font-size: 14px; font-family: 'consolas', monospace;
+  outline: none; border: 1px solid darksalmon; border-radius: 7px;
+  appearance: none; -moz-appearance: none; -webkit-appearance: none;
+  color: darkviolet; background-color: lightpink;
+  user-select: auto; text-align: center;
+}
+
+.v-control input::-moz-range-thumb {
+  -moz-appearance: none; width: 4px; height: 19px;
+  background: greenyellow; border: none; border-radius: 0;
+}
+
+.v-control input::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 4px; height: 19px;
+  background: greenyellow; border: none; border-radius: 0;
+}
+
+.v-control input::selection {
+  color: yellow; background-color: orchid;
+}
+
+.v-control button {
+  height: 17px; line-height: 12px; margin: 2px 0; padding: 0;
+  border-style: solid; border-radius: 4px; border-width: 1px 6px;
+  font-size: 14px; font-family: 'consolas', monospace;
+  outline: none; cursor: pointer; vertical-align: top;
+}
+
+.v-control button:hover {
+  border-color: mediumturquoise;
+}
+
+.v-seek {
+  border-color: mediumseagreen; color: snow; background-color: mediumslateblue;
+}
+
+.v-ctrl {
+  border-color: lightseagreen; color: snow; background-color: mediumpurple;
+}
+
+.v-span {
+  padding: 0 3px 1px 3px; margin: 1px 0 0 0;
+  color: yellow; background-color: mediumpurple;
+}
+
+.v-span2 {
+  padding: 0 4px 1px 4px; margin: 0 -1px 0 0; font-style: italic;
+}
+
+.play-lft {
+  width: 2px; height: 16px; margin: 2px 0 0 2px;
+  border-left: 3px solid greenyellow;
+}
+
+.pause-lft {
+  border-left-width: 4px; border-color: yellow
+}
+
+.play-rgt {
+  width: 0; height: 0; margin: 2px 1px 0 0;
+  border-style: solid; border-width: 8px 0 8px 7px;
+  border-color: transparent greenyellow transparent greenyellow;
+}
+
+.pause-rgt {
+  height: 16px; margin: 2px 3px 0 0;
+  border-width: 0 4px 0 0; border-color: yellow;
+}
+
+.anim-bar {
+  animation-name: waiting;
+  animation-delay: 5s;
+  animation-duration: 2.5s;
+  animation-fill-mode: both;
+  animation-direction: normal;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes waiting {
+   0%  { background-color: lightpink; }
+  30%  { background-color: lightpink; }
+  70%  { background-color: salmon; }
+ 100%  { background-color: lightpink; }
+}
+
+</style></div>
+
+<!-- Video control script - NOT inserted into a video frame. -->
+
+<script>
+
+var create_controls = function (vid)
+{
+  var control = document.getElementById ("video_control").cloneNode (true);
+
+  var doc = vid.ownerDocument;          // document
+  var ctr = control.firstElementChild;  // video control
+  var sib = ctr.children;               // video control elements
+
+  sib [0].onchange = function() { vid_click (this, 1); }
+  sib [8].onclick  = function() { vid_click (this, 2); }
+  sib [9].onchange = function() { vid_click (this, 3); }
+  sib [10].onclick = function() { vid_click (this, 4); }
+  sib [21].onclick = function() { vid_click (this, 5); }
+  sib [22].onclick = function() { vid_click (this, 6); }
+  sib [23].onclick = function() { vid_click (this, 7); }
+
+  vid.onended      = function() { vid_cntrl (this, 1); }
+  vid.onclick      = function() { vid_cntrl (this, 2); }
+  vid.onplay       = function() { vid_cntrl (this, 3); }
+  vid.onpause      = function() { vid_cntrl (this, 4); }
+  vid.onseeking    = function() { vid_cntrl (this, 5); }
+  vid.onwaiting    = function() { vid_cntrl (this, 6); }
+  vid.onstalled    = function() { vid_cntrl (this, 7); }
+
+  vid.ontimeupdate = function(e) { vid_event (e, 0); }
+  vid.onmousemove  = function(e) { vid_event (e, 1); }
+  ctr.onclick      = function(e) { vid_event (e, 2); }
+
+  ctr.onmouseleave = function() { vid_cntrl (vid, 0); }
+  ctr.onmouseenter = function() { vid_cntrl (vid, 1); }
+  doc.onfullscreenchange = function() { vid_cntrl (vid, 9); }
+
+  ctr = ctr.nextElementSibling; // background <span>
+  ctr.onmousemove = function(e) { vid.onmousemove (e); }
+  ctr.onclick     = function(e) { vid.onclick (e); }
+
+  control.style.display = "inline-block"; vid_scaler (vid, 0, 0, sib);
+  sib [0].classList.add ("anim-bar"); vid.curtime = vid.durtime = 0;
+
+  doc.body.appendChild (control); vid_resize (vid);
+  doc.body.onresize = function() { vid_resize (vid); }
+}
+////////////////////
+
+var vid_error = function (vid)
+{
+  var ctr = vid.nextElementSibling.firstElementChild, sib = ctr.children;
+  vid.disabled = true; vid_cursor (vid, true); ctr.style.display = "initial";
+  sib [0].classList.remove ("anim-bar"); sib [0].style.background = "crimson";
+  if (!sib [2].value) sib [2].value = "ERROR"; sib [3].value = "!!!!!";
+}
+////////////////////
+
+var vid_cntrl = function (vid, mode)
+{
+  var ctr = vid.nextElementSibling.firstElementChild, sib = ctr.children;
+  if (ctr.value == undefined && mode > 2 && mode < 8) return;
+  if (vid.disabled && mode > 2 && mode < 9) return;
+
+  var no_action = ctr.value == undefined || vid.disabled;
+  var got_video = vid.videoWidth && vid.videoHeight;
+
+  var t = vid.currentTime, d = vid.durtime;
+  var z = (t && d) ? 400 * t / d : 0; z = Math.round (z) * 0.25;
+
+  if (mode == 0)  // hide
+  {
+    ctr.disabled = false; if (no_action) return;
+    ctr.value = 4; if (vid.paused && got_video) ctr.style.display = "none";
+  }
+  if (mode == 1)  // show
+  {
+    ctr.disabled = true; if (no_action) return;
+    ctr.value = 0; ctr.style.display = "initial";
+  }
+  if (mode == 2)  // play/pause
+  {
+    vid_cursor (vid, true);
+    if (vid.paused) vid.play(); else vid.pause();
+    if (no_action) vid_external (vid.value, mode); else
+      if (!ctr.disabled && !got_video) ctr.style.display = "none";
+  }
+  if (mode == 3)  // is playing
+  {
+    vid_external (vid.value, mode); mode = 10;
+    // special case of video paused at video start
+    if (!ctr.disabled && ctr.value <= 0) ctr.value = 1 - ctr.value;
+  }
+  if (mode == 4)  // is paused
+  {
+    vid_external (vid.value, mode); mode = 10;
+    // special case of video paused while doing countdown or countup
+    if (!ctr.disabled && ctr.value) { ctr.style.display = "none"; ctr.value = 0; }
+  }
+  if (mode == 5)  // is seeking
+  {
+    sib [0].style.background = "linear-gradient(90deg, darkorange " + z + "%, orange 0%)";
+  }
+  if (mode == 6)  // is waiting
+  {
+    sib [0].style.background = "linear-gradient(90deg, darkorange " + z + "%, orange 0%)";
+    setTimeout (function() { vid_timer (vid, ctr, t); }, 2000);
+  }
+  if (mode == 7)  // is stalled
+  {
+    sib [0].style.background = "linear-gradient(90deg, deeppink " + z + "%, hotpink 0%)";
+    setTimeout (function() { vid_timer (vid, ctr, t); }, 2000);
+  }
+
+  if (mode == 8)  // time update
+  {
+    var v = ctr.value, ts = Math.round (t), ds = Math.round (d);
+    var th = Math.trunc (ts / 3600), dh = Math.trunc (ds / 3600); ts -= th * 3600; ds -= dh * 3600;
+    var tm = Math.trunc (ts / 60), dm = Math.trunc (ds / 60); ts -= tm * 60; ds -= dm * 60;
+
+    sib [0].style.background = "linear-gradient(90deg, skyblue " + z + "%, transparent 0%)";
+    sib [2].value = th + ":" + (tm < 10 ? "0" : "") + tm + ":" + (ts < 10 ? "0" : "") + ts;
+    sib [3].value = dh + ":" + (dm < 10 ? "0" : "") + dm + ":" + (ds < 10 ? "0" : "") + ds;
+
+    if (v != undefined) v = v * 1; else
+    {
+      v = (vid.paused || ctr.disabled) ? -5 : 6;
+      mode = 10; sib [0].classList.remove ("anim-bar");
+    }
+    if (v > 0 && !--v) { if (got_video) ctr.style.display = "none"; v = -5; }
+    if (v < 0 && !++v) vid_cursor (vid, false); ctr.value = v;
+  }
+
+  if (mode == 9)  // fullscreen change
+  {
+    var fs = vid.ownerDocument.fullscreen;
+    if (!no_action) { ctr.value = -8; ctr.disabled = false; ctr.style.display = "none"; }
+    //sib [23].style.outline = fs ? "1px solid pink" : "none";
+  }
+
+  if (mode == 10)
+  {
+    if (!vid.paused)
+      { sib [5].classList.add ("pause-lft"); sib [7].classList.add ("pause-rgt"); } else
+      { sib [5].classList.remove ("pause-lft"); sib [7].classList.remove ("pause-rgt"); }
+  }
+}
+////////////////////
+
+var vid_timer = function (vid, ctr, time)  // catch wait/stall false flags
+{
+  if (vid.currentTime == time)
+  {
+    if (!ctr.disabled) ctr.value = 4; ctr.style.display = "initial";
+  }
+}
+////////////////////
+
+var vid_cursor = function (vid, mode)
+{
+  var style = mode ? "default" : "none"; if (vid.disabled) style = "default";
+  vid.style.cursor = vid.nextElementSibling.children [1].style.cursor = style;
+}
+////////////////////
+
+var vid_external = function (param, mode)
+{
+  var frame = param.split("|")[0] * 1; if (frame) popper (frame, mode);
+}
+////////////////////
+
+var vid_click = function (item, mode)
+{
+  var min_vt = 0, ctr = item.parentNode, vid = ctr.parentNode.previousElementSibling;
+
+  if (mode == 1)
+  {
+    var t = vid.durtime * item.value; if (t < min_vt) t = min_vt;
+    vid.currentTime = t; ctr.children [11].value = t.toFixed(2);
+  }
+
+  if (mode == 2) item.style.outline = (vid.muted = !vid.muted) ? "1px solid pink" : "none";
+
+  if (mode == 3) { var m = vid.muted; vid.muted = true; vid.volume = item.value; vid.muted = m; }
+
+  if (mode == 4)
+  {
+    var v = ctr.children[11].value.split (":"), i, j = v.length; if (!j) return;
+    var t = v[0][0]; if (t == "-") t = -1; else if (t == "+") t = 1; else t = 0;
+    if (t) v[0] = v[0].substr(1);
+
+    i = v[j-1] * 1; if (j > 1) i += v[j-2] * 60; if (j > 2) i += v[j-3] * 3600;
+    if (t) { i *= t; i += vid.currentTime; }
+
+    if (i < min_vt) i = min_vt; vid.currentTime = i < vid.durtime ? i : vid.durtime;
+  }
+
+  if (mode == 5) vid_rotate (vid, ctr.children, 1);
+
+  if (mode == 6) vid_rotate (vid, ctr.children, 2);
+
+  if (mode == 7) if (vid.ownerDocument.fullscreen || vid.ownerDocument.fullscreenElement)
+    vid.ownerDocument.exitFullscreen(); else vid.parentNode.requestFullscreen();
+}
+////////////////////
+
+var vid_event = function (event, type)
+{
+  var min_vt = 0, item = event.target, node = item.nodeName, vid = item;
+
+  if (type == 0)
+  {
+    var e = event.timeStamp / 1000, c = vid.curtime || e, d = vid.durtime;
+    var t = vid.currentTime; vid.curtime = e; d += e - c; if (t > d) d = t;
+    vid.durtime = d = (c = vid.duration) < 72000 ? c : d; vid_cntrl (vid, 8);
+  }
+
+  if (type == 1)
+  {
+    if (node != "VIDEO") vid = vid.parentNode.previousElementSibling;
+
+    var ctr = vid.nextElementSibling.firstElementChild;
+    vid_cursor (vid, true); if (ctr.value == undefined) return;
+
+    var h = vid.step, e = event.clientY, s = ctr.step * ctr.checked;
+    h = (h % 10) & 2 ? vid.clientWidth : vid.clientHeight;
+
+    if (s < 0) { h += s; s /= -2; } else { h -= s; s = 0; }
+    if (ctr.value <= 0) ctr.value = -8; if (e > h || e < s) vid_cntrl (vid, 1);
+  }
+  if (type != 2 || node == "DIV") return;
+
+  var ctr = item.parentNode; vid = ctr.parentNode.previousElementSibling;
+
+  if (node == "SPAN")
+  {
+    var cls = item.classList; if (cls) cls = cls [0];
+    if (cls && cls.substr (0,5) == "play-") vid_cntrl (vid, 2);
+  }
+  if (node != "BUTTON") return;
+
+  var a = item.offsetLeft, b = item.offsetWidth / 2;
+  var c = Math.abs (ctr.step), d = ctr.clientWidth / 2;
+
+  var dir = (event.clientX < (a + b - d) * c + d) ? -1 : 1;
+  var txt = item.innerText, speed = txt * 1;
+
+  if (speed)
+  {
+    speed += dir * 0.1; if (speed > 0.4) speed += dir * 0.1;
+    if (speed > 2) speed += dir * 0.3; if (speed < 0.1) speed = 0.1; if (speed > 5) speed = 5;
+    item.innerText = speed.toFixed(1); vid.playbackRate = speed; return;
+  }
+
+  if (txt == "B") { vid_filter (vid, dir, 0); return; }
+  if (txt == "S") { vid_filter (vid, dir, 1); return; }
+  if (txt == "Z") { vid_scaler (vid, dir, 5); return; }
+
+  if (txt == "5s" ) dir *= 5;
+  if (txt == "15s") dir *= 15;
+  if (txt == "1m" ) dir *= 60;
+  if (txt == "2m" ) dir *= 120;
+  if (txt == "5m" ) dir *= 300;
+  if (txt == "10m") dir *= 600;
+
+  if ((dir += vid.currentTime) < min_vt) dir = min_vt;
+  vid.currentTime = dir > vid.durtime ? vid.durtime : dir;
+}
+////////////////////
+
+var vid_resize = function (vid)
+{
+  var i, j = 0, k, h, w = vid.step % 10;
+
+  var sib = vid.ownerDocument, fs = sib.fullscreen || sib.fullscreenElement;
+  var ctr = vid.nextElementSibling.firstElementChild; sib = ctr.children;
+
+  h = w & 2 ? vid.clientWidth : vid.clientHeight;
+  w = w & 2 ? vid.clientHeight : vid.clientWidth;
+
+  if (h <= 0 || w <= 0) return;  // looks like window is not ready
+
+  if (ctr.checked)  // block unnecessary calls
+  {
+    if (!vid.ww) vid.ww = 0; if (!vid.hh) vid.hh = 0;
+    if (Math.abs (h - vid.hh) < 3 && Math.abs (w - vid.ww) < 3) return;
+  }
+  vid.ww = w; vid.hh = h;
+
+  h = fs ? 9 : Math.round (h * 10 / screen.height) - 2;
+  if (h < 5) h = 4; ctr.checked = 45 + h; ctr.style.paddingBottom = h + "px";
+ 
+  if (w > 1024) { h = w / 1024; w = 1024; } else h = 1;
+  ctr.step = fs ? -h : h; ctr.style.transform = "scale(" + h + ")";
+  ctr.style.transformOrigin = "bottom center";
+
+  sib [0].style.width = (w - 246) + "px";
+  sib [0].style.minWidth = (w > 260 && w < 380 ? w - 192 : 68) + "px";
+  sib [1].style.display = w < 380 ? "none" : "";
+
+  var sizes = [0,0,0,0,0,0,0,0,0,0,34,88,36,42,36,36,36,42,30,30,30,0,0,0];
+  var scale = [0,0,0,0,0,0,0,0,0,0, 6, 6, 8, 7, 5, 2, 4, 1, 3, 3, 3,0,0,0];
+  var block = [632,0,0,0,0,0,0,0,0];
+
+  for (i = 0; i < sib.length; i++) if (k = scale [i]) block [k] += sizes [i] + 4;
+  if ((w -= block [0]) < 80) for (j = 1; j < block.length; j++) if ((w += block [j]) >= 80) break;
+  if (j > 5) for (i = 5; i > 3; i--) if (w - block [i] > 80) { w -= block [i]; block [i] = 0; }
+  sib [9].style.width = w + "px";
+
+  for (i = 0; i < sib.length; i++) if (k = scale [i])
+    sib [i].style.display = (!block [k] || j < k) ? "" : "none";
+}
+////////////////////
+
+var vid_rotate = function (vid, sib, mode)
+{
+  var s = vid.step * 1, v = vid.value.split ("|"), a = v[1] / 100, b = v[2] / 100;
+  if (mode == 1) s ^= 1; if (mode == 2) s += 2; s = s & 7; vid.step = s;
+  v = "scale(" + (s & 1 ? -a : a) + "," + (a * b) + ")";
+
+  vid.style.transform = "rotate(" + ((s >> 1) * 90) + "deg) " + v;
+
+  if (sib) sib [21].style.outline = s & 1 ? "1px solid pink" : "none";
+  if (sib) sib [22].style.outline = s > 1 ? "1px solid pink" : "none";
+
+  if (s & 2)
+  {
+    vid.style.top = "calc(50vh - 50vw)";
+    vid.style.left = "calc(50vw - 50vh)";
+    vid.style.width = "100vh";
+    vid.style.height = "100vw";
+  }
+  else
+  {
+    vid.style.top = vid.style.left = "0";
+    vid.style.width = vid.style.height = "100%";
+  }
+}
+////////////////////
+
+var vid_filter = function (vid, dir, mode)
+{
+  var n, s, con, lvl, sat, filter = vid.style.filter;
+
+  if (!filter) lvl = sat = 1; else
+  {
+    if ((n = filter.indexOf ("brightness")) < 0) lvl = 1; else
+      { s = filter.substr (n + 11); s = s.substr (0, s.indexOf (")")); lvl = s * 1; }
+    if ((n = filter.indexOf ("saturate")) < 0) sat = 1; else
+      { s = filter.substr (n + 9); s = s.substr (0, s.indexOf (")")); sat = s * 1; }
+  }
+
+  sat = sat / (3 - lvl) * 2; if (mode) sat += dir * 0.1; else lvl += dir * 0.05;
+  if (lvl < 0) lvl = 0; if (sat < 0) sat = 0; if (lvl > 2) lvl = 2; if (sat > 2) sat = 2;
+
+  sat = sat * (3 - lvl) / 2; con = (2 - lvl * (3 - lvl)) * (2 - sat) + 1;
+  lvl = lvl.toFixed (3); con = con.toFixed (3); sat = sat.toFixed (3);
+
+  vid.style.filter = "brightness(" + lvl + ") contrast(" + con + ") saturate(" + sat + ")";
+}
+////////////////////
+
+var vid_scaler = function (vid, dir, scale, sib)
+{
+  var c, s = vid.step, v = vid.value; s = s ? s * 1 : 0; if (!v) v = "";
+
+  if (!scale)
+  {
+    c = s % 10; scale = (s - c) / 10; if (!scale) scale = 100;
+    s = dir = 0; vid.step = c; v = v + "||100";
+  }
+
+  v = v.split ("|"); c = scale; s = dir && (s & 1) ? 2 : 1;
+  if (dir) c = v[s] * 1 + dir * scale; if (c < 25) c = 25; if (c > 200) c = 200;
+  v[s] = c; vid.value = v.join ("|"); vid_rotate (vid, sib, 0);
+}
+////////////////////
+
+var vid_poster = function (vid, name)
+{
+  vid.nextElementSibling.children[1].style.backgroundImage = "url('" + name + "')";
+}
+////////////////////
+
+</script>
+
+<script src="alleycat-frame4.js"></script>
+<script src="alleycat-frame5.js"></script>
+<script src="alleycat-frame6.js"></script>
+<script src="alleycat-frame7.js"></script>
+<script src="alleycat-frame8.js"></script>
+<script src="alleycat-frame9.js"></script>
+
+</body></html> 
+
